@@ -35,6 +35,9 @@ Un rapport Markdown (`.md`) est généré à chaque exécution dans `data/report
     ```
     *(Inclut `requests`, `beautifulsoup4`, `google-generativeai`)*
 
+3.  **Renommer la configuration** :
+    Copiez `config.example.json` vers `config.json` et ajoutez votre clé API Gemini.
+
 ---
 
 ## ⚙️ Configuration (`config.json`)
