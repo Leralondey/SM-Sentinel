@@ -229,8 +229,12 @@ class XSDWatchdog:
 
         logging.info("Changes detected. Committing...")
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        commit_msg = f"Auto-update schemas: {timestamp}"
+        if detected_version:
+             commit_msg += f" | Source: {detected_version}"
+        
         subprocess.run(['git', 'add', '.'], cwd=self.schemas_dir, check=True)
-        subprocess.run(['git', 'commit', '-m', f"Auto-update schemas: {timestamp}"], cwd=self.schemas_dir, check=True)
+        subprocess.run(['git', 'commit', '-m', commit_msg], cwd=self.schemas_dir, check=True)
         
         # Show stats for console
         diff_stat = subprocess.run(['git', 'show', '--stat', 'HEAD'], cwd=self.schemas_dir, capture_output=True, text=True)
@@ -244,13 +248,26 @@ class XSDWatchdog:
             changed_items = result_files.stdout.strip().split('\n')
             
             eahv_changes = []
+            ech_impacted = set()
+
             for item in changed_items:
                 if not item: continue
                 parts = item.split('\t')
                 status = parts[0]
                 filepath = parts[-1]
+                
+                # Detect eAHV changes
                 if 'eahv-iv' in filepath.lower():
                     eahv_changes.append({'status': status, 'path': filepath})
+                
+                # Detect changed eCH standards (from path or filename)
+                # Ex: data/schemas/eCH-0011/... or .../eCH-0011-9-0.xsd
+                if 'eCH-' in filepath:
+                    # Extract eCH-XXXX
+                    import re
+                    match = re.search(r'(eCH-\d{4})', filepath)
+                    if match:
+                        ech_impacted.add(match.group(1))
             
             # --- Console Log Report ---
             if eahv_changes:
@@ -275,9 +292,33 @@ class XSDWatchdog:
             
             md_content = f"# Rapport de Veille XSD du {datetime.now().strftime('%d/%m/%Y %H:%M')}\n\n"
             
-            if detected_version:
-                md_content += f"**Version Source Détectée** : `{detected_version}`\n\n"
+            # --- Header: Versions Comparison ---
+            previous_version = "Inconnue (Initial)"
+            current_version = detected_version if detected_version else "Non spécifiée"
             
+            # Try to get previous commit message to parse Source
+            try:
+                prev_commit_msg = subprocess.run(['git', 'log', '-1', '--skip=1', '--pretty=%B'], cwd=self.schemas_dir, capture_output=True, text=True).stdout.strip()
+                if "Source: " in prev_commit_msg:
+                    previous_version = prev_commit_msg.split("Source: ")[1].strip()
+                elif prev_commit_msg:
+                    previous_version = "Commit précédent (Sans Source)"
+                else:
+                    previous_version = "Aucun (Premier Run)"
+            except Exception:
+                pass
+
+            if detected_version:
+                md_content += f"### 🔄 Comparaison de Versions\n"
+                md_content += f"| Ancienne Version | Nouvelle Version |\n"
+                md_content += f"| :--- | :--- |\n"
+                md_content += f"| `{previous_version}` | `{current_version}` |\n\n"
+            
+            # --- Header: eCH Impacted ---
+            if ech_impacted:
+                md_content += f"### 📜 Normes eCH Impactées\n"
+                md_content += f"> {', '.join(sorted(ech_impacted))}\n\n"
+
             md_content += "## Résumé Global\n"
             md_content += "```text\n"
             md_content += diff_stat.stdout
