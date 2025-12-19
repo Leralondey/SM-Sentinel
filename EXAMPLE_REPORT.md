@@ -3,7 +3,7 @@
 ## Résumé Global
 ```text
 commit 683bd4d2cbfd984a654373fc78749d70e8c051fb
-Author: XSD Watchdog <marco.pambianchi@gmail.com>
+Author: SM-Sentinel Bot <bot@sm-sentinel.local>
 Date:   Fri Dec 19 09:52:35 2025 +0100
 
     Auto-update schemas: 2025-12-19 09:52:35
@@ -82,7 +82,7 @@ En résumé, ces types de modifications visent toujours à **améliorer la quali
 ## Résumé Global
 ```text
 commit 2644781502c1e9da710047c2e0451ee5b604985b
-Author: XSD Watchdog <marco.pambianchi@gmail.com>
+Author: SM-Sentinel Bot <bot@sm-sentinel.local>
 Date:   Fri Dec 19 09:53:56 2025 +0100
 
     Auto-update schemas: 2025-12-19 09:53:56
