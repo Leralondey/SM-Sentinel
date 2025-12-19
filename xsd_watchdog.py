@@ -25,6 +25,8 @@ logging.basicConfig(
 class XSDWatchdog:
     def __init__(self, config_path='config.json'):
         self.load_config(config_path)
+        # Check if git repo exists before setup creates it
+        self.is_first_run = not os.path.exists(os.path.join(self.schemas_dir, '.git'))
         self.setup_directories()
         self.configure_git()
         self.configure_ai()
@@ -504,14 +506,13 @@ class XSDWatchdog:
 
     def run(self):
         # Initial check logic
-        is_first_run = not os.path.exists(os.path.join(self.schemas_dir, '.git'))
         versions_to_process = []
         
         atos_config = self.config.get('atos_discovery')
         if atos_config and atos_config.get('enabled'):
             available_versions = self.discover_atos_versions(atos_config['url'])
             
-            if is_first_run and len(available_versions) >= 2:
+            if self.is_first_run and len(available_versions) >= 2:
                 logging.info("🚀 First Run Detected! Executing 'Warm Start' sequence.")
                 logging.info(f"Will process previous version ({available_versions[1]['filename']}) then latest ({available_versions[0]['filename']}) to generate comparison.")
                 versions_to_process.append(available_versions[1]) # N-1
