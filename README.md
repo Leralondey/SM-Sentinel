@@ -37,6 +37,7 @@ Un rapport Markdown (`.md`) est généré à chaque exécution dans `data/report
 
 3.  **Renommer la configuration** :
     Copiez `config.example.json` vers `config.json` et ajoutez votre clé API Gemini.
+    > 💡 **Obtenir une clé gratuite :** Rendez-vous sur [Google AI Studio](https://aistudio.google.com/) et cliquez sur "Get API key".
 
 ---
 
