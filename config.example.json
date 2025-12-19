@@ -1,0 +1,26 @@
+{
+    "base_dir": "data",
+    "ech_standards": {
+        "manual": [
+            {
+                "id": "eCH-0090",
+                "url": "https://www.ech.ch/fr/ech/ech-0090/2.0"
+            },
+            {
+                "id": "eCH-0044",
+                "url": "https://www.ech.ch/fr/ech/ech-0044/4.1"
+            }
+        ],
+        "auto_discovered": []
+    },
+    "atos_discovery": {
+        "enabled": true,
+        "url": "https://sm-client.atos-solutions.ch/index.php"
+    },
+    "ai_analysis": {
+        "enabled": true,
+        "api_key": "YOUR_GEMINI_API_KEY_HERE",
+        "model": "gemini-2.5-flash"
+    },
+    "zip_sources": []
+}

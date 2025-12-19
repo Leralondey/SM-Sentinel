@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data & Logs
+data/
+watchdog.log
+*.log
+
+# Configuration sensitive
+config.json
+
+# IDE
+.vscode/
+.idea/
