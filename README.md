@@ -68,6 +68,8 @@ python xsd_watchdog.py
 
 **Version Source Détectée** : `repository_prod_121225.zip`
 
+📄 **[Voir le rapport complet généré (Exemple réel)](EXAMPLE_REPORT.md)** - Analyse comparative entre une version d'Octobre 2025 et Décembre 2025.
+
 ## 🎯 Focus eAHV-IV
 | Statut | Fichier | Analyse Impact (IA) |
 | :---: | :--- | :--- |
