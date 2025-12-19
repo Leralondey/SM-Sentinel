@@ -365,8 +365,8 @@ class XSDWatchdog:
         except Exception as e:
             logging.error(f"Error generating reports: {e}")
 
-    def find_latest_atos_zip(self, base_url):
-        logging.info(f"Scanning for latest ZIP at {base_url}...")
+    def discover_atos_versions(self, base_url):
+        logging.info(f"Scanning for available versions at {base_url}...")
         try:
             response = requests.get(base_url)
             response.raise_for_status()
@@ -379,6 +379,7 @@ class XSDWatchdog:
                 if filename.startswith('repository_prod_') and filename.endswith('.zip') and len(filename) == 26:
                     try:
                         date_str = filename[16:22]
+                        # Assume DDMMYY format
                         date_obj = datetime.strptime(date_str, "%d%m%y")
                         if not href.startswith('http'):
                             if href.startswith('/'):
@@ -393,119 +394,65 @@ class XSDWatchdog:
 
             if not candidates:
                 logging.warning("No matching repository_prod_*.zip found.")
-                return None, None
+                return []
 
             candidates.sort(key=lambda x: x['date'], reverse=True)
-            latest = candidates[0]
-            logging.info(f"Found latest version: {latest['filename']} ({latest['date'].strftime('%Y-%m-%d')})")
-            return latest['url'], latest['filename']
+            logging.info(f"Found {len(candidates)} versions. Latest: {candidates[0]['filename']}")
+            return candidates
 
         except Exception as e:
             logging.error(f"Error during discovery: {e}")
-            return None, None
+            return []
 
-    def get_all_standards(self):
-        """Helper to get merged list of manual and auto-discovered standards"""
-        # Support default list format for backward compatibility (during transition)
-        standards_conf = self.config.get('ech_standards', {})
-        if isinstance(standards_conf, list):
-            return standards_conf
+    def execute_cycle(self, atos_version=None):
+        """Execute a full update cycle for a specific version state"""
         
-        # New dict format
-        return standards_conf.get('manual', []) + standards_conf.get('auto_discovered', [])
-
-    def scan_atos_ech_dependencies(self):
-        """Scan Atos folder for eCH dependencies and auto-add them to monitoring (Persistent)"""
-        atos_xslt_path = os.path.join(self.schemas_dir, "SM-Client-Atos", "xsd_xslt")
-        if not os.path.exists(atos_xslt_path):
-            logging.warning("Atos folder not found for eCH dependency scan.")
-            return
-
-        logging.info("Scanning Atos dependencies for eCH Standards auto-discovery...")
-        found_ech = set()
+        # 1. Atos Download (if version provided)
+        if atos_version:
+            self.fetch_zip_source("SM-Client-Atos", atos_version['url'])
         
-        try:
-            for item_name in os.listdir(atos_xslt_path):
-                if item_name.startswith("eCH-") and os.path.isdir(os.path.join(atos_xslt_path, item_name)):
-                    found_ech.add(item_name)
-        except Exception as e:
-            logging.error(f"Error scanning Atos dependencies: {e}")
-            return
-
-        # Prepare for update
-        standards_conf = self.config.get('ech_standards', {})
-        
-        # Handle migration if still a list
-        if isinstance(standards_conf, list):
-            logging.info("Migrating configuration to new format (manual/auto_discovered)...")
-            standards_conf = {
-                "manual": standards_conf,
-                "auto_discovered": []
-            }
-            self.config['ech_standards'] = standards_conf
-
-        manual_ids = {std['id'] for std in standards_conf.get('manual', [])}
-        auto_list = standards_conf.get('auto_discovered', [])
-        auto_ids = {std['id'] for std in auto_list}
-        
-        updates_made = False
-        for ech_id in found_ech:
-            # Add only if not in manual AND not already in auto
-            if ech_id not in manual_ids and ech_id not in auto_ids:
-                url_id = ech_id.lower() 
-                generic_url = f"https://www.ech.ch/fr/ech/{url_id}"
-                
-                logging.info(f"✨ Auto-discovered new eCH standard: {ech_id}. Persisting to config.")
-                auto_list.append({"id": ech_id, "url": generic_url})
-                auto_ids.add(ech_id)
-                updates_made = True
-        
-        if updates_made:
-            # Save back to file
-            try:
-                # Reload raw file to preserve formatting? No, json dump is fine.
-                # Use self.config_path assuming it was stored. If not, fix main.
-                # XSDWatchdog __init__ uses config_path arg but doesn't store it as attribute cleanly?
-                # It does: load_config(config_path). Let's check load_config implementation.
-                # It doesn't store self.config_path. I will fix that or assume default 'config.json' if passed.
-                # Actually I should allow writing back.
-                
-                # Assume attribute self.config_file exists (added in load_config or init)
-                with open(self.config_path, 'w', encoding='utf-8') as f:
-                    json.dump(self.config, f, indent=4)
-                logging.info("💾 Configuration updated with new standards.")
-            except Exception as e:
-                logging.error(f"Failed to save configuration: {e}")
-
-    def run(self):
-        detected_ver = None
-        
-        # 1. Atos Downloads (Source of truth for dependencies)
-        # 1a. Dynamic Discovery
-        atos_config = self.config.get('atos_discovery')
-        if atos_config and atos_config.get('enabled'):
-            latest_url, latest_filename = self.find_latest_atos_zip(atos_config['url'])
-            if latest_url:
-                self.fetch_zip_source("SM-Client-Atos", latest_url)
-                detected_ver = latest_filename
-
-        # 1b. ZIP Sources (Legacy)
+        # 1b. Other ZIP Sources
         for zip_src in self.config.get('zip_sources', []):
             self.fetch_zip_source(zip_src['name'], zip_src['url'])
-        
-        # 2. Auto-Discovery of eCH dependencies from Atos content
+            
+        # 2. Auto-Discovery
         self.scan_atos_ech_dependencies()
         
-        # 3. Fetch eCH Standards (Now includes auto-discovered ones)
-        # Use helper
+        # 3. Fetch Standards
         for std in self.get_all_standards():
             self.fetch_ech_standard(std['id'], std['url'])
 
         # 4. Local Schemas
         self.sync_local_schemas()
         
-        # 5. Git ops & Reporting
-        self.commit_changes(detected_version=detected_ver)
+        # 5. Commit & Report
+        ver_name = atos_version['filename'] if atos_version else None
+        self.commit_changes(detected_version=ver_name)
+
+    def run(self):
+        # Initial check logic
+        is_first_run = not os.path.exists(os.path.join(self.schemas_dir, '.git'))
+        versions_to_process = []
+        
+        atos_config = self.config.get('atos_discovery')
+        if atos_config and atos_config.get('enabled'):
+            available_versions = self.discover_atos_versions(atos_config['url'])
+            
+            if is_first_run and len(available_versions) >= 2:
+                logging.info("🚀 First Run Detected! Executing 'Warm Start' sequence.")
+                logging.info(f"Will process previous version ({available_versions[1]['filename']}) then latest ({available_versions[0]['filename']}) to generate comparison.")
+                versions_to_process.append(available_versions[1]) # N-1
+                versions_to_process.append(available_versions[0]) # N
+            elif available_versions:
+                versions_to_process.append(available_versions[0]) # Only latest
+
+        if not versions_to_process:
+            # Fallback for no atos or manual mode, just run once
+            self.execute_cycle()
+        else:
+            for ver in versions_to_process:
+                logging.info(f"▶️ Processing cycle for version: {ver['filename']}")
+                self.execute_cycle(atos_version=ver)
 
 if __name__ == "__main__":
     import sys
