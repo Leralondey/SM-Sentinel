@@ -31,7 +31,7 @@ Un rapport Markdown (`.md`) est généré à chaque exécution dans `data/report
 1.  **Pré-requis** : Python 3.8+, Git.
 2.  **Installation des dépendances** :
     ```powershell
-    pip install -r monitoring/requirements.txt
+    pip install -r requirements.txt
     ```
     *(Inclut `requests`, `beautifulsoup4`, `google-generativeai`)*
 
@@ -42,25 +42,7 @@ Un rapport Markdown (`.md`) est généré à chaque exécution dans `data/report
 ```json
 {
     "base_dir": "data",
-    "ech_standards": {
-        "manual": [
-            {"id": "eCH-0090", "url": "https://www.ech.ch/fr/ech/ech-0090/2.0"},
-            {"id": "eCH-0044", "url": "https://www.ech.ch/fr/ech/ech-0044/4.1"}
-        ],
-        "auto_discovered": [
-            {"id": "eCH-0058", "url": "https://www.ech.ch/fr/ech/ech-0058"}
-        ]
-    },
-    "atos_discovery": {
-        "enabled": true,
-        "url": "https://sm-client.atos-solutions.ch/index.php"
-    },
-    "ai_analysis": {
-        "enabled": true,
-        "api_key": "VOTRE_KEY_ICI",
-        "model": "gemini-2.5-flash"
-    }
-}
+// ...
 ```
 
 ### Détails Configuration
@@ -75,7 +57,7 @@ Un rapport Markdown (`.md`) est généré à chaque exécution dans `data/report
 ## ▶️ Utilisation
 
 ```powershell
-python monitoring/xsd_watchdog.py
+python xsd_watchdog.py
 ```
 
 ### Exemple de Résultat (Rapport)
