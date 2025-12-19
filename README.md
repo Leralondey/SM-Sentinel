@@ -71,6 +71,8 @@ python xsd_watchdog.py
 
 📄 **[Voir le rapport complet généré (Exemple réel)](EXAMPLE_REPORT.md)** - Analyse comparative entre une version d'Octobre 2025 et Décembre 2025.
 
+📂 **[Accéder à l'historique des rapports générés (Dossier data/reports)](data/reports/)**
+
 ## 🎯 Focus eAHV-IV
 | Statut | Fichier | Analyse Impact (IA) |
 | :---: | :--- | :--- |
