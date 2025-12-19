@@ -9,8 +9,8 @@
 ## 🚀 Fonctionnalités Clés
 
 ### 1. 🔍 Découverte & Collecte
-*   **eCH Standards** : Scanne et télécharge les normes officielles configurées.
-*   **Atos SmartClient** : Détecte *automatiquement* la dernière version du bundle ZIP (`repository_prod_ddMMyy.zip`).
+*   **eCH Standards** : eCH est l'association qui définit, développe et promeut des normes de cyberadministration en Suisse. Ces standards (au format .xsd pour les schémas techniques) facilitent la collaboration électronique entre autorités, entreprises et particuliers. Le script surveille les mises à jour sur le site officiel [ech.ch](https://www.ech.ch/fr).
+*   **Atos SmartClient** : Le [SM Client](https://sm-client.atos-solutions.ch/#r_ablage) (Sedex Mover Client) est le logiciel client fourni par Atos pour interagir avec la plateforme sécurisée sedex. Il permet d'envoyer et recevoir des données cryptées entre les unités administratives suisses. Le script détecte *automatiquement* la dernière version des livrables ZIP (`repository_prod_ddMMyy.zip`) contenant les définitions de messages.
 *   **Warm Start (Nouveau)** : Au premier lancement, le script récupère automatiquement les **2 dernières versions** pour générer immédiatement un rapport comparatif pertinent, sans attendre la prochaine mise à jour.
 
 ### 2. 🧠 Intelligence Artificielle (Gemini 2.5)
