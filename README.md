@@ -10,7 +10,8 @@
 
 ### 1. 🔍 Découverte & Collecte
 *   **eCH Standards** : Scanne et télécharge les normes officielles configurées.
-*   **Atos SmartClient** : Détecte *automatiquement* la dernière version du bundle ZIP (`repository_prod_ddMMyy.zip`) sans intervention manuelle.
+*   **Atos SmartClient** : Détecte *automatiquement* la dernière version du bundle ZIP (`repository_prod_ddMMyy.zip`).
+*   **Warm Start (Nouveau)** : Au premier lancement, le script récupère automatiquement les **2 dernières versions** pour générer immédiatement un rapport comparatif pertinent, sans attendre la prochaine mise à jour.
 
 ### 2. 🧠 Intelligence Artificielle (Gemini 2.5)
 Le script ne se contente pas de dire "Le fichier a changé".
