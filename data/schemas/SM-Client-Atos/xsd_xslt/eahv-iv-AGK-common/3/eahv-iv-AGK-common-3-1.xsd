@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Lars Steffen (AWK Group AG) -->
+<!-- Mit XMLSpy v2015 rel. 3 (http://www.altova.com) von IGS GmbH (IGS GmbH - Informatik) bearbeitet -->
+<!--
+==============================================================================
+ Revision History:
+==============================================================================
+¦  Date		¦Ver.	¦Who¦      Change (where, what, why)
+==============================================================================
+¦ 				¦		¦		¦ 
+¦ 17.11.16	¦ 1.0	¦ab	¦ - 
+¦ 11.03.19	¦ 2.0	¦ Stl	¦ - CR-16: AHV-AuditFrom, AHV-AuditTo: minOccurs = 0
+¦				¦		¦		¦ - CR-18: UVG-Insurer, UVG-PoliceNo, BVG-Insurer, BVG-InsurerNo: maxLength = 255 
+¦ 21.07.22	¦ 2.1	¦ Stl	¦ - Ergänzung Kontrollmethode (auditMethodType)
+¦ 28.03.25	¦ 3.0	¦ Stl	¦ - Ergänzung Verzicht Freibetrag
+¦ 25.04.25	¦ 3.1	¦ Stl	¦ - Anpassung Verzicht Freibetrag
+¦ 				¦		¦		¦ 
+==============================================================================
+-->
+<xs:schema xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0046="http://www.ech.ch/xmlns/eCH-0046/4" xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/3" xmlns:eCH-0098="http://www.ech.ch/xmlns/eCH-0098/3" xmlns:AGK="http://www.eahv-iv.ch/xmlns/eahv-iv-AGK-common/3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sd="http://www.swissdec.ch/schema/sd/20130514/SalaryDeclaration" targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-AGK-common/3" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.1">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">AGK-common</xs:documentation>
+		<xs:documentation xml:lang="fr">AGK-common</xs:documentation>
+		<xs:documentation xml:lang="it">AGK-common</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0010/6"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0046/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/3"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0098/3"/>
+	<xs:import namespace="http://www.swissdec.ch/schema/sd/20130514/SalaryDeclaration"/>
+	<xs:simpleType name="orderIdType">
+		<xs:annotation>
+			<xs:documentation>AuftragsId</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="36"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="timeStampType">
+		<xs:annotation>
+			<xs:documentation>Zeitstempel für ganzen Datensatz</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:simpleType name="orderCommentType">
+		<xs:annotation>
+			<xs:documentation>Kommentar zum Auftrag</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="4096"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ratingType">
+		<xs:annotation>
+			<xs:documentation>Typ für die Risikoburteilung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="findingAudit" type="xs:unsignedShort">
+				<xs:annotation>
+					<xs:documentation>Ergebnis letzte Kontrolle</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="qualityHR" type="xs:unsignedShort">
+				<xs:annotation>
+					<xs:documentation>Qualität Personal</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cooperation" type="xs:unsignedShort">
+				<xs:annotation>
+					<xs:documentation>Zusammenarbeit mit AK/UV</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="organisationCriteria" type="xs:unsignedShort">
+				<xs:annotation>
+					<xs:documentation>Unternehmensspezifische Kriterien</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="auditType">
+		<xs:annotation>
+			<xs:documentation>Typ für die Parameter der Kontrolle</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="timeLimitFrom" type="xs:date"/>
+			<xs:element name="timeLimitTo" type="xs:date"/>
+			<xs:element name="AHV-AuditFrom" type="xs:date" minOccurs="0"/>
+			<xs:element name="AHV-AuditTo" type="xs:date" minOccurs="0"/>
+			<xs:element name="UVG-AuditFrom" type="xs:date" minOccurs="0"/>
+			<xs:element name="UVG-AuditTo" type="xs:date" minOccurs="0"/>
+			<xs:element name="auditKind" type="xs:unsignedShort"/>
+			<xs:element name="auditType" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="scheduledYear" type="xs:gYear" minOccurs="0"/>
+			<xs:element name="lastAuditDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="lastAuditEndYear" type="xs:gYear" minOccurs="0"/>
+			<xs:element name="auditDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="individualOrder" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="toAuditWith" type="eCH-0097:organisationIdentificationType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="auditMethodType">
+		<xs:annotation>
+			<xs:documentation>Kontrollmethode</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="0">
+				<xs:annotation xml:lang="de">
+					<xs:documentation>Kontrollmethode nicht bekannt, nicht definiert oder nicht erhoben</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation xml:lang="de">
+					<xs:documentation>Kontrolle vor Ort</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation xml:lang="de">
+					<xs:documentation>Kontrolle auf Distanz</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="organisationExtensionType">
+		<xs:annotation>
+			<xs:documentation>Erweiterung der Eigenschaften der Organisation für Arbeitgeberkontrolle</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eCH-0098:organisationType">
+				<xs:sequence>
+					<xs:element name="sumOfSalaries" type="xs:decimal"/>
+					<xs:element name="sumOfSalariesCategory" type="xs:unsignedShort"/>
+					<xs:element name="numberOfEmployees" type="xs:unsignedLong" minOccurs="0"/>
+					<xs:element name="hasCommercialRegisterEntry" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="UVG-Insurer" minOccurs="0">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="255"/>
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="UVG-InsurerNo" minOccurs="0">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="20"/>
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="UVG-PoliceNo" minOccurs="0">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="255"/>
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="BVG-Insurer" minOccurs="0">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="255"/>
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="BVG-InsurerNo" minOccurs="0">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="255"/>
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="organisationIdentificationExtensionType">
+		<xs:annotation>
+			<xs:documentation>Erweiterung der Eigenschaften der organisationIdentification für Arbeitgeberkontrolle</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eCH-0097:organisationIdentificationType">
+				<xs:sequence>
+					<xs:element name="contact" type="eCH-0046:contactType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="salaryTotalsExtensionType">
+		<xs:annotation>
+			<xs:documentation>Erweiterung der Eigenschaften von SalaryTotalsType für Arbeitgeberkontrolle</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sd:SalaryTotalsType">
+				<xs:sequence>
+					<xs:element name="salaryYears" type="xs:gYear" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Jahre, für die Lohnsummen geliefert werden</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AHV-AVS-SalaryType">
+		<xs:annotation>
+			<xs:documentation>Neudefinition AHV-AVS-SalaryType mit Option Verzicht Freibetrag</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sd:AHV-AVS-SalaryType">
+				<xs:sequence>
+					<xs:element name="waiveOfPensionDeduct" type="xs:boolean" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AHV-AVS-SalariesType">
+		<xs:annotation>
+			<xs:documentation>Neudefinition AHV-AVS-SalariesType mit Option Verzicht Freibetrag</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="AHV-AVS-Salary" type="AGK:AHV-AVS-SalaryType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						<translation>AHV-Lohn</translation>
+						<description>
+							<short>Der massgebende Lohn für die AHV</short>
+							<domain>
+                                Bei mehreren Beitragsdauern (Einritt/Austritt oder Wechsel in der AHV-Pflicht)
+                                während eines Jahres, sind die dazugehörenden Einkommen periodengerecht aufzuschlüsseln.
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">
+						<translation>Salaire AVS</translation>
+						<description>
+							<short>Le salaire déterminant pour l'AVS</short>
+							<domain>
+                                Au cas de plusieures durées de cotisation (Entrée/sortie ou changement de
+                                l'obligation de cotiser à l'AVS) pendant une année, il faut répartir les revenus
+                                correspondants
+                                selon la période.
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation>
+						<usage>AHV</usage>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PersonType">
+		<xs:annotation>
+			<xs:documentation>Neudefinition PersonType mit Option Verzicht Freibetrag</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Particulars" type="sd:ParticularsType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						<translation>Personalien</translation>
+						<description>
+							<short>
+                                Personalien der Person
+                            </short>
+						</description>
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">
+						<translation>Identité</translation>
+						<description>
+							<short>
+                                Identité de la personne
+                            </short>
+						</description>
+					</xs:documentation>
+					<xs:documentation>
+						<usage>all</usage>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Work" type="sd:WorkType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						<translation>Arbeitsdaten</translation>
+						<description>
+							<short>
+                                Arbeitsplatz Informationen
+                            </short>
+						</description>
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">
+						<translation>Informations concernant le travail</translation>
+						<description>
+							<short>
+                                Informations concernant le travail
+                            </short>
+						</description>
+					</xs:documentation>
+					<xs:documentation>
+						<usage>all</usage>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AHV-AVS-Salaries" type="AGK:AHV-AVS-SalariesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						<translation>AHV-Löhne</translation>
+						<description>
+							<short>AHV-Löhne der Person</short>
+							<domain>
+                                Bei mehreren Beitragsdauern während eines Jahres, sind die dazugehörenden Einkommen
+                                aufzuschlüsseln.
+                                Für Versicherte, die während der Abrechnungsperiode das Rentenalter erreichen und
+                                weiterarbeiten, ist das Einkommen vor und nach dem Erreichen des Rentenalters auf die
+                                entsprechende Beitragsdauer zuzuordnen.
+                                Periodenfremde Einkommen:
+                                Bei Einkommen, welche für eine Vorjahresperiode bestimmt sind, ist die Beitragsdauer
+                                der Bestimmungsperiode anzugeben
+                                z.B. Nachzahlung Bonus oder Versicherungsleistungen für eine Person, welche im
+                                Vorjahr ausgetreten ist (kein aktiver Mitarbeiter im Meldungsjahr)
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">
+						<translation>Salaires AVS</translation>
+						<description>
+							<short>Salaires AVS de la personne</short>
+							<domain>
+                                Au cas de plusieurs durées de cotisation pendant une année, les revenus correspondants
+                                doivent être répartis.
+                                Pour les assurés qui atteignent l'âge de la retraite pendant la période de décompte et
+                                qui continuent
+                                à travailler il faut attribuer le revenu d'avant et d'après l'arrivée de l'âge de
+                                retraite à
+                                la durée de cotisation correspondante.
+                                Revenus hors période:
+                                Dans le cas de revenus déstinés à un période d'une année précédente, il faut indiquer
+                                la durée de cotisation de la période concernée.
+                                p.e. paiements ultérieurs, bonus ou prestations d'assurance pour une personne ayant
+                                quitté
+                                l'entreprise l'année précédente (qui n'est pas employé actif dans l'année courante)
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation>
+						<usage>AHV</usage>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UVG-LAA-Salaries" type="sd:UVG-LAA-SalariesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						<translation>UVG-Löhne</translation>
+						<description>
+							<short>UVG-Löhne der Person</short>
+							<domain>
+                                Beitragspflichtiger Lohn, der aufgrund der UVG-Basis für die versicherten Personen unter
+                                der Berücksichtigung des Höchstlohnes berechnet wird. Bei mehreren Beitragsdauern
+                                (Einritt/Austritt oder UVG-Code-Wechsel) während eines Jahres, sind die dazugehörenden
+                                Einkommen aufzuschlüsseln
+                                Periodenfremde Einkommen:
+                                Bei Einkommen, welche für eine Vorjahresperiode bestimmt sind, ist die Beitragsdauer
+                                der Bestimmungsperiode anzugeben
+                                z.B. Nachzahlung Bonus oder Versicherungsleistungen für eine Person, welche im
+                                Vorjahr ausgetreten ist (kein aktiver Mitarbeiter im Meldungsjahr)
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">
+						<translation>Salaires LAA</translation>
+						<description>
+							<short>Salaires LAA de la personne</short>
+							<domain>
+                                Salaire soumis aux cotisations qui est calculé selon la base LAA pour les personnes
+                                assurées,
+                                compte tenu du salaire maximum. Au cas de plusieures durées de cotisation (Entrée/Départ
+                                ou
+                                changement du code LAA) pendant une année, les revenus correspondants doivent être
+                                répartis.
+                                Revenus hors période:
+                                Dans le cas de revenus déstinés à un période d'une année précédente, il faut indiquer
+                                la durée de cotisation de la période concernée.
+                                p.e. paiements ultérieurs, bonus ou prestations d'assurance pour une personne ayant
+                                quitté
+                                l'entreprise l'année précédente (qui n'est pas employé actif dans l'année courante)
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation>
+						<usage>UVG-</usage>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UVGZ-LAAC-Salaries" type="sd:UVGZ-LAAC-SalariesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						<translation>UVGZ-Löhne</translation>
+						<description>
+							<short>UVGZ-Löhne der Person</short>
+							<domain>
+                                Beitragspflichtiger Lohn, der aufgrund der UVGZ-Basis für die versicherten Personen
+                                unter der Berücksichtigung der Versicherungskategorie berechnet wird. Bei mehreren
+                                Beitragsdauern (Einritt/Austritt oder UVGZ-Kategorie-Code-Wechsel) während eines Jahres,
+                                sind die dazugehörenden Einkommen aufzuschlüsseln.
+                                Periodenfremde Einkommen:
+                                Bei Einkommen, welche für eine Vorjahresperiode bestimmt sind, ist die Beitragsdauer
+                                der Bestimmungsperiode anzugeben
+                                z.B. Nachzahlung Bonus oder Versicherungsleistungen für eine Person, welche im
+                                Vorjahr ausgetreten ist (kein aktiver Mitarbeiter im Meldungsjahr)
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">
+						<translation>Salaires LAAC</translation>
+						<description>
+							<short>Salaires LAAC de la personne</short>
+							<domain>
+                                Salaire soumis au cotisations qui est calculé selon la base LAAC pour les personnes
+                                assurées
+                                compte tenu de la catégorie d'assurance. Au cas de plusieures durées de cotisation
+                                (Entrée/Départ
+                                ou changement du code de la catégorie LAAC) pendant une année, les revenus
+                                correspondants
+                                doivent être répartis.
+                                Revenus hors période:
+                                Dans le cas de revenus déstinés à un période d'une année précédente, il faut indiquer
+                                la durée de cotisation de la période concernée.
+                                p.e. paiements ultérieurs, bonus ou prestations d'assurance pour une personne ayant
+                                quitté
+                                l'entreprise l'année précédente (qui n'est pas employé actif dans l'année courante)
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation>
+						<usage>UVGZ</usage>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="KTG-AMC-Salaries" type="sd:KTG-AMC-SalariesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						<translation>KTG-Löhne</translation>
+						<description>
+							<short>KTG-Löhne der Person</short>
+							<domain>
+                                Beitragspflichtiger Lohn, der aufgrund der KTG-Basis für die versicherten Personen unter
+                                der Berücksichtigung der Versicherungskategorie berechnet wird. Bei mehreren
+                                Beitragsdauern
+                                (Einritt/Austritt oder KTG-Kategorie-Code-Wechsel) während eines Jahres, sind die
+                                dazugehörenden Einkommen aufzuschlüsseln
+                                Periodenfremde Einkommen:
+                                Bei Einkommen, welche für eine Vorjahresperiode bestimmt sind, ist die Beitragsdauer
+                                der Bestimmungsperiode anzugeben
+                                z.B. Nachzahlung Bonus oder Versicherungsleistungen für eine Person, welche im
+                                Vorjahr ausgetreten ist (kein aktiver Mitarbeiter im Meldungsjahr)
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">
+						<translation>Salaires AMC</translation>
+						<description>
+							<short>Salaires AMC (IJM) de la personne</short>
+							<domain>
+                                Salaire soumis au cotisations qui est calculé selon la base IJM pour les personnes
+                                assurées
+                                compte tenu de la catégorie d'assurance. Au cas de plusieures durées de cotisation
+                                (Entrée/Départ
+                                ou changement du code de la catégorie IJM) pendant une année, les revenus correspondants
+                                doivent être répartis.
+                                Revenus hors période:
+                                Dans le cas de revenus déstinés à un période d'une année précédente, il faut indiquer
+                                la durée de cotisation de la période concernée.
+                                p.e. paiements ultérieurs, bonus ou prestations d'assurance pour une personne ayant
+                                quitté
+                                l'entreprise l'année précédente (qui n'est pas employé actif dans l'année courante)
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation>
+						<usage>KTG</usage>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BVG-LPP-Salaries" type="sd:BVG-LPP-SalariesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						<translation>BVG-Basen</translation>
+						<description>
+							<short>BVG-Basen der Person</short>
+						</description>
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">
+						<translation>Salaires LPP</translation>
+						<description>
+							<short>Salaires LPP de la personne</short>
+							<domain>
+                                Salaire soumis aux cotisations qui est calculé selon le salaire AVS pour les personnes
+                                assurées compte tenu de la catégorie d'assurance. Au cas de plusieures durées de
+                                cotisation
+                                (Entrée/Départ ou changement du code de la catégorie LPP) pendant une année, les revenus
+                                correspondants doivent être répartis.
+                                Revenus hors période:
+                                Dans le cas de revenus déstinés à un période d'une année précédente, il faut indiquer
+                                la durée de cotisation de la période concernée.
+                                p.e. paiements ultérieurs, bonus ou prestations d'assurance pour une personne ayant
+                                quitté
+                                l'entreprise l'année précédente (qui n'est pas employé actif dans l'année courante)
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation>
+						<usage>BVG</usage>
+					</xs:documentation>
+				</xs:annotation>
+				<xs:unique name="BVG-LPP-Salary-Ctrl">
+					<xs:selector xpath="sd:BVG-LPP-Salary"/>
+					<xs:field xpath="@institutionIDRef"/>
+					<xs:field xpath="sd:BVG-LPP-Code"/>
+				</xs:unique>
+			</xs:element>
+			<xs:element name="FAK-CAF-Salaries" type="sd:FAK-CAF-SalariesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						<translation>FAK-Löhne</translation>
+						<description>
+							<short>FAK-Löhne der Person</short>
+							<domain>
+                                Es sind alle FAK-relevanten Summen pro Versicherten auszuweisen.
+                                Periodenfremde Einkommen:
+                                Bei Einkommen, welche für eine Vorjahresperiode bestimmt sind, ist die Beitragsdauer
+                                der Bestimmungsperiode anzugeben
+                                z.B. Nachzahlung Bonus oder Versicherungsleistungen für eine Person, welche im
+                                Vorjahr ausgetreten ist (kein aktiver Mitarbeiter im Meldungsjahr)
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">
+						<translation>Salaires CAF</translation>
+						<description>
+							<short>Salaires CAF de la personne</short>
+							<domain>
+                                Il faut déclarer tout les sommes concernant la CAF par assuré.
+                                Revenus hors période:
+                                Dans le cas de revenus déstinés à un période d'une année précédente, il faut indiquer
+                                la durée de cotisation de la période concernée.
+                                p.e. paiements ultérieurs, bonus ou prestations d'assurance pour une personne ayant
+                                quitté
+                                l'entreprise l'année précédente (qui n'est pas employé actif dans l'année courante)
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation>
+						<usage>FAK</usage>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TaxSalaries" type="sd:TaxSalariesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						<translation>Steuer-Löhne</translation>
+						<description>
+							<short>Steuer-Löhne der Person</short>
+							<domain>
+                                Informatioinen und Löhne gemäss Lohnausweis der Steuerverwaltungen
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">
+						<translation>Salaires-Impôts</translation>
+						<description>
+							<short>Salaires de la personne (impôts)</short>
+							<domain>
+                                Informations et salaires selon le certificat de salaire des administrations fiscales
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation>
+						<usage>Tax</usage>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StatisticSalaries" type="sd:StatisticSalariesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						<translation>Statistik Lohndaten</translation>
+						<description>
+							<short>LSE Informationen und Lohndaten</short>
+							<domain>
+                                Informationen und Lohndaten für die Lohnstrukturerhebung (LSE) des BFS
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">
+						<translation>Informations salariales statistiques</translation>
+						<description>
+							<short>ESS: informations et données salariales</short>
+							<domain>
+                                Informations et données salariales pour l’enquête sur la structure des salaires (ESS) du
+                                OFS
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation>
+						<usage>Statistic</usage>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- TaxAtSource -->
+			<xs:element name="TaxAtSourceSalaries" type="sd:TaxAtSourceSalariesType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						<translation>Quellensteuer-Löhne</translation>
+						<description>
+							<short>Quellensteuer-Löhne der Person</short>
+							<domain>
+                                Informationen und Lohndaten zur Quellensteuer (QST) Abrechnung.
+                                Der Meldezyklus ist monatlich.
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">
+						<translation>Salaires impôt à la source</translation>
+						<description>
+							<short>Salaires de la personne (impôt à la source)</short>
+							<domain>
+                                Informations et salaires pour la déclaration de l'impôt à la source.
+                                Le cycle de la déclaration est mensuel.
+                            </domain>
+						</description>
+					</xs:documentation>
+					<xs:documentation>
+						<usage>TAtSrc</usage>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Lars Steffen (AWK Group AG) -->
+<!-- 
+		2018-03-20 - v 0.80 - First release
+		2018-04-05 - v 1.00 - pensionSince - misspelling correction 
+		2018-04-09 - v 1.00.1 - Add submessage type to namespace and file name 
+ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:eCH-0090="http://www.ech.ch/xmlns/eCH-0090/1" xmlns:gekvg-zas-1027-000101="http://www.zas.admin.ch/xmlns/gekvg-zas-1027-000101/1" targetNamespace="http://www.zas.admin.ch/xmlns/gekvg-zas-1027-000101/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Meldung Rentenabfrage GE KVG - ZAS</xs:documentation>
+		<xs:documentation xml:lang="fr">Annonce interrogation de rente IC LAMal - CdC</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0090/1"/>
+	<xs:simpleType name="vnType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Schweizerische, 13-stelligen Versichertennummer (756xxxxxxxxxy), kompatibel mit vnType aus eCH-0044</xs:documentation>
+			<xs:documentation xml:lang="fr">Numéro AVS suisse à 13 positions (756xxxxxxxxxy), compatible avec vnType de eCH-0044</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:unsignedLong">
+			<xs:minInclusive value="7560000000002"/>
+			<xs:maxInclusive value="7569999999998"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="pensionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Laufende Rente, Gültigkeit AHVN13</xs:documentation>
+			<xs:documentation xml:lang="fr">Rente actuelle, validité NAVS13</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Keine laufende Rente, AHVN13 aktiv</xs:documentation>
+					<xs:documentation xml:lang="fr">Pas de rente actuelle, NAVS13 actif</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Laufende Rente, AHVN13 aktiv</xs:documentation>
+					<xs:documentation xml:lang="fr">Rente actuelle, NAVS13 actif</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Keine laufende Rente, AHVN13 inaktiv</xs:documentation>
+					<xs:documentation xml:lang="fr">Pas de rente actuelle, NAVS13 inactif</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Laufende Rente, AHVN13 inaktiv</xs:documentation>
+					<xs:documentation xml:lang="fr">Rente actuelle, NAVS13 inactif</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">AHVN13 ungültig oder unbekannt</xs:documentation>
+					<xs:documentation xml:lang="fr">NAVS13 invalide ou inconnu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="pensionQueryType">
+		<xs:sequence>
+			<xs:element name="vn" type="gekvg-zas-1027-000101:vnType"/>
+			<xs:element name="pension" type="gekvg-zas-1027-000101:pensionType" minOccurs="0"/>
+			<xs:element name="pensionSince" type="xs:gYearMonth" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="headerType">
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="messageId" type="eCH-0090:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0090:messageIdType" minOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="1027"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000101"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:actionType">
+						<xs:minLength value="1"/>
+						<xs:enumeration value="5">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Anfrage</xs:documentation>
+								<xs:documentation xml:lang="fr">Demande</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="6">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Antwort</xs:documentation>
+								<xs:documentation xml:lang="fr">Réponse</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+			<xs:documentation xml:lang="fr">Attributs métier de l'annonce</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="pensionQuery" type="gekvg-zas-1027-000101:pensionQueryType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation>root element for pension query message</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="gekvg-zas-1027-000101:headerType"/>
+				<xs:element name="content" type="gekvg-zas-1027-000101:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

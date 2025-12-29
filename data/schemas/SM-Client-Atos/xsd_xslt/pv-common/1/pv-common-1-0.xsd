@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 sp1 (x64) (http://www.altova.com) by Andrea Rapanaro (private) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/4" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/2" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/4" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/2" xmlns:eCH-0046="http://www.ech.ch/xmlns/eCH-0046/2" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:pv-common="http://www.gdk-cds.ch/xmlns/pv-common/1" xmlns:ns1="http://www.ech.ch/xmlns/eCH-0008/2" targetNamespace="http://www.gdk-cds.ch/xmlns/pv-common/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0007/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0008/2"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0010/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/2"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0046/2"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Datenaustausch Prämienverbilligung: Basistypen für die Meldungen</xs:documentation>
+	</xs:annotation>
+	<!-- ============================================= header type ============================================= -->
+	<xs:complexType name="headerType" abstract="true">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Ableitung von eCH-0058:headerType.
+ Dieser Typ kann nicht direkt benutzt werden. Er muss für jede Meldung abgeleitet werden.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="pv-common:declarationLocalReferenceType"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0"/>
+			<xs:element name="businessProcessId" type="pv-common:businessProcessIdType"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="uniqueIdBusinessTransaction" type="eCH-0058:uniqueIdBusinessTransactionType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType" type="eCH-0058:messageTypeType"/>
+			<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType"/>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="eventDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="modificationDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action" type="pv-common:actionType"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="actionType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2"/>
+			<xs:minLength value="1"/>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Neue Meldung</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="5">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anfrage</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="6">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Antwort</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="declarationLocalReferenceType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:token"/>
+			<xs:element name="department" type="xs:token" minOccurs="0"/>
+			<xs:element name="phone" type="eCH-0046:phoneNumberType"/>
+			<xs:element name="email" type="eCH-0046:emailAddressType"/>
+			<xs:element name="other" type="xs:token" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="businessProcessIdType">
+		<xs:restriction base="xs:unsignedLong"/>
+	</xs:simpleType>
+	<!-- ============================================= content types ============================================= -->
+	<xs:complexType name="insuranceQueryResultType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Antwort Versicherungsverhältnis</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="person" type="pv-common:personType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Personenidentifikation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="insuranceData" type="pv-common:insuranceDataType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Daten der Krankenversicherung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ============================================= field types ============================================= -->
+	<xs:complexType name="decreeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Verfügung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="decreeId" type="pv-common:decreeIdType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Referenzcode der betroffenen Verfügung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="person" type="pv-common:personType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Personenidentifikation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="beginMonth" type="xs:gYearMonth">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Beginn Monat (Format YYYY-MM)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="endMonth" type="xs:gYearMonth">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ende Monat (Format YYYY-MM)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="amount">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Monatlicher PV-Betrag in CHF in Franken und Rappen auf 5 Rappen gerundet</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:fractionDigits value="2"/>
+						<xs:pattern value="[0-9]*\.[0-9](0|5)"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="limitation" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">False=keine Plafonierung; True=Plafonierung auf Tarifprämie</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="decreeIdType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Identifikationsnummer einer Verfügung</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:pattern value="[a-zA-Z0-9_\-\.]{1,30}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="stopRejectReasonType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Grund der Rückweisung eines Stopps</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1"/>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verfügung unbekannt</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gemeldetes Stoppdatum nach dem Ende des Verfügungszeitraums</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gemeldetes Stoppdatum liegt zu weit in der Vergangenheit</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ungültiger Stopp mit Verfügungsnummer 0</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="insuranceDataType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Daten der Krankenversicherung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="premium" type="pv-common:decimalTwoFractionDigitsType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Monatliche Tarifprämie in Franken und Rappen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="accident" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">True=mit Unfall; False=ohne Unfall</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contractStartDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Beginn des OKP-Versicherungsverhältnisses</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contractEndDate" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ende des OKP-Versicherungsverhältnisses falls bekannt/vorhanden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="franchise" type="pv-common:decimalTwoFractionDigitsType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Jährliche Franchise auf Franken und Rappen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="premiumGroup" type="pv-common:premiumGroupType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tarifgruppe</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="productName" type="xs:token" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Produktname (Freitext)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="bonus" type="pv-common:bonusType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bonusprodukt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="premiumAge" type="pv-common:premiumAgeType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tarifaltersgruppe</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="premiumCountry" type="eCH-0008:countryIdType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tarifland, vierstelliger BFS-Ländercode gemäss http://www.bfs.admin.ch/bfs/portal/de/index/infothek/nomenklaturen/blank/blank/sg/01.html</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="premiumZoneCH" type="eCH-0007:cantonAbbreviationType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tarifzone falls Tarifland = Schweiz (zweistelliger Kantonskürzel)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="premiumZoneForeign" type="xs:token" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tarifzone falls Ausland, Freitext</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="premiumRegionCH" type="pv-common:premiumRegionType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tarifregion falls Tarifland = Schweiz</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="premiumRegionForeign" type="xs:token" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tarifregion falls Ausland, Freitext</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="premiumGroupType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Tarifgruppe</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1"/>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Standardgrundversicherung</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">HMO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hausarzt</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="9">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">weitere Modelle</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="bonusType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Bonusprodukt</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1"/>
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">45%</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">35%</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">25%</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">15%</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">0%</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="9">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">kein Bonusprodukt</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="premiumAgeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Prämiengruppe</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1"/>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kind</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Jugendlicher</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Erwachsener</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="premiumRegionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Prämienregion gem. BAG</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1"/>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tarifregion 1</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tarifregion 2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tarifregion 3</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="mutationReasonType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Grund für Mutation Versicherungsverhältnis</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1"/>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wegzug ins Ausland</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tod</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wechsel des Krankenversicherers</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wegzug nach unbekannt</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="5">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausschluss vom Meldeverfahren</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="bagNumberType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Bezeichnet den Krankenversicherer anhand der BAG-Nummer. Für die Militärversicherung wird die BAG-Nummer 01572 benutzt, für die gemeinsame Einrichtung KVG die 09999.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:pattern value="\d{5}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="decreeRejectReasonType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Grund der Rückweisung einer Verfügung</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2"/>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zu Beginn des Verfügungszeitraums nicht OKP-versichert</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wechsel zu anderem Krankenversicherer</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Die versicherte Person ist vom Meldeverfahren ausgeschlossen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Die versicherte Person erhält im Verfügungszeitraum bereits PV</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="5">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">PV-Verfügung zu weit in der Vergangenheit</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="6">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">PV-Verfügung zu weit in der Zukunft</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="decimalTwoFractionDigitsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">xs:decimal mit fractionDigits=2</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="personType">
+		<xs:sequence>
+			<xs:element name="vn" type="eCH-0044:vnType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">AHV-Nummer 13-stellig (AHVN13)</xs:documentation>
+					<xs:appinfo>checksum.groovy</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="officialName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nachname</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="firstName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Alle Vornamen in der richtigen Reihenfolge</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sex" type="eCH-0044:sexType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschlecht (1=männlich, 2=weiblich)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateOfBirth" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geburtsdatum</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="address" type="pv-common:addressType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresse</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="addressType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Wohnsitz</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="addressLine1" type="eCH-0010:addressLineType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresszusatzzeile für personifizierte Adressangaben (z.B. c/o-Adresse)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="addressLine2" type="eCH-0010:addressLineType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresszusatzzeile für unpersonifizierte Adressangaben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="street" type="eCH-0010:streetType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Strassenbezeichnungen (dies kann auch der Name einer Lokalität, etc. sein)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="houseNumber" type="eCH-0010:houseNumberType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hausnummer (zu setzen, falls vorhanden)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="town" type="eCH-0010:townType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ortsname (in ausländischen Adressen falls nötig inkl. Provinz etc.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="swissZipCode" type="eCH-0010:swissZipCodeType">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Schweizer Postleitzahl (zu setzten, falls Land CH)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="foreignZipCode" type="eCH-0010:foreignZipCodeType">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Ausländische Postleitzahl (zu setzten, falls Ausland)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="country" type="eCH-0008:countryIdType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Land, vierstelliger BFS-Ländercode</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="agencyType">
+		<xs:annotation>
+			<xs:documentation>Der agencyType basiert auf dem Typ eCH-0007:cantonAbbreviationType und ergänzt diesen
+um die gemeinsame Einrichtung KVG.</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="eCH-0007:cantonAbbreviationType pv-common:agencyTypeForUnion"/>
+	</xs:simpleType>
+	<xs:simpleType name="agencyTypeForUnion">
+		<xs:annotation>
+			<xs:documentation>Enthält die Enumeration GEKVG zum Ergänzung des Typs eCH-0007 im Typ agencyType</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="GEKVG"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

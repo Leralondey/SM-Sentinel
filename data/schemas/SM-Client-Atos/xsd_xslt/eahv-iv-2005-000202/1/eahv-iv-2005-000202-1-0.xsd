@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-common/1"
+           xmlns="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-000202/1"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-000202/1"
+           version="1.0">
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="eCH-0058-5-0.xsd"/>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-common/1"
+               schemaLocation="eahv-iv-2005-common-1-0.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation xml:lang="fr">
+            SubMessageType: 202
+            Annonce envoyée par une caisse à la CdC afin de demander le transfert du cas vers une autre caisse.
+        </xs:documentation>
+        <xs:documentation xml:lang="de">
+            SubMessageType: 202
+            Meldung, die von einer Kasse an die ZAS geschickt wird, um die Übertragung des Falls an eine andere Kasse zu
+            beantragen.
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType name="headerType">
+        <xs:complexContent>
+            <xs:extension base="common:headerType">
+                <xs:sequence>
+                    <xs:element name="subMessageType">
+                        <xs:simpleType>
+                            <xs:restriction base="eCH-0058:subMessageTypeType">
+                                <xs:enumeration value="000202"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="contentType">
+        <xs:sequence>
+            <xs:element name="caseTransfer" type="common:transferType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Le champ 'compensationOffice' correspond à la caisse de destination
+                        du transfert.
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Das Feld 'compensationOffice' enthält die Ausgleichskasse an welche
+                        der Fall übertragen wird.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="headerType"/>
+                <xs:element name="content" type="contentType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+ 

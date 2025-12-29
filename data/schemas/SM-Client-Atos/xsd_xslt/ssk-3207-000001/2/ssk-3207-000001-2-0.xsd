@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2022 by Lars Steffen (AWK Group AG) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010-f/5" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4" xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/1" xmlns:ssk-common="http://www.steuerkonferenz.ch/xmlns/ssk-common/2" xmlns:ssk-3207-000001="http://www.steuerkonferenz.ch/xmlns/ssk-3207-000001/2" xmlns:ns1="http://www.steuerkonferenz.ch/xmlns/ssk-3207-000001/2" targetNamespace="http://www.steuerkonferenz.ch/xmlns/ssk-3207-000001/2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Formular W-15</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0010-f/5"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/1"/>
+	<xs:import namespace="http://www.steuerkonferenz.ch/xmlns/ssk-common/2"/>
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von ssk-common:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="eCH-0058:declarationLocalReferenceType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="2" maxOccurs="2"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType"/>
+			<xs:element name="ourBusinessReferenceID" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="uniqueIdBusinessTransaction" type="eCH-0058:uniqueIdBusinessTransactionType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="3207"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000001"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="eventDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="modificationDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:actionType">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue Nachricht</xs:documentation>
+								<xs:documentation xml:lang="fr">Message nouveau</xs:documentation>
+								<xs:documentation xml:lang="it">Nuovo messaggio</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="ssk-common:attachmentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" fixed="false"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" fixed="true"/>
+			<xs:element name="extension" type="ssk-3207-000001:extensionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="extensionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Attribute, welche im eCH-0058/4-Standard nicht vorgesehen sind, werden im Attribut „extension“ geführt.</xs:documentation>
+			<xs:documentation xml:lang="fr">Les éléments qui ne sont pas prévus dans le standard eCH-0058/4 sont définis dans l'élément 'extension'</xs:documentation>
+			<xs:documentation xml:lang="it">Gli elementi che non sono incluse nello standard eCH-0058/4 sono definiti in 'estensione' l'elemento</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contactInformation" type="ssk-common:contactInformationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="amountType">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="beneficiaryType">
+		<xs:sequence>
+			<xs:element name="kindOfPerson">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">NP</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">JP</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="name" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">NP: Nachname
+JP: Name der Organisation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="firstName" type="eCH-0044:baseNameType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">NP: Vorname
+JP: keine Verwendung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="uid" type="eCH-0097:uidStructureType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">NP: keine Verwendung
+JP: UID der Organisation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="address" type="eCH-0010:addressInformationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresse</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="typeOfBenefit">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Ausserordentliche Dividen-de/Ausschüttung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Gratisaktien/-Stammanteile</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Liquidationsüberschuss</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Wiederkehrende geldwerte Leistungen</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="5">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Andere geldwerte Leistungen</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="6">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">ordentliche Dividende</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="7">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Interimsdividende</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="fiscalYear" type="xs:gYear">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschäftsjahr</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="grossAmountOriginalCurrency" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Brutto-Betrag der Leistung in Originalwährung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="currencyISO">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="exchangeRate" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wechselkurs </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="grossAmount" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Brutto-Betrag der Leistung in CHF</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="withholdingTax" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verrechnungssteuer (35%) in CHF</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="netAmount" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Netto-Betrag der Leistung in CHF</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="constitutionTaxClaim" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Entstehung der Steuerforderung 
+(= Fälligkeit)
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">geprüft (gültiger Eintrag)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">korrigiert (gültiger, seit dem letzten Versand korrigierter Eintrag)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">gelöscht (nicht mehr gültiger, gelöschter Eintrag; wird übermittelt, um die Korrektur in allen Fällen sichtbar zu machen)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="providerMonetaryBenefit" type="ssk-common:legalEntitiesTaxType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Unternehmen, welches die geldwerten Leistungen erbracht hat</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="beneficiary" type="ssk-3207-000001:beneficiaryType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Begünstigter / Empfänger der geldwerten Leistungen (Steuerpflichtiger)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="remark" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bemerkungen</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="ssk-3207-000001:headerType"/>
+				<xs:element name="content" type="ssk-3207-000001:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

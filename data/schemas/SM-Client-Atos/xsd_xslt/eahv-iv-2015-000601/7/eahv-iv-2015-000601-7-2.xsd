@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eahv-iv-2015-000601="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-000601/7"
+           xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-common/7"
+           xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-000601/7"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="7.2">
+
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-common/7"
+               schemaLocation="eahv-iv-2015-common-7-2.xsd"/>
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5"/>
+
+    <xs:element name="message">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Déclaration de l'élément
+                root pour message.xml
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Deklaration des
+                Root-Elements für message.xml
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eahv-iv-2015-000601:headerType"/>
+                <xs:element name="content" type="eahv-iv-2015-000601:contentType"/>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:int" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="headerType">
+        <xs:complexContent>
+            <xs:extension base="common:headerBaseType">
+                <xs:sequence>
+                    <xs:element name="referenceMessageId" type="eCH-0058:messageIdType"
+                                minOccurs="0"/>
+                    <xs:element name="subMessageType">
+                        <xs:simpleType>
+                            <xs:restriction base="eCH-0058:subMessageTypeType">
+                                <xs:enumeration value="000601">
+                                    <xs:annotation>
+                                        <xs:documentation xml:lang="fr">Type 6 : Etat du
+                                            registre
+                                        </xs:documentation>
+                                    </xs:annotation>
+                                </xs:enumeration>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="action">
+                        <xs:simpleType>
+                            <xs:restriction base="eCH-0058:actionType">
+                                <xs:enumeration value="1"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="responseExpected">
+                        <xs:simpleType>
+                            <xs:restriction base="eCH-0058:responseExpectedType">
+                                <xs:pattern value="false"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="contentType">
+        <xs:sequence>
+            <xs:element name="commandDetail" type="common:commandDetailsType"/>
+            <xs:element name="registerStatusRecords"
+                        type="eahv-iv-2015-000601:registerStatusRecordType" minOccurs="0"
+                        maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="registerStatusRecordType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Contenu des annonce de
+                type 000601
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="eahv-iv-2015-000601:subRawRecordType">
+                <xs:sequence>
+                    <xs:element name="breakRules" type="common:breakRuleWeakType"
+                                minOccurs="0"/>
+                    <xs:element name="orphan" type="xs:boolean" minOccurs="0"/>
+                    <xs:element name="canceled" type="xs:boolean" minOccurs="0"/>
+                    <xs:element name="mutationDate" type="xs:date"
+                                minOccurs="0"/>
+                    <xs:element name="rawRecords" type="eahv-iv-2015-000601:rawRecordType"
+                                minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="simpleIntraConflicts"
+                                type="eahv-iv-2015-000601:simpleIntraConflictType" minOccurs="0"
+                                maxOccurs="unbounded"/>
+                    <xs:element name="interConflicts" type="eahv-iv-2015-000601:interConflictType"
+                                minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="rawRecordType">
+        <xs:complexContent>
+            <xs:extension base="eahv-iv-2015-000601:subRawRecordType">
+                <xs:sequence>
+                    <xs:element name="action" type="eahv-iv-2015-000601:actionType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="subRawRecordType">
+        <xs:sequence>
+            <xs:element name="deliveryOffice" type="common:deliveryOfficeType"/>
+            <xs:element name="businessProcessId"
+                        type="eahv-iv-2015-000601:businessProcessIdType" minOccurs="0"/>
+            <xs:element name="insurant" type="eCH-0044:personIdentificationType"
+                        minOccurs="0"/>
+            <xs:element name="insurantMaritalStatus" type="common:maritalStatusType"
+                        minOccurs="0"/>
+            <xs:element name="numberOfChildren" type="xs:short"
+                        minOccurs="0"/>
+            <xs:element name="insurantDomicile" type="common:insurantDomicileWeakType"
+                        minOccurs="0"/>
+            <xs:element name="accountingMonth" type="common:yearMonthRestricted"
+                        minOccurs="0"/>
+            <xs:element name="serviceType" type="common:serviceTypeType"
+                        minOccurs="0"/>
+            <xs:element name="referenceNumber" type="xs:int"
+                        minOccurs="0"/>
+            <xs:element name="controlNumber" type="common:controlNumberType"
+                        minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Kontrollnummer für
+                        Zivildienst (serviceType = 40,
+                        41 und 30 zwingend anzugeben)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Numéro de contrôle pour
+                        le service civil
+                        (serviceType = 40, 41 et 30 obligatoire)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="activityBeforeService" type="common:activityBeforeServiceType"
+                        minOccurs="0"/>
+            <xs:element name="averageDailyIncome" type="common:decimal10-2"
+                        minOccurs="0"/>
+            <xs:element name="startOfPeriod" type="common:dateRestricted"
+                        minOccurs="0"/>
+            <xs:element name="endOfPeriod" type="common:dateRestricted"
+                        minOccurs="0"/>
+            <xs:element name="numberOfDays" type="xs:short"
+                        minOccurs="0"/>
+            <xs:element name="basicDailyAmount" type="common:decimal10-2"
+                        minOccurs="0"/>
+            <xs:element name="dailyIndemnityGuaranteeAI" type="xs:boolean"
+                        minOccurs="0"/>
+            <xs:element name="allowanceFarm" type="xs:boolean"
+                        minOccurs="0"/>
+            <xs:element name="allowanceCareExpenses" type="common:decimal10-2"
+                        minOccurs="0"/>
+            <xs:element name="totalAPG" type="common:decimal16-2" minOccurs="0"/>
+            <xs:element name="paymentMethod" type="common:paymentMethodType"
+                        minOccurs="0"/>
+            <xs:element name="paternityLeaveData" type="common:paternityLeaveDataWeakType" minOccurs="0"/>
+            <xs:element name="maternityLeaveData" type="common:maternityLeaveDataType" minOccurs="0"/>
+            <xs:element name="careLeaveData" type="common:careLeaveDataType" minOccurs="0"/>
+            <xs:element name="adoptLeaveData" type="common:adoptLeaveDataWeakType" minOccurs="0"/>
+            <xs:element name="history" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="creationDate" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="actionType">
+        <xs:restriction base="xs:int">
+            <xs:enumeration value="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Historique
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Annonce initiale
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Annonce de correction
+                        pour paiement rétroactif
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Annonce de correction
+                        pour restitution
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="9">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Synchro UPI
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="simpleIntraConflictType">
+        <xs:sequence>
+            <xs:element name="code" type="xs:integer"/>
+            <xs:element name="reminder" type="eahv-iv-2015-000601:reminderType"
+                        minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="interConflictType">
+        <xs:sequence>
+            <xs:element name="code" type="xs:integer"/>
+            <xs:element name="inConflitRecords"
+                        type="eahv-iv-2015-000601:inConflictRecordType" maxOccurs="unbounded"/>
+            <xs:element name="interPeriod" type="eahv-iv-2015-000601:intervalePeriodType"
+                        minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation source="Uniquement valable pour les doubles payements"
+                                      xml:lang="fr"/>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="inConflictRecordType">
+        <xs:sequence>
+            <xs:element name="deliveryOffice" type="common:deliveryOfficeType"/>
+            <xs:element name="businessProcessId"
+                        type="eahv-iv-2015-000601:businessProcessIdType" minOccurs="0"/>
+            <xs:element name="reminder" type="eahv-iv-2015-000601:reminderType"
+                        minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="intervalePeriodType">
+        <xs:sequence>
+            <xs:element name="startDate" type="xs:date"/>
+            <xs:element name="endDate" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="businessProcessIdType">
+        <xs:restriction base="eCH-0058:businessProcessIdType">
+            <xs:pattern value="\d{3}\.\d{3}\..*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="reminderType">
+        <xs:restriction base="xs:boolean">
+            <xs:pattern value="true"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

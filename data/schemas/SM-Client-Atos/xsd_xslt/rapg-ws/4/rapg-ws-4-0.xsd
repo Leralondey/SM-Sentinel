@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		   xmlns:rapg-ws="http://www.zas.admin.ch/xmlns/rapg-ws/4"
+		   xmlns:ech0044="http://www.ech.ch/xmlns/eCH-0044-f/4"
+		   xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-common/7"
+		   xmlns:eahv-iv-2015-000601="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-000601/7"
+		   xmlns:ofit-ws="http://www.ofit.admin.ch/xmlns/commun-ws/2"
+		   targetNamespace="http://www.zas.admin.ch/xmlns/rapg-ws/4" elementFormDefault="qualified" version="4.0">
+	
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="../eCH-0058-5-0.xsd" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4" schemaLocation="../eCH-0044-4-1f.xsd"/>
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-common/7" schemaLocation="../v7/eahv-iv-2015-common-7-0.xsd"/>
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-000601/7" schemaLocation="../v7/eahv-iv-2015-000601-7-0.xsd"/>
+	<xs:import namespace="http://www.ofit.admin.ch/xmlns/commun-ws/2" schemaLocation="../ofit-commun-ws-2-0.xsd"/>
+	<xs:element name="rapgAnnoncesRequest" type="rapg-ws:rapgAnnoncesRequestType"/>
+	<xs:element name="rapgAnnoncesResponse" type="rapg-ws:rapgAnnoncesResponseType"/>
+	<xs:complexType name="rapgConsultationStandardResponseType">
+		<xs:sequence>
+			<xs:element name="ack" type="ofit-ws:ackType"/>
+			<xs:element name="errors" type="ofit-ws:erreurMessageType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="rapgAnnoncesRequestType">
+		<xs:sequence>
+			<xs:element name="vn" type="ech0044:vnType"/>
+			<xs:element name="deliveryOffice" type="common:deliveryOfficeType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="rapgAnnoncesResponseType">
+		<xs:complexContent>
+			<xs:extension base="rapg-ws:rapgConsultationStandardResponseType">
+				<xs:sequence>
+					<xs:element ref="eahv-iv-2015-000601:message" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

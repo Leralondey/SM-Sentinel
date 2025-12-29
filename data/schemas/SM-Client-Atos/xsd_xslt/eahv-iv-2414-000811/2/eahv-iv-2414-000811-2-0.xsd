@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4"
+           xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/6"
+           xmlns:eahv-iv-2414-000811="http://www.eahv-iv.ch/xmlns/eahv-iv-2414-000811/2"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2414-000811/2"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5"
+               schemaLocation="eCH-0058-5-0.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0007/6"
+               schemaLocation="eCH-0007-6-0.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/4"
+               schemaLocation="eCH-0044-4-1.xsd"/>
+    <xs:annotation>
+        <xs:documentation xml:lang="de">EL-IPV-Datenaustausch: Mutationen für IPV-Empfänger</xs:documentation>
+        <xs:documentation xml:lang="en">EL-IPV data exchange: Mutations for IPV recipients</xs:documentation>
+    </xs:annotation>
+    <xs:simpleType name="dateType">
+        <xs:restriction base="xs:date">
+            <xs:pattern value="[^:Z]*" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="elIPVRejectReasonType">
+        <xs:annotation>
+            <xs:documentation>
+                Other - Anderer
+                IncomeSurplus - Einkommensüberschuss
+                ChangeOfMunicipality - Gemeindewechsel
+                Marriage - Heirat
+                ChangeOfCanton - Kantonswechsel
+                MovingAbroad - Wegzug ins Ausland
+                PensionChange - Rentenänderung
+                Death - Verstorben
+                Renunciation - Verzicht
+                LossOfPension - Verlust der Rente
+                PaymentStop - Zahlungsstopp
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Other" />
+            <xs:enumeration value="IncomeSurplus" />
+            <xs:enumeration value="ChangeOfMunicipality" />
+            <xs:enumeration value="Marriage" />
+            <xs:enumeration value="ChangeOfCanton" />
+            <xs:enumeration value="MovingAbroad" />
+            <xs:enumeration value="PensionChange" />
+            <xs:enumeration value="Death" />
+            <xs:enumeration value="Renunciation" />
+            <xs:enumeration value="LossOfPension" />
+            <xs:enumeration value="PaymentStop" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="premiumType">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="0"/>
+            <xs:pattern value="[^+-]*" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="ipvPeriodsType">
+        <xs:sequence>
+            <xs:element name="ipvPeriod" type="eahv-iv-2414-000811:ipvPeriodType" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="premiumInsuredPersonType">
+        <xs:sequence>
+            <xs:element name="ipvRecipient" type="eahv-iv-2414-000811:ipvRecipientType" minOccurs="1" maxOccurs="1" />
+            <xs:element name="elCases" type="eahv-iv-2414-000811:elCasesType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="elCasesType">
+        <xs:sequence>
+            <xs:element name="elCase" type="eahv-iv-2414-000811:elCaseType" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="elCaseType">
+        <xs:sequence>
+            <xs:element name="primaryElRecipient" type="eahv-iv-2414-000811:personType" minOccurs="0" maxOccurs="1" />
+            <xs:element name="ipvPeriods" type="eahv-iv-2414-000811:ipvPeriodsType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ipvRecipientType">
+        <xs:complexContent>
+            <xs:extension base="eahv-iv-2414-000811:personType">
+                <xs:sequence>
+                    <xs:element name="officialName" type="eCH-0044:baseNameType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="firstName" type="eCH-0044:baseNameType" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="sex" type="eCH-0044:sexType" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="ipvPeriodType">
+        <xs:sequence>
+            <xs:element name="periodStartDate" type="eahv-iv-2414-000811:dateType" />
+            <xs:element name="periodEndDate" type="eahv-iv-2414-000811:dateType" />
+            <xs:element name="canton" type="eCH-0007:cantonFlAbbreviationType" />
+            <xs:element name="premiumRegion" type="eahv-iv-2414-000811:premiumRegionType" />
+            <xs:element name="premium" type="eahv-iv-2414-000811:premiumType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Monatliche Prämie in Rappen</xs:documentation>
+                    <xs:documentation xml:lang="en">Monthly premium in Rappen</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ipvEligible" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        true: Der Empfänger hat Anspruch auf EL.
+                        false: Der Empfänger hat keinen Anspruch auf EL.
+                    </xs:documentation>
+                    <xs:documentation xml:lang="en">
+                        true: The receipient is eligible for EL.
+                        false: The receipient is not eligible for EL.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="provisional" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        true: Die Informationen sind vorläufig und für Vorauszahlungen gedacht.
+                        false (default): Die Informationen basieren auf tatsächlichen Werten.
+                    </xs:documentation>
+                    <xs:documentation xml:lang="en">
+                        true: The information is provisional and meant for advanced payment.
+                        false (default): The information is based on actual values.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rejectReason" type="eahv-iv-2414-000811:elIPVRejectReasonType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Grund, warum der Empfänger keinen Anspruch mehr auf EL hat</xs:documentation>
+                    <xs:documentation xml:lang="en">Reason why the recipient is no longer eligible for EL</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="insuranceCode" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Nur TI: Krankenkasse - Code</xs:documentation>
+                    <xs:documentation xml:lang="en">Only TI: Health insurance company - Code</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="insuranceName" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Nur TI: Krankenkasse - Name </xs:documentation>
+                    <xs:documentation xml:lang="en">Only TI: Health insurance company - Name</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="premiumRegionType">
+        <xs:restriction base="xs:unsignedShort">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="9"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="headerType">
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType"/>
+            <xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+            <xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+            <xs:element name="messageId" type="eCH-0058:messageIdType"/>
+            <xs:element name="messageType" type="eCH-0058:messageTypeType" fixed="2414"/>
+            <xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000811"/>
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+            <xs:element name="subject" type="eCH-0058:subjectType" minOccurs="0"/>
+            <xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+            <xs:element name="action" type="eCH-0058:actionType" fixed="1"/>
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="personType">
+        <xs:sequence>
+            <xs:element name="vn" type="eCH-0044:vnType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de"> Schweizerische, 13-stellige Versichertennummer (756XXXXXXXXXY)</xs:documentation>
+                    <xs:documentation xml:lang="en"> Swiss national insurance number, 13 characters (756XXXXXXXXXY)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="dateOfBirth" type="eahv-iv-2414-000811:dateType">
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="contentType">
+        <xs:sequence>
+            <xs:element name="premiumInsuredPerson" type="eahv-iv-2414-000811:premiumInsuredPersonType"  minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eahv-iv-2414-000811:headerType"/>
+                <xs:element name="content" type="eahv-iv-2414-000811:contentType"/>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

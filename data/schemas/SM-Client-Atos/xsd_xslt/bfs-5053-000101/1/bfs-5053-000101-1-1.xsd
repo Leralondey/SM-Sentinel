@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/4"
+	xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/2"
+	xmlns:eCH-0046="http://www.ech.ch/xmlns/eCH-0046/2"
+	xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/3"
+	xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/1"
+	xmlns:eCH-0098="http://www.ech.ch/xmlns/eCH-0098/1"
+	xmlns:bfs-5053-000101="http://www.bfs.admin.ch/xmlns/bfs-5053-000101/1"
+	targetNamespace="http://www.bfs.admin.ch/xmlns/bfs-5053-000101/1"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Jährliche Lieferung Stammdaten</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0010/4" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/2"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0046/2"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/3" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/1" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0098/1" />
+		
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von eCH-0058:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="bfs-5053-000101:declarationLocalReferenceType" minOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="5053"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000101"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="uniqueIdBusinessCase" type="eCH-0058:uniqueIdBusinessCaseType"/>
+						<xs:element name="totalNumberOfPackages" type="eCH-0058:totalNumberOfPackagesType"/>
+						<xs:element name="numberOfActualPackage" type="eCH-0058:numberOfActualPackageType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="object" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0"/>
+			<xs:element name="messageDate" type="xs:dateTime"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:initialMessageDateType" minOccurs="0"/>
+			<xs:element name="eventDate" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+			<xs:element name="modificationDate" type="xs:dateTime" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="testData" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="masterDataType" >
+		<xs:sequence>
+			<xs:element name="enteringDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="enteringReason" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1"/>
+						<xs:enumeration value="K">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kassenwechsel</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="N">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neuzugang</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="R">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Reaktivierung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="W">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue Mitgliedsnummer</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="X">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">anderer Eintrittsgrund</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="leavingDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="leavingReason" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1"/>
+						<xs:enumeration value="D">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Verstorben</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="E">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Eröffnet aufgrund von Fehler</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="F">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Geschlossen (Ende der Aktivität)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="H">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Geschlossen (Altersrücktritt)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="K">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kassenwechsel</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="N">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue Mitgliedsnummer</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="P">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kein Personal mehr</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="Q">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Aus Kanton weggezogen</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="R">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Geschäftsübergabe</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="T">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Umzug in eine andere Gemeinde</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="X">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Anderer Grund</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="leavingCompensationOffice" type="xs:string" minOccurs="0"/>
+			<xs:element name="enteringCompensationOffice" type="xs:string" minOccurs="0"/>
+			<xs:element name="accountNumber" type="xs:string" />
+			<xs:element name="compensationOffice" type="xs:string"/>
+			<xs:element name="uid" type="eCH-0097:uidStructureType" minOccurs="0" />
+			<xs:element name="burNr" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="entId" type="xs:decimal" minOccurs="0" />
+			<xs:element name="noga" type="eCH-0098:nogaCodeType" minOccurs="0"/>
+			<xs:element name="legalForm" >
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1"/>
+						<xs:enumeration value="A">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Selbständigerwerbender</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="B">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nichterwerbstätiger</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="C">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">einfache Gesellschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="D">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kollektivgesellschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="E">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kommanditgesellschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="F">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Erbengemeinschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="G">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Aktiengesellschaft AG</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="H">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Gesellschaft mit beschränkter Haftung GmbH</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="I">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Genossenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="J">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Arbeitgeber von Hausdienstpersonal</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="K">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kommanditaktiengesellschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="L">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Verein</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="M">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Stiftung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="N">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">öffentlich-rechtliche Körperschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="P">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Liegenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="X">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">unbekannt</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="Z">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Andere Sozialwerke</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="firmForm" >
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Arbeitgeber</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Selbständig mit Arbeitnehmern</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Selbständig ohne Arbeitnehmer</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Arbeitnehmer ohne beitragspflichtigen Arbeitgeber</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="5">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Hausdienstarbeitgeber (ADM)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="6">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nichterwerbstätiger (ADM)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="7">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Liegenschaft (ADM)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="8">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nebeneintrag eines Unternehmens </xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="99">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">anderer Unternehmenstyp</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>		
+			<xs:element name="vn" type="eCH-0044:vnType" minOccurs="0" />
+			<xs:element name="dateOfBirth" type="eCH-0044:datePartiallyKnownType" minOccurs="0" />
+			<xs:element name="sex" type="eCH-0044:sexType " minOccurs="0" />
+			<xs:element name="officialName" type="eCH-0044:baseNameType" minOccurs="0" />
+			<xs:element name="firstName" type="eCH-0044:baseNameType" minOccurs="0" />
+			<xs:element name="organisationName" type="eCH-0097:organisationNameType " minOccurs="0" />
+			<xs:element name="kindOfActivity" type="xs:string" minOccurs="0" />
+			<xs:element name="address" type="eCH-0010:addressInformationType" />			
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="declarationLocalReferenceType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="department" type="xs:string" minOccurs="0"/>
+			<xs:element name="phone" type="eCH-0046:phoneNumberType"/>
+			<xs:element name="email" type="eCH-0046:emailAddressType"/>
+			<xs:element name="other" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>	
+
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="masterData" type="bfs-5053-000101:masterDataType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="header">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für header.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="bfs-5053-000101:headerType">
+					<xs:attribute name="minorVersion" type="xs:integer" use="required" />
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="bfs-5053-000101:headerType" />
+				<xs:element name="content" type="bfs-5053-000101:contentType" />
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

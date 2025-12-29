@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/6"
+           xmlns="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-common/1"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-common/1"
+           version="1.0">
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="eCH-0058-5-0.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/6" schemaLocation="eCH-0097-6-0.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Gemeinsame Typen für alle Meldungen</xs:documentation>
+        <xs:documentation xml:lang="fr">Types communs à toutes les annonces</xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType name="headerType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Type commun pour les headers eCH-0058</xs:documentation>
+            <xs:documentation xml:lang="de">Gemeinsamer Typ für Headers eCH-0058</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType"/>
+            <xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+            <xs:element name="messageId" type="eCH-0058:messageIdType"/>
+            <xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType"/>
+            <xs:element name="messageType">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:messageTypeType">
+                        <xs:enumeration value="2005"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+            <xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+            <xs:element name="action">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:actionType">
+                        <xs:enumeration value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="emptyTagType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Utilisé pour les cas où un type sans donnée supplémentaire est nécessaire
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Wird für Fälle verwendet, in denen ein Typ ohne zusätzliche Daten benötigt
+                wird.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="0"/>
+            <xs:maxLength value="0"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="transferType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Information sur les divers transferts du cas de caisse en caisse
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Informationen über die verschiedenen Transfers des Falles von Kasse zu Kasse
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="compensationOffice" type="eCH-0097:uidStructureType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">IDE de la caisse concernée par le transfert. Pour le message 202,
+                        il s'agit de la caisse de destination. Pour le message 101, il s'agit de la caisse source.
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">IDE der von der Übertragung betroffenen Kasse. Bei der Nachricht 202,
+                        handelt es sich um die Zielkasse. Bei Nachricht 101 handelt es sich um die Quellkasse.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="reason">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Commentaire de la caisse sur la raison du transfert
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Kommentar der Kasse zum Grund der Überweisung
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="300"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
+ 

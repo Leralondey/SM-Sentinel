@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:easygov-ahv-common="http://www.easygov.swiss/xmlns/ahv/easygov-ahv-common-001/2" xmlns:eahv-iv-2067-004104="http://www.eahv-iv.ch/xmlns/eahv-iv-2067-004104/2" xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" xmlns:eCH-0046="http://www.ech.ch/xmlns/eCH-0046/5" xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/1" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4" xmlns:eCH-0098="http://www.ech.ch/xmlns/eCH-0098/6" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007-f/5" targetNamespace="http://www.easygov.swiss/xmlns/ahv/easygov-ahv-2804-000001/2" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="2.0" version="2.0">
+    <xs:import namespace="http://www.easygov.swiss/xmlns/ahv/easygov-ahv-common-001/2" schemaLocation="easygov-ahv-common-001-2-0.xsd"/>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" schemaLocation="eahv-iv-common-4-0.xsd"/>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2067-004104/2" schemaLocation="eahv-iv-2067-004104-2-0.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0007-f/5" schemaLocation="../ech/eCH-0007-5-0f.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4" schemaLocation="../ech/eCH-0044-4-1f.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0046/5" schemaLocation="../ech/eCH-0046-5-0.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/1" schemaLocation="../ech/eCH-0097-1-0.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0098/6" schemaLocation="../ech/eCH-0098-6-0.xsd"/>
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="easygov-ahv-common:headerType" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="content" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:choice>
+                                <xs:element name="insuredPerson" type="eahv-iv-common:naturalPersonsOASIDIType"/>
+                                <xs:element name="legalEntity" type="eahv-iv-2067-004104:legalEntityType"/>
+                            </xs:choice>
+                            <xs:element name="oasiRegistration" minOccurs="1" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="employees" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="employeesCount" type="xs:int" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="employeesChildren" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="employeesEmployedSince" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="employeesSalary" type="xs:int" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="managementCount" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="managementChildren" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="managementEmployedSince" type="xs:date" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="managementSalary" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="familyMembersCount" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="familyMembersChildren" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="familyMembersEmployedSince" type="xs:date" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="familyMembersSalary" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="employeesFees" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="foundation" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="predecessorName" type="eCH-0097:organisationNameType" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="foundationType" minOccurs="1" maxOccurs="1">
+                                                        <xs:annotation>
+                                                            <xs:documentation xml:lang="de">
+                                                                NEU: Wurde neu gegründet
+                                                                UBERNAHME: Wurde von einem Vorgänger übernommen
+                                                                UMWANDLUNG: Ist durch Umwandlung entstanden
+                                                            </xs:documentation>
+                                                        </xs:annotation>
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:enumeration value="NEU"/>
+                                                                <xs:enumeration value="UBERNAHME"/>
+                                                                <xs:enumeration value="UMWANDLUNG"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="acquisitionType" minOccurs="0" maxOccurs="1">
+                                                        <xs:annotation>
+                                                            <xs:documentation xml:lang="de">
+                                                                KAUF: Kauf
+                                                                MIETE: Miete
+                                                                PACHT: Pacht
+                                                            </xs:documentation>
+                                                        </xs:annotation>
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:enumeration value="KAUF"/>
+                                                                <xs:enumeration value="MIETE"/>
+                                                                <xs:enumeration value="PACHT"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="predecessorOrganisationName" type="eCH-0097:organisationNameType" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="predecessorBilling" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="investments" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="officeSpaceRent" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="vehiclesPurchase" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="vehiclesRent" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="storeRent" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="storageSpaceRent" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="inventoryPurchase" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="otherInvestmentsPurchase" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="otherInvestmentsPurchaseType" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="otherInvestmentsRent" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="otherInvestmentsRentType" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="workshopRent" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="toolsMachinesPurchase" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="capital" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="loans" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="equity" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="contact" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="contactRemark" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="contactEmail" type="eCH-0046:emailType" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="contactOfficial" type="eCH-0044:baseNameType" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="contactMobile" type="eCH-0046:phoneType" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="contactPhone" type="eCH-0046:phoneType" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="contactFirstName" type="eCH-0044:baseNameType" minOccurs="0" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="payroll" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="payrollDigital" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="payrollAnalog" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="payrollSuva" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="payrollTrustee" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="room" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="usesOwnBusinessPremises" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="doesNotUsePremises" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="usesPremisesOfACustomer" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="usesOwnHomeAsPremise" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="additionalServices" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="requestAIA" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="requestOASIforms" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="requestCollectiveHealth" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="partnerWeb" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="requestBVG" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="requestAssociationMembership" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="requestOther" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="socialInsurances" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="BVG" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="noBVGexplanation" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="BVGname" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="UVGname" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="activity" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="agentOrRepresentative" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="customersCount" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="orderType" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="lastOrderDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="mutualCustomers" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="customerName1" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="customerName2" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="customerName3" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="professionalAssociation" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="professionalAssociationDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="professionalAssociationName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="professionalMembership" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="familyCompensationOffice" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="zefix" minOccurs="1" maxOccurs="1">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="chNr" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="companyName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="municipality" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="shabDate" type="xs:date" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="shabNr" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="status" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                    <xs:element name="uid" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="organisation" minOccurs="1" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="organisationName" type="eCH-0097:organisationNameType" minOccurs="1" maxOccurs="1"/>
+                                        <xs:element name="UID" type="eCH-0097:uidStructureType" minOccurs="0" maxOccurs="1"/>
+                                        <xs:element name="vn" type="eCH-0044:vnType" minOccurs="0" maxOccurs="1"/>
+                                        <xs:element name="legalForm" type="eCH-0097:legalFormType" minOccurs="0" maxOccurs="1"/>
+                                        <xs:element name="NOGACode" type="eCH-0098:NOGACodeType" minOccurs="0" maxOccurs="1"/>
+                                        <xs:element name="NOGAText" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                        <xs:element name="organisationObject" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                        <xs:element name="reportingMunicipality" type="eCH-0007:swissMunicipalityType" minOccurs="1" maxOccurs="1"/>
+                                        <xs:element name="representationName" type="eCH-0097:organisationNameType" minOccurs="0" maxOccurs="1"/>
+                                        <xs:element name="correspondenceAddress" type="easygov-ahv-common:adresseDomizilType" minOccurs="0" maxOccurs="1"/>
+                                        <xs:element name="representationAddress" type="easygov-ahv-common:adresseDomizilType" minOccurs="0" maxOccurs="1"/>
+                                        <xs:element name="startDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                                        <xs:element name="paymentAccount" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                        <xs:element name="paymentDetails" type="easygov-ahv-common:zahlungsverbindungType" minOccurs="0" maxOccurs="1"/>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="ahvParticipants" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="ahvParticipant" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="participant" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="participantInfos" type="easygov-ahv-common:personType" minOccurs="1" maxOccurs="1"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="AOA" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="hasOwnStationary" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="subjectToNonCompetitionClause" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="isResponsibleForCustomerService" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="appearsInOwnName" minOccurs="1" maxOccurs="1">
+                                                                    <xs:annotation>
+                                                                        <xs:documentation xml:lang="de">
+                                                                            EIGENER: im eigenen Namen
+                                                                            GESELLSCHAFT: im Namen der Kollektivgesellschaft
+                                                                            AUFTRAGGEBER: im Namen des Auftraggebers
+                                                                        </xs:documentation>
+                                                                    </xs:annotation>
+                                                                    <xs:simpleType>
+                                                                        <xs:restriction base="xs:string">
+                                                                            <xs:enumeration value="EIGENER"/>
+                                                                            <xs:enumeration value="GESELLSCHAFT"/>
+                                                                            <xs:enumeration value="AUFTRAGGEBER"/>
+                                                                        </xs:restriction>
+                                                                    </xs:simpleType>
+                                                                </xs:element>
+                                                                <xs:element name="preparesOwnOffers" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="mustPerformWorkPersonally" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="canGiveOwnDiscounts" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="createsOwnInvoices" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="subjectToInstructions" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="makesRegularAdvertising" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="previous" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="previousCompensationOffice" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="previousCompensationOfficeDateFrom" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="previousCompensationOfficeDateUntil" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="previousIncome" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="incomeFrom" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="incomeUntil" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="children" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="previousRole" minOccurs="1" maxOccurs="1">
+                                                                    <xs:annotation>
+                                                                        <xs:documentation xml:lang="de">
+                                                                            ARBEITNEHMER: Arbeitnehmer
+                                                                            ARBEITGEBER: Arbeitgeber
+                                                                            TEILHABER: Teilhaber
+                                                                            SELBSTAENDIGERWERBENDER: Selbständigerwerbender
+                                                                            NICHT_ERWERBSTAETIGER: Nicht-Erwerbstätiger
+                                                                            BEZUEGER_ERSATZEINKOMMEN: Bezüger von Ersatzeinkommen (ALV, EO, IV)
+                                                                            AUSLANDAUFENTHALT: Auslandaufenthalter
+                                                                            KEINE_BEITRAEGE: Keine Beiträge bezahlt
+                                                                        </xs:documentation>
+                                                                    </xs:annotation>
+                                                                    <xs:simpleType>
+                                                                        <xs:restriction base="xs:string">
+                                                                            <xs:enumeration value="ARBEITNEHMER"/>
+                                                                            <xs:enumeration value="ARBEITGEBER"/>
+                                                                            <xs:enumeration value="TEILHABER"/>
+                                                                            <xs:enumeration value="SELBSTAENDIGERWERBENDER"/>
+                                                                            <xs:enumeration value="NICHT_ERWERBSTAETIGER"/>
+                                                                            <xs:enumeration value="BEZUEGER_ERSATZEINKOMMEN"/>
+                                                                            <xs:enumeration value="AUSLANDAUFENTHALT"/>
+                                                                            <xs:enumeration value="KEINE_BEITRAEGE"/>
+                                                                        </xs:restriction>
+                                                                    </xs:simpleType>
+                                                                </xs:element>
+                                                                <xs:element name="personalCompensationOfficeMembership" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="personalCompensationOfficeName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="professionalAssociationMembership" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="professionalAssociationName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="income" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="income" type="xs:int" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="profitShare" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="lossShare" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="earningsFromSalary" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="compensationSalary" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="earningsFromCommission" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="compensationBill" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="expenses" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="warranty" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="carriesCollectionRisk" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="salaryEntitlementDuringDowntime" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="purchasesOwnMaterials" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="companyRisk" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="carriesExpensesHimself" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="carriesMaintenanceCostsHimself" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="lossesBorneByCustomer" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="collaboration" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="collaboration" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="collaborationName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="collaborationEmployerName" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="collaborationTown" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="role" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="collaborationCountries" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="collaborationAddress" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="partner" minOccurs="1" maxOccurs="1">
+                                                        <xs:complexType>
+                                                            <xs:sequence>
+                                                                <xs:element name="partnerInfos" type="easygov-ahv-common:personType" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="partnerCollaboration" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                                <xs:element name="partnerSalary" type="xs:int" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="partnerEmployedSince" type="xs:date" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="partnerSalaryTotal" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+                                                                <xs:element name="partnerChildren" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+                                                            </xs:sequence>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element name="ahvFilialen" minOccurs="0" maxOccurs="1">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="ahvFiliale" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="branchSalary" type="xs:int" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="branchSince" type="xs:date" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="branchPeopleCount" type="xs:int" minOccurs="1" maxOccurs="1"/>
+                                                    <xs:element name="branchAddress" type="easygov-ahv-common:adresseDomizilType" minOccurs="1" maxOccurs="1"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

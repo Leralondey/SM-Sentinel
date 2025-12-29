@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Bundesamt für Statistik BFS -->
+<!-- Basierend auf eCH-0116-4-0, dient dieses Schema für die Übermittlung des UID InfoAbo an Kunden welche den smClient verwenden -->
+<!-- Der smClient erwartet anstelle von 'delivery' ein Element 'message' und anstelle des 'deliveryHeader' ein 'header'  -->
+<!-- Die Versionierung folgt dem zugrunde liegenden eCH-0116   -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:smClient="http://www.bfs.admin.ch/xmlns/bfs-5102-000001/4" targetNamespace="http://www.bfs.admin.ch/xmlns/bfs-5102-000001/4" 
+           xmlns:eCH-0116="http://www.ech.ch/xmlns/eCH-0116/4"  xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.0">
+	<xs:annotation>
+		<xs:documentation>Ausgabedatum: 25.06.2018</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0116/4" schemaLocation="eCH-0116-4-0.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="eCH-0058-5-0.xsd"/>
+	<xs:element name="message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="eCH-0058:headerType" />
+        <xs:choice>
+          <xs:element name="registerModification" type="eCH-0116:eventInfoRegisterModification" />
+        </xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

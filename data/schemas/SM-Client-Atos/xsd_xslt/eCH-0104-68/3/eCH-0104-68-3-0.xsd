@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by Anne-Carine Guntern (Centrale de Compensation) -->
+<!--
+	2009-05-01 - v 0.1 - First Release
+	2009-05-05 - v 0.2 - Each record type - Validity period is optional
+                                 Register status record type - Addition of error code
+	2009-05-08 - v 0.3 - Each response type - Addition of an optional mutation date
+                                 UPI synchronization record - Addition of an optional new "Versichertennummer"of the child
+                                 UPI synchronization record - Addition of the "Versichertennummer" of the beneficiary 
+                                 UPI synchronization record - Addition of the return code
+                                 Register status record type - Addition of an optional comment
+    2009-05-20 - v 0.4 - Each record type - Comment can contain only an enumeration
+    2009-05-22 - v 0.5 - Each element - Comment for root elements
+                                 Schema - Version only contains minor version
+    2009-05-28 - v 0.6 - Each response type - Change of the type of dateOfBirth to be coherent with eCH-0044
+    2009-06-05 - v 0.7 - Receipt - Creation date is optional
+                                 Response type - The textual description is not used any more for the error element
+                                 Each response type - Use of the schema eCH-0044f for person identification data
+    2009-06-09 - v 0.8 - Each response type - Addition of the date of death with person data
+    2009-06-26 - v 0.9 - Each response type - Deletion of the date of death with person data
+                                 Each record type - Change of the labels for the items 11, 21, 32 of familyAllowanceType
+                                 Each response type - Use of type to describe return code instead of element
+                                 Notice record - Addition of this type of records
+                                 Each record type - Use of the eCH-0058:headerType
+    2009-08-14 - v 0.10 - Each record type - Change of the recordNumber max length to 16
+                                   Each record type - Refactoring of the office and contact information
+    2009-08-17 - v 0.11 - Each record type - Refactoring of the office and contact information
+    2009-08-26 - v 0.12 - New Benefit type - Addition of the optional comment
+                                   Receipt - Addition of an optional date of death for each person
+                                   UPI Synchronization  - Addition of an optional date of death for each person
+                                   Register Status Record - Addition of an optional date of death for each person
+                                   Each record type - Refactoring of the office identification
+    2009-10-08 - v 0.13 - Each record type - Deletion of the contact office
+    2009-10-21 - v 0.13 - Each record type - Addition of the items 03 and 04 for familyAllowanceType 
+    2009-10-21 - v 0.13 - Each record type - Deletion of the adoptive parents and reordering of the items of familialStatus
+    2009-10-21 - v 0.13 - Each answer type - Addition of the overlap period element
+    2009-10-23 - v 0.13 - Each record type - Change of the pattern for the office identifier
+    2009-11-04 - v 0.14 - Moved message into own namespace
+                                   Deletion of the schemaLocation of the import statements
+                                   Added own definition for message header
+                                   Rename of the root element
+                                   Addition of the minorVersion
+    2009-11-10 - v 0.15 - Change of the namespace
+                                   Come back of the schemaLocation in the import statements
+                                   Customization of the header
+                                   Overlap period can occurs more than once
+    2009-11-18 - v 0.16 - Each record type - For each enumerated type the type xs:string replaces xs:unsignedInt
+    2009-12-10 - v 0.17 - Each record type - Addition of the item 23 for familyAllowanceType
+                                   Each record type - Addition of the item 'A' for the comment
+                                   Local reference to other schemas
+    2010-02-01 - v 0.18 - Cancellation record type - Deletion of the legal office and the contact information
+                                   Header - Test flag forced to false
+    2010-02-10 - v 0.19 - Each record type - Removal of the item23 for familyAllowanceType
+    2010-02-10 - v 1.0
+    2010-02-11               Header - Addition of the sub message type
+    2010-02-22 - v 1.1 -   Each answer type - overlapPeriod renamed errorPeriod
+    2010-02-23               Register status record type - Renaming of the beneficiary (previously beneficiairy)
+                                   Each record type - Comment must be a two-digits number (not restricted to enumerated values) 
+                                   Each record type - Addition of the specialTreatment element
+    2010-02-24               Each record type - Comment can have multiple occurrences
+    2010-04-16 - v 1.2 -   Header - Subject allowed
+    2010-05-17 - v 1.3 -   Each record type - Comment restricted to enumerated values
+                                   Each record type - SpecialTreatment restricted to enumerated values
+    2010-06-28 - v 1.4 -   Each record type - Addition of the items 13 and 23 for familyAllowanceType
+    2010-07-19 - v 1.5 -   Each record type - Each date or monthYear in the validity period is restricted between 01.01.1980 and 31.12.2099
+                                   Each record type - The error period are also restricted between 01.01.1980 and 31.12.2099
+    2010-08-20 - v 2.0
+    2010-08-25               Each record type - The record number can really contain 16 digits
+    2010-09-01               Addition of a hierarchical level for the announcements (content)
+    2010-09-03               Message - Content defined as a named type
+    2010-09-06 - v 2.1
+    2011-07-11 - v 2.2     Each record type - Addition of an optional element : officeMessageId    
+    2011-08-08 - v 2.3     v 2.1
+    2011-08-08 - v 2.4
+	2011-09-12 - v 2.5    	Field officeMessageId is renamed as internalOfficeReference
+	2012-06-07 - v 2.6		Addition of the delegated element
+	2012-06-13 - v 3.0    Update to the version 4 of eCH-0058
+                                   Delegated element is mandatory
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0104="http://www.ech.ch/xmlns/eCH-0104/3" xmlns:eCH-0104-68="http://www.ech.ch/xmlns/eCH-0104-68/3" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" targetNamespace="http://www.ech.ch/xmlns/eCH-0104-68/3" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:annotation>
+		<xs:documentation xml:lang="fr">Schéma pour l'échange de données entre les caisses d'allocations familiales et la Centrale de Compensation</xs:documentation>
+		<xs:documentation xml:lang="de">Datenaustauschschema zwischen den Familienausgleichskassen und der zentralen Ausgleichsstelle</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0104/3"/>
+	<xs:complexType name="headerType">
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="eCH-0058:declarationLocalReferenceType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0"/>
+			<xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="uniqueIdBusinessTransaction" type="eCH-0058:uniqueIdBusinessTransactionType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="2601"/>
+                        <xs:enumeration value="2604"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="0"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="eventDate" type="eCH-0058:eventDateType" minOccurs="0"/>
+			<xs:element name="modificationDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:actionType">
+						<xs:enumeration value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="testDeliveryFlag">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:testDeliveryFlagType">
+						<xs:pattern value="false"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="newBenefitType">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Annonce d'une nouvelle prestation</xs:documentation>
+			<xs:documentation xml:lang="de">Meldung über eine neue Leistung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="eCH-0104:internalOfficeReference" minOccurs="0"/>
+			<xs:element ref="eCH-0104:deliveryOffice"/>
+			<xs:element ref="eCH-0104:legalOffice"/>
+			<xs:element ref="eCH-0104:delegated"/>
+			<xs:element ref="eCH-0104:contact" minOccurs="0"/>
+			<xs:element ref="eCH-0104:recordNumber"/>
+			<xs:element ref="eCH-0104:familyAllowanceType"/>
+			<xs:element name="child">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="eCH-0104:vn"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="eCH-0104:legalBasis"/>
+			<xs:element ref="eCH-0104:validityPeriod" minOccurs="0"/>
+			<xs:element name="beneficiary">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="eCH-0104:vn"/>
+						<xs:element ref="eCH-0104:familialStatus"/>
+						<xs:element ref="eCH-0104:occupationStatus"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="eCH-0104:comment" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element ref="eCH-0104:specialTreatment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="benefitMutationType">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Annonce de mutation/correction d'une prestation</xs:documentation>
+			<xs:documentation xml:lang="de">Meldung über die Mutation/Korrektur einer Leistung</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eCH-0104-68:newBenefitType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="benefitCancellationType">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Annonce d'annulation d'une prestation</xs:documentation>
+			<xs:documentation xml:lang="de">Meldung über die Aufhebung einer Leistung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="eCH-0104:internalOfficeReference" minOccurs="0"/>
+			<xs:element ref="eCH-0104:deliveryOffice"/>
+			<xs:element ref="eCH-0104:recordNumber"/>
+			<xs:element ref="eCH-0104:familyAllowanceType"/>
+			<xs:element name="child">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="eCH-0104:vn"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="eCH-0104:comment" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="newBenefit" type="eCH-0104-68:newBenefitType">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">Annonce d'une nouvelle prestation</xs:documentation>
+					<xs:documentation xml:lang="de">Meldung über eine neue Leistung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="benefitMutation" type="eCH-0104-68:benefitMutationType">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">Annonce de mutation/correction d'une prestation</xs:documentation>
+					<xs:documentation xml:lang="de">Meldung über die Mutation/Korrektur einer Leistung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="benefitCancellation" type="eCH-0104-68:benefitCancellationType">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">Annonce d'annulation d'une prestation</xs:documentation>
+					<xs:documentation xml:lang="de">Meldung über die Aufhebung einer Leistung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:element name="header">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Déclaration de l'élément racine de header.xml</xs:documentation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für header.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="eCH-0104-68:headerType">
+					<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Communication des caisses d'allocations familiales à la Centrale de Compensation (root element)</xs:documentation>
+			<xs:documentation xml:lang="de">Meldung der Familienausgleichskassen an die zentrale Ausgleichsstelle (root element)</xs:documentation>
+		</xs:annotation>
+		<!-- Root element -->
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="eCH-0104-68:headerType" minOccurs="0"/>
+				<xs:element name="content" type="eCH-0104-68:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

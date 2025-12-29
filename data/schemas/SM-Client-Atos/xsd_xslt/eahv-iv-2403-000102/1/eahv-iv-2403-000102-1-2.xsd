@@ -1,0 +1,986 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Lars Steffen (AWK Group AG) -->
+<!--
+		2018-04-26 - v 0.01 - Erster Entwurf
+		2018-04-27 - v 0.02 - Überarbeitung
+		2018-04-30 - v 0.80 - Version zur Review durch BSV
+		2018-05-04 - v 0.90 - Version zur Vernehmlassung bei der ZAS und LEONARDO Productions AG
+		2018-05-25 - v 1.00 - Publizierte Version
+		2019-03-11 - v 1.10 - Attribut nillable = "true" gesetzt für tg_datum_beginn_periode und tg_datum_ende_periode
+		2022-05-16 - v 1.20 - Anpasssung an die Reform 'Weiterentwicklung der IV' (Rentenanteil); neue Elemente 'smx_betrag' und 'smx_waehrung'
+
+ -->
+<xs:schema xmlns="http://www.eahv-iv.ch/xmlns/eahv-iv-2403-000102/1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eahv-iv-2403-000102="http://www.eahv-iv.ch/xmlns/eahv-iv-2403-000102/1" targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2403-000102/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.2">
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Antwort Vertigo</xs:documentation>
+        <xs:documentation xml:lang="fr">Réponse Vertigo</xs:documentation>
+        <xs:documentation xml:lang="it">Risposta Vertigo</xs:documentation>
+    </xs:annotation>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5"/>
+    <!--Original Vertigo types-->
+    <xs:simpleType name="NameVorname_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">ein Versichertenname oder Versichertenvorname</xs:documentation>
+            <xs:documentation xml:lang="fr">Nom ou prénom d'un assuré</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="200"/>
+            <xs:pattern value="[A-Za-z]+([\- '][A-Za-z]+)*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Versichertennummer11Stellen_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">11-stellige AHV Nummer</xs:documentation>
+            <xs:documentation xml:lang="fr">Numéro AVS à 11 positions</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedLong">
+            <xs:pattern value="[1-9][0-9]{10}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Versichertennummer13Stellen_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Schweizerische, 13-stelligen Versichertennummer (756xxxxxxxxxy)</xs:documentation>
+            <xs:documentation xml:lang="fr">Numéro AVS suisse à 13 positions (756xxxxxxxxxy)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedLong">
+            <xs:minInclusive value="7560000000002"/>
+            <xs:maxInclusive value="7569999999998"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Versichertennummer_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Schweizerische, 11- oder 13-stellige Versichertennummer</xs:documentation>
+            <xs:documentation xml:lang="fr">Numéro AVS suisse à 11 ou 13 positions </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="Versichertennummer11Stellen_Type Versichertennummer13Stellen_Type"/>
+    </xs:simpleType>
+    <xs:simpleType name="Empty_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">leeres Element</xs:documentation>
+            <xs:documentation xml:lang="fr">élément vide</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="0"/>
+            <!-- xs:pattern value="[0]"/ -->
+            <!-- xs:pattern value="\s*"/ -->
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Zero_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Value=0</xs:documentation>
+            <xs:documentation xml:lang="fr">Value=0</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0]"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Csex_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Code Geschlecht (1,2)</xs:documentation>
+            <xs:documentation xml:lang="fr">Code sexe (1,2)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedByte">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Code_zivilstand_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Code Zivilstand (Infostar)</xs:documentation>
+            <xs:documentation xml:lang="fr">Code état civil (Infostar)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[1-9]?"/>
+            <!-- peut être vide -->
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Zivilstand_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Zivilstand (Infostar)</xs:documentation>
+            <xs:documentation xml:lang="fr">Etat civil (Infostar)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Ledig"/>
+            <xs:enumeration value="Verheiratet"/>
+            <xs:enumeration value="Verwitwet"/>
+            <xs:enumeration value="Geschieden"/>
+            <xs:enumeration value="Unverheiratet"/>
+            <xs:enumeration value="Eingetragene Partnerschaft"/>
+            <xs:enumeration value="Aufgelöste Partnerschaft"/>
+            <xs:enumeration value="Unbekannt"/>
+            <xs:enumeration value=""/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Fehlercode_Geburtsdatum_numType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Fehlercode Geburtsdatum (0-5)
+                0 = TT.MM.JJJJ
+                2 = auf den Monat genau
+                3 = auf das Jahr genau
+                4 = auf die Dekade genau
+                5 = 29.02</xs:documentation>
+            <xs:documentation xml:lang="fr">Code erreur dans la date de naissance (0-5)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedByte">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Invaliditaetsgrad_numType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Invaliditätsgrad (34-100)</xs:documentation>
+            <xs:documentation xml:lang="fr">Degré d'invalidité (34-100)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedByte">
+            <xs:minInclusive value="34"/>
+            <xs:maxInclusive value="100"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Invaliditaetsgrad_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Invaliditätsmgrad</xs:documentation>
+            <xs:documentation xml:lang="fr">Degré d'invalidité</xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="Invaliditaetsgrad_numType Empty_Type"/>
+    </xs:simpleType>
+    <xs:simpleType name="BetragFR_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Beitrag im AHV-Gebiet : CHF (bis 10^9 CHF)</xs:documentation>
+            <xs:documentation xml:lang="fr">Montant monétaire (en CHF) dans le domaine AVS : (jusqu'à 10^9 CHF)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([\+\-]?\d{1,9})?"/>
+            <!-- optional; base="xs:decimal" does not accept empty element -->
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="BetragFRRP3_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">3-stelligen Betrag mit Rappen : CHF.RP (bis(3^9).99 CHF)</xs:documentation>
+            <xs:documentation xml:lang="fr">Montant monétaire (en CHF.CT) à trois positions plus les décimales : (jusqu'à 999.99 CHF)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:pattern value="([\+\-]?\d{1,3}\.\d{1,2}|\d{1,3}\.\d{1,2})"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="BetragFRRP5_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">5-stelligen Betrag mit Rappen : CHF.RP (bis 99999.99 CHF)</xs:documentation>
+            <xs:documentation xml:lang="fr">Montant monétaire (en CHF.CT) à six positions plus les décimales : (jusqu'à 99999.99 CHF)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:pattern value="([\+\-]?\d{1,5}\.\d{1,2}|\d{1,5}\.\d{1,2})"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="BetragFRRP6_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">6-stelligen Betrag mit Rappen : CHF.RP (bis 999999.99 CHF)</xs:documentation>
+            <xs:documentation xml:lang="fr">Montant monétaire (en CHF.CT) à six positions plus les décimales : (jusqu'à 999999.99 CHF)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:pattern value="([\+\-]?\d{1,6}\.\d{1,2}|\d{1,6}\.\d{1,2})"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="BetragP6_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">6-stelliger Betrag mit Dezimalangabe : MMMMMM.DD (bis 999999.99)</xs:documentation>
+            <xs:documentation xml:lang="fr">Montant monétaire (en MMMMMM.DD) à six positions plus les décimales : (jusqu'à 999999.99)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:pattern value="([\+\-]?\d{1,6}\.\d{1,2}|\d{1,6}\.\d{1,2})"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AHVTimestamp_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Datum und Zeit (automatische Durchführung...)</xs:documentation>
+            <xs:documentation xml:lang="fr">Timestamp (d'une opération par ex.)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:dateTime">
+            <xs:minInclusive value="2004-01-01T00:00:00"/>
+            <xs:maxInclusive value="2048-12-31T23:59:59"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AHVDatumJMT_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de"> Genaues datum im AHV-Gebiet (Gültigkeit, Durchführung usw.)</xs:documentation>
+            <xs:documentation xml:lang="fr">Date précise (au jour) dans le domaine temporel de l'AVS</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:date">
+            <xs:minInclusive value="1948-01-01"/>
+            <xs:maxInclusive value="2048-12-31"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AHVDatumJM_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Jahr-Monat Datum  im AHV-Gebiet (Gültigkeit, Durchführung usw.)</xs:documentation>
+            <xs:documentation xml:lang="fr">Date au mois, dans le domaine de l'AVS</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:gYearMonth">
+            <xs:minInclusive value="1948-01"/>
+            <xs:maxInclusive value="2048-12"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AHVDatumJ_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Jahr Datum  im AHV-Gebiet (Gültigkeit, Durchführung usw.)</xs:documentation>
+            <xs:documentation xml:lang="fr">Date à l'année, dans le domaine de l'AVS</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:gYear">
+            <xs:minInclusive value="1948"/>
+            <xs:maxInclusive value="2048"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DatumMMJJJJ_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Datum MM.JJJJ</xs:documentation>
+            <xs:documentation xml:lang="fr">Date  MM.AAAAA</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{2}\.\d{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DatumMMJJJJ_optType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Datum MM.JJJJ (optional)</xs:documentation>
+            <xs:documentation xml:lang="fr">AVS MM.AAAAA (optionnel)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\s*|\d{2}\.\d{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DatumTTMMJJJJ_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Datum TT.MM.JJJJ</xs:documentation>
+            <xs:documentation xml:lang="fr">Date  JJ.MM.AAAAA</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{2}\.\d{2}\.\d{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="IVStelle_numType">
+        <xs:restriction base="xs:unsignedShort">
+            <xs:minInclusive value="301"/>
+            <xs:maxInclusive value="350"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="IVStelle_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                Weite Codifizierung der IV-Stellen (default)
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                Offices AI (typage faible, défaut)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="IVStelle_numType Empty_Type"/>
+    </xs:simpleType>
+    <xs:simpleType name="Ausgleichskasse_weakType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                Weite Codifizierung der Ausgleichskassen
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                Codification des caisse de compensation (typage faible, défaut)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedInt">
+            <xs:minInclusive value="001000"/>
+            <xs:maxInclusive value="516999"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="VerfuegungNummer14Stellen_optType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">14-stellige Nummer der Verfügung für individuelle Massnahmen</xs:documentation>
+            <xs:documentation xml:lang="fr">Numéro de décision à 14 chiffres pour mesures individuelles</xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="xs:unsignedLong Empty_Type"/>
+    </xs:simpleType>
+    <xs:simpleType name="VerfuegungNummer11Stellen_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Numéro de décision à onze chiffres pour mesures individuelles</xs:documentation>
+            <xs:documentation xml:lang="fr">Elfstellige Nummer der Verfügung für individuelle Massnahmen</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedLong">
+            <xs:minInclusive value="19480000000"/>
+            <xs:maxInclusive value="20489999999"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Kanton_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">TYPE: Kanton</xs:documentation>
+            <xs:documentation xml:lang="fr">TYPE: Canton</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="GE"/>
+            <xs:enumeration value="VD"/>
+            <xs:enumeration value="TI"/>
+            <xs:enumeration value="FR"/>
+            <xs:enumeration value="BE"/>
+            <xs:enumeration value="ZH"/>
+            <xs:enumeration value="VS"/>
+            <xs:enumeration value="BL"/>
+            <xs:enumeration value="BS"/>
+            <xs:enumeration value="NE"/>
+            <xs:enumeration value="SO"/>
+            <xs:enumeration value="AR"/>
+            <xs:enumeration value="AI"/>
+            <xs:enumeration value="GR"/>
+            <xs:enumeration value="ZG"/>
+            <xs:enumeration value="JU"/>
+            <xs:enumeration value="SG"/>
+            <xs:enumeration value="LU"/>
+            <xs:enumeration value="SH"/>
+            <xs:enumeration value="FL"/>
+            <xs:enumeration value="TG"/>
+            <xs:enumeration value="OW"/>
+            <xs:enumeration value="NW"/>
+            <xs:enumeration value="UR"/>
+            <xs:enumeration value="AG"/>
+            <xs:enumeration value="SZ"/>
+            <xs:enumeration value="GL"/>
+            <xs:enumeration value=""/>
+            <!-- empty element -->
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="PLZ_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">TYPE: Postleitzahl</xs:documentation>
+            <xs:documentation xml:lang="fr">TYPE: Numéro postal d'acheminement</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(\d{1,5})?"/>
+            <!-- peut être vide -->
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- Rentes -->
+    <xs:simpleType name="VersichertennummerErgaenzend_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">13-stellige oder unbekannte Versichertennummer oder 0</xs:documentation>
+            <xs:documentation xml:lang="fr">Numéro AVS à 13 positions ou inconnu ou 0</xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="Versichertennummer13Stellen_Type Empty_Type Zero_Type"/>
+    </xs:simpleType>
+    <xs:simpleType name="IVLeistungsart_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Art der IV-Leistung</xs:documentation>
+            <xs:documentation xml:lang="fr">Genre de prestation AI</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedByte">
+            <xs:enumeration value="50"/>
+            <xs:enumeration value="53"/>
+            <xs:enumeration value="54"/>
+            <xs:enumeration value="55"/>
+            <xs:enumeration value="56"/>
+            <xs:enumeration value="70"/>
+            <xs:enumeration value="74"/>
+            <xs:enumeration value="75"/>
+            <xs:enumeration value="13"/>
+            <xs:enumeration value="14"/>
+            <xs:enumeration value="15"/>
+            <xs:enumeration value="16"/>
+            <xs:enumeration value="81"/>
+            <xs:enumeration value="82"/>
+            <xs:enumeration value="83"/>
+            <xs:enumeration value="84"/>
+            <xs:enumeration value="88"/>
+            <xs:enumeration value="91"/>
+            <xs:enumeration value="92"/>
+            <xs:enumeration value="93"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Rentenanteil_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Rentenanteil</xs:documentation>
+            <xs:documentation xml:lang="fr">Quotité</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:decimal">
+            <xs:enumeration value="100.0"/>
+            <xs:enumeration value="75.0"/>
+            <xs:enumeration value="69.0"/>
+            <xs:enumeration value="68.0"/>
+            <xs:enumeration value="67.0"/>
+            <xs:enumeration value="66.0"/>
+            <xs:enumeration value="65.0"/>
+            <xs:enumeration value="64.0"/>
+            <xs:enumeration value="63.0"/>
+            <xs:enumeration value="62.0"/>
+            <xs:enumeration value="61.0"/>
+            <xs:enumeration value="60.0"/>
+            <xs:enumeration value="59.0"/>
+            <xs:enumeration value="58.0"/>
+            <xs:enumeration value="57.0"/>
+            <xs:enumeration value="56.0"/>
+            <xs:enumeration value="55.0"/>
+            <xs:enumeration value="54.0"/>
+            <xs:enumeration value="53.0"/>
+            <xs:enumeration value="52.0"/>
+            <xs:enumeration value="51.0"/>
+            <xs:enumeration value="50.0"/>
+            <xs:enumeration value="47.5"/>
+            <xs:enumeration value="45"/>
+            <xs:enumeration value="42.5"/>
+            <xs:enumeration value="40"/>
+            <xs:enumeration value="37.5"/>
+            <xs:enumeration value="35"/>
+            <xs:enumeration value="32.5"/>
+            <xs:enumeration value="30"/>
+            <xs:enumeration value="27.5"/>
+            <xs:enumeration value="25.0"/>
+            <xs:enumeration value="0.0"/>
+        </xs:restriction>
+        <!-- xs:restriction base="xs:unsignedByte">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="4"/>
+        </xs:restriction -->
+    </xs:simpleType>
+    <!-- Sumex -->
+    <xs:simpleType name="SumexVersicherung_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">TYPE: Sumex - Versicherung (IV)</xs:documentation>
+            <xs:documentation xml:lang="fr">TYPE: Sumex - Assurance (AI)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="IV"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SumexArtGebrechen_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">TYPE: Sumex - Art des Gebrechens</xs:documentation>
+            <xs:documentation xml:lang="fr">TYPE: Sumex - Art des Gebrechens</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Unfall"/>
+            <xs:enumeration value="Krankheit"/>
+            <xs:enumeration value="Geburtsgebrechen"/>
+            <xs:enumeration value="unbekannt"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SumexWaehrung_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">TYPE: Sumex - Waehrung der Rechnung</xs:documentation>
+            <xs:documentation xml:lang="fr">TYPE: Sumex - Monnaie de la facture</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CHF"/>
+            <xs:enumeration value="EUR"/>
+            <xs:enumeration value="USD"/>
+            <xs:enumeration value="HRK"/>
+            <xs:enumeration value="CAD"/>
+            <xs:enumeration value="GBP"/>
+            <xs:enumeration value="AUD"/>
+            <xs:enumeration value="PLN"/>
+            <xs:enumeration value="SEK"/>
+            <xs:enumeration value="MAD"/>
+            <xs:enumeration value="CZK"/>
+            <xs:enumeration value="NZD"/>
+            <xs:enumeration value="ZAR"/>
+            <xs:enumeration value="DKK"/>
+            <xs:enumeration value="NOK"/>
+            <xs:enumeration value="TND"/>
+            <xs:enumeration value="JPY"/>
+            <xs:enumeration value="XXX"/>
+            <xs:enumeration value=""/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Leistungscode_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">TYPE: Sumex - Leistungscode</xs:documentation>
+            <xs:documentation xml:lang="fr">TYPE: Sumex - Code de prestation</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedShort">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="999"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NIF_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">TYPE: NIF-Nummer</xs:documentation>
+            <xs:documentation xml:lang="fr">TYPE: NIF</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(\d{1,7})?"/>
+            <!-- peut être vide -->
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NIF_Name_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">TYPE: NIF-Name</xs:documentation>
+            <xs:documentation xml:lang="fr">TYPE: NIF-nom</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="0"/>
+            <xs:maxLength value="60"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NIF_Ort_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">TYPE: NIF-Ort</xs:documentation>
+            <xs:documentation xml:lang="fr">TYPE: NIF-localité</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="0"/>
+            <xs:maxLength value="35"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="SumexLeistungserbringer_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">TYPE: Sumex - Angaben Leistungserbringer</xs:documentation>
+            <xs:documentation xml:lang="fr">TYPE: Sumex - Détails fournisseur de prestation</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="smx_nif" type="NIF_Type">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">NIF-Nummer</xs:documentation>
+                    <xs:documentation xml:lang="fr">NIF</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_nif_name" type="NIF_Name_Type">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Ort</xs:documentation>
+                    <xs:documentation xml:lang="fr">Localité</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_nif_kanton" type="Kanton_Type">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Kanton</xs:documentation>
+                    <xs:documentation xml:lang="fr">Canton</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_nif_ort" type="NIF_Ort_Type">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Ort</xs:documentation>
+                    <xs:documentation xml:lang="fr">Localité</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_nif_plz" type="PLZ_Type">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">PLZ</xs:documentation>
+                    <xs:documentation xml:lang="fr">NPA</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!-- Taggeld -->
+    <xs:simpleType name="Taggeld_Meldungsinhalt_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Taggeld Meldungsinhalt</xs:documentation>
+            <xs:documentation xml:lang="fr">Taggeld Meldungsinhalt</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="laufendes Taggeld"/>
+            <xs:enumeration value="Nachzahlung"/>
+            <xs:enumeration value="Rueckforderung"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!--Reponse-->
+    <xs:simpleType name="Rentenskala_Type">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Skala einer IV/AHV Rente (0-44)</xs:documentation>
+            <xs:documentation xml:lang="fr">échelle de rente AVS/AI (0-44)</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9]|0[1-9]|[1-3][0-9]|4[0-4])?"/>
+            <!-- optional 0-44; "xs:unsignedByte" refuses empty element '?' -->
+        </xs:restriction>
+        <!-- xs:restriction base="xs:unsignedByte">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="44"/> </xs:restriction -->
+    </xs:simpleType>
+    <xs:complexType name="request_bsv_Type">
+        <xs:sequence>
+            <xs:element name="ahvn_input_bsv" type="Versichertennummer13Stellen_Type">
+                <xs:annotation>
+                    <xs:documentation>AHVN = Input BSV</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="versichertenregister">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Angaben aus dem Versichertenregister für die abgefragte AHVN</xs:documentation>
+                    <xs:documentation xml:lang="fr">Données extraites du registre des assurés pour le NAVS</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="Versichertenregister_Type">
+                            <xs:attribute name="refdate" type="xs:string" use="required"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="renten">
+                <xs:annotation>
+                    <xs:documentation>Leistungen der IV</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:annotation>
+                        <xs:documentation>Renten für die NAVS + Familie</xs:documentation>
+                    </xs:annotation>
+                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="rente" type="Rente_Type" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="taggelder">
+                <xs:complexType>
+                    <xs:annotation>
+                        <xs:documentation>Taggelder für die versicherte Person</xs:documentation>
+                    </xs:annotation>
+                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="taggeld" type="Taggeld_Type" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="sumex">
+                <xs:complexType>
+                    <xs:annotation>
+                        <xs:documentation>Sumex-Leistungen für die versicherte Person</xs:documentation>
+                    </xs:annotation>
+                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                        <xs:element name="smx" type="smx_Type" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Versichertenregister_Type">
+        <xs:sequence>
+            <xs:element name="ahvn_ref" type="Versichertennummer13Stellen_Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">aktuellste AHVN</xs:documentation>
+                    <xs:documentation xml:lang="fr">NAVS la plus récente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="name" type="NameVorname_Type" minOccurs="0"/>
+            <xs:element name="vorname" type="NameVorname_Type" minOccurs="0"/>
+            <xs:element name="code_zivilstand" type="Code_zivilstand_Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Code Zivilstand (Infostar)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Code état civil (Infostar)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="zivilstand" type="Zivilstand_Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Zivilstand (Infostar)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Etat civil (Infostar)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="geburtsdatum" type="DatumTTMMJJJJ_Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">TT.MM.JJJJ</xs:documentation>
+                    <xs:documentation xml:lang="fr">JJ.MM.AAAA</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="fehlercode_geburtsdatum" type="Fehlercode_Geburtsdatum_numType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">0 = auf den Tag genau
+                        2 = auf den Monat genau
+                        3 = auf das Jahr genau
+                        5 = 29.02, aber das Jahr ist kein Schaltjahr</xs:documentation>
+                    <xs:documentation xml:lang="fr">0 = au jour près
+                        2 = au mois près
+                        3 = à l'année près
+                        5 = 29.02 pour une année non bisextile</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="geschlecht" type="Csex_Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Geschlecht: 1=M, 2=W</xs:documentation>
+                    <xs:documentation xml:lang="fr">Sexe:       1=H, 2=F</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="comment" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">z.B. ungültige AHVN13</xs:documentation>
+                    <xs:documentation xml:lang="fr">par ex: NAVS13 invalide</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Rente_Type">
+        <xs:sequence>
+            <xs:element name="rr_ahvn" type="Versichertennummer13Stellen_Type"/>
+            <xs:element name="rr_vorname" type="xs:string"/>
+            <xs:element name="rr_name" type="xs:string"/>
+            <xs:element name="rr_geburtsdatum" type="DatumTTMMJJJJ_Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">TT.MM.JJJJ</xs:documentation>
+                    <xs:documentation xml:lang="fr">JJ.MM.AAAA</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_fehlercode_geburtsdatum" type="Fehlercode_Geburtsdatum_numType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">0 = auf den Tag genau
+                        2 = auf den Monat genau
+                        3 = auf das Jahr genau
+                        5 = 29.02, aber das Jahr ist kein Schaltjahr</xs:documentation>
+                    <xs:documentation xml:lang="fr">0 = au jour près
+                        2 = au mois près
+                        3 = à l'année près
+                        5 = 29.02 pour une année non bisextile</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_geschlecht" type="Csex_Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Geschlecht: 1=M, 2=W</xs:documentation>
+                    <xs:documentation xml:lang="fr">Sexe:       1=H, 2=F</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_ahvn1" type="VersichertennummerErgaenzend_Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>1.ergänzende Versichertennummer</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_ahvn2" type="VersichertennummerErgaenzend_Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>2.ergänzende Versichertennummer</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_leistungsart" type="IVLeistungsart_Type">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Art der Leistung der IV:
+                        50, 53,54,55,56
+                        13,14,15,16
+                        81,82,83,84,88,91,92,93</xs:documentation>
+                    <xs:documentation xml:lang="fr">Genre de la prestation AI:
+                        50, 53,54,55,56
+                        13,14,15,16
+                        81,82,83,84,88,91,92,93
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_invaliditaetsgrad" type="Invaliditaetsgrad_Type">
+                <xs:annotation>
+                    <xs:documentation>34 .. 100</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_rentenanteil" type="Rentenanteil_Type">
+                <xs:annotation>
+                    <xs:documentation>1,2,3,4</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_dje_chf" type="BetragFR_Type">
+                <xs:annotation>
+                    <xs:documentation>Durschschnittliches Jahreseinkommen</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_skala" type="Rentenskala_Type">
+                <xs:annotation>
+                    <xs:documentation>Rentenskala</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_betrag_chf" type="BetragFR_Type">
+                <xs:annotation>
+                    <xs:documentation>Monatsbetrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_anspruchsbeginn" type="DatumMMJJJJ_Type">
+                <xs:annotation>
+                    <xs:documentation>MM.JJJJ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_anspruchsende" type="DatumMMJJJJ_optType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>MM.JJJJ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_ak" type="Ausgleichskasse_weakType">
+                <xs:annotation>
+                    <xs:documentation>Ausgleichskasse</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="rr_iv_stelle" type="IVStelle_Type">
+                <xs:annotation>
+                    <xs:documentation>IV-Stelle</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Taggeld_Type">
+        <xs:sequence>
+            <xs:element name="tg_ahvn" type="Versichertennummer_Type"/>
+            <xs:element name="tg_verfuegungsnummer" type="VerfuegungNummer14Stellen_optType">
+                <xs:annotation>
+                    <xs:documentation>14-stellig: IV-Stelle + JJJJ + NNNNNN + Pruefziffer</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="tg_meldungsinhalt" type="Taggeld_Meldungsinhalt_Type">
+                <xs:annotation>
+                    <xs:documentation>1 = laufendes Taggeld
+                        3 = Nachzahlung
+                        4 = Rückforderung	</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="tg_art_taggeld" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>1 = grosses Taggeld
+                        2 = kleines Taggeld
+                        3 = Einarbeitungszuschuss (5.IV-Revision)
+                        4 = Entschädigung für Betreuungskosten (5.IV-Revision)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="tg_anzahl_tage" type="xs:int"/>
+            <xs:element name="tg_tagesansatz_chf" type="BetragFRRP3_Type">
+                <xs:annotation>
+                    <xs:documentation>FF.RR</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="tg_betrag_total_chf" type="BetragFRRP6_Type">
+                <xs:annotation>
+                    <xs:documentation>FF.RR</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="tg_datum_beginn_periode" type="DatumTTMMJJJJ_Type" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>TT.MM.JJJJ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="tg_datum_ende_periode" type="DatumTTMMJJJJ_Type" nillable="true">
+                <xs:annotation>
+                    <xs:documentation>TT.JJ.JJJJ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="tg_ausgleichskasse" type="Ausgleichskasse_weakType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="smx_Type">
+        <xs:sequence>
+            <xs:element name="smx_ahvn" type="Versichertennummer_Type">
+                <xs:annotation>
+                    <xs:documentation>11- oder 13-stellig</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_datum_zahlung" type="DatumTTMMJJJJ_Type">
+                <xs:annotation>
+                    <xs:documentation>TT.MM.JJJJ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_datum_erste_leistung" type="DatumTTMMJJJJ_Type">
+                <xs:annotation>
+                    <xs:documentation>TT.MM.JJJJ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_leistungscode" type="Leistungscode_Type"/>
+            <xs:element name="smx_betrag_chf" type="BetragFRRP6_Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>FFFFFF.RR</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_betrag" type="BetragP6_Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>MMMMMM.DD</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_waehrung" type="SumexWaehrung_Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>CHF,EUR,USD,...</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_iv_stelle" type="IVStelle_Type"/>
+            <xs:element name="smx_versicherung" type="SumexVersicherung_Type">
+                <xs:annotation>
+                    <xs:documentation>IV,</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_art_gebrechen" type="SumexArtGebrechen_Type">
+                <xs:annotation>
+                    <xs:documentation>Unfall, Krankheit, Geburtsgebrechen, unbekannt</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_verfuegungsnummer" type="VerfuegungNummer14Stellen_optType">
+                <xs:annotation>
+                    <xs:documentation>14-stellig: IV-Stelle + JJJJ + NNNNNN + Prüfziffer
+                        oder
+                        IV-Stelle + 299</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="smx_leistungserbringer" type="SumexLeistungserbringer_Type">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Angaben Leistungserbringer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Détails fournisseur de prestations</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <!--eCH-0058 Types-->
+    <xs:complexType name="headerType">
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType"/>
+            <xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+            <xs:element name="messageId" type="eCH-0058:messageIdType"/>
+            <xs:element name="referenceMessageId" type="eCH-0058:messageIdType"/>
+            <xs:element name="messageType">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:messageTypeType">
+                        <xs:enumeration value="2403"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="subMessageType">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:subMessageTypeType">
+                        <xs:enumeration value="000102"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+            <xs:element name="subject" type="eCH-0058:subjectType"/>
+            <xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+            <xs:element name="action">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:actionType">
+                        <xs:minLength value="1"/>
+                        <xs:enumeration value="6">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="de">Antwort</xs:documentation>
+                                <xs:documentation xml:lang="fr">Réponse</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+            <xs:element name="responseExpected" type="eCH-0058:responseExpectedType"/>
+            <xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType"/>
+            <xs:element name="attachment" type="eahv-iv-common:attachmentType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="extension" type="eahv-iv-2403-000102:extensionType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="extensionType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Elemente, welche im eCH-0058/4-Standard nicht vorgesehen sind, werden im Attribut „extension“ geführt.</xs:documentation>
+            <xs:documentation xml:lang="fr">Les éléments qui ne sont pas prévus dans le standard eCH-0058/4 sont définis dans l'élément 'extension'</xs:documentation>
+            <xs:documentation xml:lang="it">Gli elementi che non sono incluse nello standard eCH-0058/4 sono definiti in 'estensione' l'elemento</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="contactInformation" type="eahv-iv-common:contactInformationType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="contentType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+            <xs:documentation xml:lang="fr">Attributs métier de l'annonce</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="request_bsv" type="request_bsv_Type" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>request = 1 AHVN</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="message">
+        <xs:annotation>
+            <xs:documentation>root element for pension query message</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eahv-iv-2403-000102:headerType"/>
+                <xs:element name="content" type="eahv-iv-2403-000102:contentType"/>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

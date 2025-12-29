@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        targetNamespace="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclarationConsumerServiceTypes"
+        xmlns:sdcst="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclarationConsumerServiceTypes"
+        xmlns:sdcc="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclarationConsumerContainer"
+        xmlns:c="http://www.swissdec.ch/schema/common/20200220/Common"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+
+    <!-- state of standardisation:
+        publication: FINAL 2020-04-23
+        intern: release-5.0.0-20200423-Version5_RL-LDUeV20200220-ELMV5
+
+        SVN keywords
+        $Date:: 2020-04-23 20:34:50 +0200 (Do, 23 Apr 2020)     $: Date of last commit
+        $Revision:: 26561                                       $: Revision of last commit
+        $Author:: boehm                                         $: Author of last commit
+
+    -->
+
+
+    <!-- imports -->
+    <xs:import namespace="http://www.swissdec.ch/schema/common/20200220/Common"
+               schemaLocation="Common.xsd"/>
+
+    <xs:import
+            namespace="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclarationConsumerContainer"
+            schemaLocation="SalaryDeclarationConsumerContainer.xsd"/>
+
+    <!-- definitions PingConsumer -->
+    <xs:element name="PingConsumer" type="c:PingConsumerType"/>
+    <xs:element name="PingConsumerResponse" type="c:PingConsumerResponseType"/>
+
+    <!-- ****************************** -->
+    <!-- *** DECLARE SALARY PROCESS *** -->
+    <!-- ****************************** -->
+    <!-- definitions DeclareSalaryConsumer -->
+    <xs:element name="DeclareSalaryConsumer" type="sdcc:DeclareSalaryConsumerType"/>
+    <xs:element name="DeclareSalaryConsumerResponse"
+                type="sdcc:DeclareSalaryConsumerResponseType"/>
+
+    <!-- definitions GetResultFromDeclareSalaryConsumer (old GetContributionsFromDeclareSalaryConsumer) -->
+    <xs:element name="GetResultFromDeclareSalaryConsumer"
+                type="sdcc:GetResultFromDeclareSalaryConsumerType"/>
+    <xs:element name="GetResultFromDeclareSalaryConsumerResponse"
+                type="sdcc:GetResultFromDeclareSalaryConsumerResponseType"/>
+
+    <!-- ***************************** -->
+    <!-- *** DECLARE MONTH PROCESS *** -->
+    <!-- ***************************** -->
+    <xs:element name="DeclareMonthTotalConsumer" type="sdcc:DeclareMonthTotalConsumerType"/>
+    <xs:element name="DeclareMonthTotalConsumerResponse" type="sdcc:DeclareMonthTotalConsumerResponseType"/>
+
+    <xs:element name="GetResultFromDeclareMonthTotalConsumer" type="sdcc:GetResultFromDeclareMonthTotalConsumerType"/>
+    <xs:element name="GetResultFromDeclareMonthTotalConsumerResponse"
+                type="sdcc:GetResultFromDeclareMonthTotalConsumerResponseType"/>
+
+    <!-- ************** -->
+    <!-- *** DIALOG *** -->
+    <!-- ************** -->
+    <xs:element name="GetDialogConsumer" type="sdcc:GetDialogConsumerType"/>
+    <xs:element name="GetDialogConsumerResponse" type="sdcc:GetDialogConsumerResponseType"/>
+    <xs:element name="ReplyDialogConsumer" type="sdcc:ReplyDialogConsumerType"/>
+    <xs:element name="ReplyDialogConsumerResponse" type="sdcc:ReplyDialogConsumerResponseType"/>
+
+    <!-- *********** -->
+    <!-- ** FAULT ** -->
+    <!-- *********** -->
+    <xs:element name="SalaryDeclarationConsumerFault"
+                type="sdcc:SalaryDeclarationConsumerFaultType"/>
+</xs:schema>

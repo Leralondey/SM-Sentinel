@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- eahv-iv-2402-000301 edited with XMLSpy v2013 sp1 (http://www.altova.com) by Patrick Blaser -->
+<xs:schema xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010-f/5" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4"
+	 xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:eahv-iv-2402-common="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-common/2"
+	 xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" xmlns:eahv-iv-2402-000301="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-000301/2"
+	 xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-000301/2"
+	 elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Abschliessen Entsendung</xs:documentation>
+		<xs:documentation xml:lang="fr">Conclure détachement</xs:documentation>
+		<xs:documentation xml:lang="it">Concludere distacco</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0010-f/5"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-common/2"/>
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4"/>
+	<xs:complexType name="headerType">
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0"/>
+			<xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="messageType" type="eCH-0058:messageTypeType" fixed="2402"/>
+			<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000301"/>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:actionType">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neu</xs:documentation>
+								<xs:documentation xml:lang="fr">Nouveau</xs:documentation>
+								<xs:documentation xml:lang="it">Nuovo</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="6">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Antwort</xs:documentation>
+								<xs:documentation xml:lang="fr">Réponse</xs:documentation>
+								<xs:documentation xml:lang="it">Risposta</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="eahv-iv-2402-common:attachmentType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" fixed="false"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" fixed="true"/>
+			<xs:element name="extension" type="eahv-iv-2402-common:extensionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="insuredPerson" type="eahv-iv-common:naturalPersonsOASIDIType"/>
+			<xs:element name="vn" type="eCH-0044:vnType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Sozialversicherungsnummer der Schweiz (AHV-Nr)</xs:documentation>
+					<xs:documentation xml:lang="fr">Numéro de sécurité sociale en Suisse (N° AVS)</xs:documentation>
+					<xs:documentation xml:lang="it">Numero di sicurezza sociale in Svizzera (N. AVS)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="officialName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Name</xs:documentation>
+					<xs:documentation xml:lang="fr">Nom</xs:documentation>
+					<xs:documentation xml:lang="it">Cognome</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="birthName" type="eCH-0044:baseNameType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geburtsname</xs:documentation>
+					<xs:documentation xml:lang="fr">Nom de naissance</xs:documentation>
+					<xs:documentation xml:lang="it">Cognome di nascita</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="firstName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vorname</xs:documentation>
+					<xs:documentation xml:lang="fr">Prénom</xs:documentation>
+					<xs:documentation xml:lang="it">Nome</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sex" type="eCH-0044:sexType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschlecht</xs:documentation>
+					<xs:documentation xml:lang="fr">Sexe</xs:documentation>
+					<xs:documentation xml:lang="it">Sesso</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateOfBirth" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geburtsdatum - Datumsformat: YYYY-MM-DD (zB. 1961-01-11                        für 11ter Januar)</xs:documentation>
+					<xs:documentation xml:lang="fr">Date de naissance - Format de la date: AAAA-MM-JJ (p.ex. 1961-01-11 pour 11 janvier)</xs:documentation>
+					<xs:documentation xml:lang="it">Data di nascita - Formato della data: AAAA-MM-GG (p.es. 1961-01-11 per 11 gennaio)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="placeOfBirth" type="eCH-0044:baseNameType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geburtsort</xs:documentation>
+					<xs:documentation xml:lang="fr">Lieu de naissance</xs:documentation>
+					<xs:documentation xml:lang="it">Luogo di nascita</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="citizenshipCountry" type="eCH-0010:countryIdIso2Type" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Staatsangehörigkeit(en)</xs:documentation>
+					<xs:documentation xml:lang="fr">Nationalité(s)</xs:documentation>
+					<xs:documentation xml:lang="it">Nazionalità</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="employeeResidenceAddress" type="eahv-iv-2402-common:addressInformationType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresse im Wohnsitzstaat</xs:documentation>
+					<xs:documentation xml:lang="fr">Adresse dans l'Etat de résidence</xs:documentation>
+					<xs:documentation xml:lang="it">Indirizzo nello Stato di residenza</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="employeeLivingAddress" type="eahv-iv-2402-common:addressInformationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresse im Aufenthaltsstaat</xs:documentation>
+					<xs:documentation xml:lang="fr">Adresse dans l'Etat de séjour</xs:documentation>
+					<xs:documentation xml:lang="it">Indirizzo nello Stato di soggiorno</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="changeOfResidenceOutsideCH" type="eahv-iv-2402-common:changeOfResidenceType"
+				 minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wohnsitzstaatverlegung während der Entsendung</xs:documentation>
+					<xs:documentation xml:lang="fr">Déplacement du lieu de résidence pendant le détachement</xs:documentation>
+					<xs:documentation xml:lang="it">Trasferimento del luogo di residenza durante il distacco</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="infoKvgHealthInsurance" type="eahv-iv-2402-common:infoKvgHealthInsuranceType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Angaben zur KVG-Krankenversicherung</xs:documentation>
+					<xs:documentation xml:lang="fr">Renseignements sur l'assurance-maladie (LAMal)</xs:documentation>
+					<xs:documentation xml:lang="it">Informazioni sull'assicurazione malattie (LAMal)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="activityCH" type="eahv-iv-2402-common:employeeActivityCHType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tätigkeit in der Schweiz</xs:documentation>
+					<xs:documentation xml:lang="fr">Activité en Suisse</xs:documentation>
+					<xs:documentation xml:lang="it">Attività in Svizzera</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="activityAbroad" type="eahv-iv-2402-common:employeeActivityAbroadType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Tätigkeit im Ausland</xs:documentation>
+					<xs:documentation xml:lang="fr">Activité à l'étranger</xs:documentation>
+					<xs:documentation xml:lang="it">Attività all'estero</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="employerRepresentative" type="eahv-iv-2402-common:companyAddressInformationStrictType"
+				 minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vertretung Arbeitgeber</xs:documentation>
+					<xs:documentation xml:lang="fr">Représentation de l'employeur</xs:documentation>
+					<xs:documentation xml:lang="it">Rappresentanza del datore di lavoro</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="infoEmployed" type="eahv-iv-2402-common:infoEmployedType">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Angaben zur unselbstständigen Erwerbstätigkeit</xs:documentation>
+						<xs:documentation xml:lang="fr">Renseignements sur l'activité lucrative salariée</xs:documentation>
+						<xs:documentation xml:lang="it">Informazioni sull'attività lucrativa dipendente</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="infoSelfEmployed" type="eahv-iv-2402-common:infoSelfEmployedType">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Angaben zur selbstständigen Erwerbstätigkeit</xs:documentation>
+						<xs:documentation xml:lang="fr">Renseignements sur l'activité lucrative indépendante</xs:documentation>
+						<xs:documentation xml:lang="it">Informazioni sull'attività lucrativa indipendente</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="familyMembers" type="eahv-iv-2402-common:familyMembersType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Familienangehörige, welche den Versicherten begleiten</xs:documentation>
+					<xs:documentation xml:lang="fr">Membres de famille qui accompagnent l'assuré</xs:documentation>
+					<xs:documentation xml:lang="it">Membri della famiglia che accompagnano l'assicurato</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="notes" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bemerkungen</xs:documentation>
+					<xs:documentation xml:lang="fr">Remarques</xs:documentation>
+					<xs:documentation xml:lang="it">Osservazioni</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="deploymentDecision" type="eahv-iv-2402-common:deploymentDecisionType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Entscheid zur Entsendung</xs:documentation>
+					<xs:documentation xml:lang="fr">Décision sur le détachement</xs:documentation>
+					<xs:documentation xml:lang="it">Decisione sul distacco</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+			<xs:documentation xml:lang="fr">Déclaration de l'élément Root pour message.xml</xs:documentation>
+			<xs:documentation xml:lang="it">Dichiarazione dell'elemento Root per message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="eahv-iv-2402-000301:headerType"/>
+				<xs:element name="content" type="eahv-iv-2402-000301:contentType" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

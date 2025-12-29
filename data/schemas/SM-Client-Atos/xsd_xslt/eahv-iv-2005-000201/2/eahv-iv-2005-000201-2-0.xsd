@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-napg-common/2"
+           xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/6"
+           xmlns="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-000201/2"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-000201/2"
+           elementFormDefault="qualified"
+           version="2.0">
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/6" schemaLocation="eCH-0097-6-0.xsd"/>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-napg-common/2"
+               schemaLocation="eahv-iv-napg-common-2-0.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation xml:lang="fr">
+            SubMessageType: 000201
+            Annonce envoyée par une caisse de compensation à la CdC afin de demander la clôture d'un cas.
+        </xs:documentation>
+        <xs:documentation xml:lang="de">
+            SubMessageType: 000201
+            Meldung, die von einer Ausgleichskasse an die ZAS geschickt wird, um den Abschluss eines Falls zu
+            beantragen.
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="common:headerType"/>
+                <xs:choice>
+                    <xs:element name="content">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="closeCaseRequest">
+                                    <xs:annotation>
+                                        <xs:documentation xml:lang="fr">
+                                            Demande de clôture d'un cas.
+                                            Le business process id du header est utilisé afin d'identifier le cas à
+                                            clôturer.
+                                        </xs:documentation>
+                                        <xs:documentation xml:lang="de">
+                                            Antrag auf Abschluss eines Falls.
+                                            Die business process id des Headers wird verwendet, um den abzuschließenden
+                                            Fall
+                                            zu identifizieren.
+                                        </xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                        <xs:annotation>
+                                            <xs:documentation xml:lang="fr">
+                                                IDE de la caisse de compensation demande la clôture du cas.
+                                            </xs:documentation>
+                                            <xs:documentation xml:lang="de">
+                                                UID der Ausgleichskasse fordert die Schließung des Falls.
+                                            </xs:documentation>
+                                        </xs:annotation>
+                                        <xs:sequence>
+                                            <xs:element name="requestingCompensationOffice"
+                                                        type="eCH-0097:uidStructureType"/>
+                                        </xs:sequence>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="info" type="common:infoType"/>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+ 

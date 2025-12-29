@@ -1,0 +1,962 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        targetNamespace="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclarationConsumerContainer"
+        xmlns:sdcc="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclarationConsumerContainer"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:sdc="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclarationContainer"
+        xmlns:sd="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclaration"
+        xmlns:c="http://www.swissdec.ch/schema/common/20200220/Common"
+        elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+
+    <!-- state of standardisation:
+        publication: FINAL 2020-04-23
+        intern: release-5.0.0-20200423-Version5_RL-LDUeV20200220-ELMV5
+
+        SVN keywords
+        $Date:: 2022-09-12 14:29:38 +0200 (Mo, 12 Sep 2022)     $: Date of last commit
+        $Revision:: 29773                                       $: Revision of last commit
+        $Author:: stettler                                      $: Author of last commit
+
+    -->
+
+    <!-- imports -->
+    <xs:import namespace="http://www.swissdec.ch/schema/common/20200220/Common"
+               schemaLocation="Common.xsd"/>
+
+    <xs:import namespace="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclarationContainer"
+               schemaLocation="SalaryDeclarationContainer.xsd"/>
+
+    <xs:import namespace="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclaration"
+               schemaLocation="SalaryDeclaration.xsd"/>
+
+    <!-- complex type definitions -->
+    <xs:complexType name="DeclareSalaryConsumerType">
+        <xs:sequence>
+            <xs:element name="DistributorRequestContext" type="sdcc:DistributorRequestContextType"/>
+            <xs:element name="DeclareSalary" type="sdc:SalaryDeclarationRequestType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>SalaryDeclaration Request</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>SalaryDeclaration Request</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>SalaryDeclaration Request</translation>
+                    </xs:documentation>
+                </xs:annotation>
+                <!-- check Job references
+                    attention: element name="DeclareSalary" in SalaryDeclarationServiceTypes.xsd  -->
+                <xs:unique name="AHV-AVS-ID-Key">
+                    <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:AHV-AVS"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="AHV-AVS-ID-Ref" refer="sdcc:AHV-AVS-ID-Key">
+                    <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:AHV-AVS"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="FAK-CAF-ID-Key">
+                    <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:FAK-CAF"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="FAK-CAF-ID-Ref" refer="sdcc:FAK-CAF-ID-Key">
+                    <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:FAK-CAF"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="UVG-LAA-ID-Key">
+                    <xs:selector
+                            xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:UVG-LAA"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="UVG-LAA-ID-Ref" refer="sdcc:UVG-LAA-ID-Key">
+                    <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:UVG-LAA"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="UVGZ-LAAC-ID-Key">
+                    <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:UVGZ-LAAC"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="UVGZ-LAAC-ID-Ref" refer="sdcc:UVGZ-LAAC-ID-Key">
+                    <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:UVGZ-LAAC"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="KTG-AMC-ID-Key">
+                    <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:KTG-AMC"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="KTG-AMC-ID-Ref" refer="sdcc:KTG-AMC-ID-Key">
+                    <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:KTG-AMC"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="BVG-LPP-ID-Key">
+                    <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:BVG-LPP"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="BVG-LPP-ID-Ref" refer="sdcc:BVG-LPP-ID-Key">
+                    <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:BVG-LPP"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="TaxAtSource-Key">
+                    <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:TaxAtSource"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="TaxAtSource-Ref" refer="sdcc:TaxAtSource-Key">
+                    <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:TaxAtSource"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="TaxCrossborder-Key">
+                    <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:TaxCrossborder"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="TaxCrossborder-Ref" refer="sdcc:TaxCrossborder-Key">
+                    <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:TaxCrossborder"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="Statistic-Key">
+                    <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:Statistic"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="Statistic-Ref" refer="sdcc:Statistic-Key">
+                    <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:Statistic"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DistributorRequestContextType">
+        <xs:sequence>
+            <xs:element name="UserAgent" type="c:UserAgentType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Applikationsinformation</translation>
+                        <description>
+                            <short>Beschreibung der wesentlichen System-Identifikations-Daten</short>
+                            <technical>
+                                Zur Qualitätsicherung des Übermittlungsprozesses werden die wesentlichen
+                                Informationen der beteiligten gesichert
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Informations concernant l'application</translation>
+                        <description>
+                            <short>Description des données essentielles d'identification de système</short>
+                            <technical>
+                                Pour l'assurance de la qualité, les informations essentielles des participants
+                                sont sauvegardées.
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Informazioni sull'applicazione</translation>
+                        <description>
+                            <short>Descrizione dei dati essenziali per l'identificazione del sistema</short>
+                            <technical>
+                                Per garantire la qualità, le informazioni essenziali dei partecipanti
+                                sono salvati.
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="TransmissionDate" type="xs:dateTime">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Übertragungszeitpunkt</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Date et Temps de transmission</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Data e ora di trasmissione</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DeclarationID" type="c:IDType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>DeclarationID</translation>
+                        <description>
+                            <short>Gleiche ID in allen Requests (Distributor -> End-Empfänger),
+                                Responses (Distributor -> Transmitter), Masken und Pdf‘s, welche
+                                zum identischen Geschäftsvorfall gehören. Damit kann sie als
+                                Fallnummer für den Support verwendet werden.
+                            </short>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>DeclarationID</translation>
+                        <description>
+                            <short>Identificateur qui reste le même dans toutes les requêtes
+                                (Distributeur -> End-Empfänger), réponses (DistributeuràTransmetteur),
+                                masques et Pdf‘s faisant partie d‘une opération commerciale identique.
+                                Il peut être utilisé comme numéro de cas pour le support.
+                            </short>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>DeclarationID</translation>
+                        <description>
+                            <short>Identificatore che rimane lo stesso in tutte le domande
+                                (Distributore -> End-Empfänger), risposte (dal distributore al trasmettitore),
+                                maschere e Pdf fanno parte di un'identica operazione commerciale.
+                                Può essere utilizzato come numero di caso per il supporto.
+                            </short>
+                        </description>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DistributorRequestID" type="c:IDType"/>
+            <xs:element name="TestCase" type="c:EmptyType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Testfall</translation>
+                        <description>
+                            <short>Testfall-Kennzeichnung</short>
+                            <technical>Die Daten wurden empfangen und quittiert. Aber OHNE
+                                PRODUKTIVE VERARBEITUNG!!!
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Cas de test</translation>
+                        <description>
+                            <short>Marquage pour cas de test</short>
+                            <technical>Les données sont reçus et acquittés. Mais SANS
+                                TRAITEMENT PRODUCTIVE!!!
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Casi di test</translation>
+                        <description>
+                            <short>Marcatura per i casi di test</short>
+                            <technical>I dati vengono ricevuti e riconosciuti. Ma SENZA
+                                TRATTAMENTO PRODUTTIVO!!!!
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Duplicate" type="sdcc:DuplicateType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Duplikat</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Dupliquer</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Duplicare</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="SubstitutionMapping" type="sdcc:SubstitutionMappingType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Substitutions-Zuordnung</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Substitution Affectation</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Sostituzione Assegnazione</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VersionMappingFrom" type="sdcc:VersionMappingFromType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Versionsabbildung von</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Version Mapping de</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Versione Mappatura Da</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ProducerSecurityTokens" type="sdcc:ProducerSecurityTokensType">
+                <xs:unique name="X509CertificateID">
+                    <xs:selector xpath="sdcc:X509Certificate"/>
+                    <xs:field xpath="@X509CertificateID"/>
+                </xs:unique>
+            </xs:element>
+            <xs:element name="SignatureCertificateUID-BFS" type="sdcc:SignatureCertificateUID-BFSType" minOccurs="0"/>
+            <xs:element name="ProducerResponseNotifications" type="sdcc:ProducerResponseNotificationsType"/>
+            <xs:element name="ConsumerNotifications" type="sdcc:ConsumerNotificationsType" minOccurs="0"/>
+            <xs:element name="Institutions" type="sd:CustomerIdentificationType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SignatureCertificateUID-BFSType">
+        <xs:sequence>
+            <xs:element name="CommonName" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Common Name</translation>
+                        <description>
+                            <technical>
+                                NTRCH-{UID-BFS}@swissdec.ch
+                                mit Beispiel:
+                                NTRCH-CHE-123.456.789@swissdec.ch
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Common Name</translation>
+                        <description>
+                            <technical>
+                                NTRCH-{UID-BFS}@swissdec.ch
+                                à titre d'exemple:
+                                NTRCH-CHE-123.456.789@swissdec.ch
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Common Name</translation>
+                        <description>
+                            <technical>
+                                NTRCH-{UID-BFS}@swissdec.ch
+                                a titolo di esempio:
+                                NTRCH-CHE-123.456.789@swissdec.ch
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation>
+                        <usage>all</usage>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="UID" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>UID</translation>
+                        <description>
+                            <technical>
+                                UID Nr. nach BFS UID-Register
+                                OID Object Identifier (2.5.4.97)
+                                mit Beispiel
+                                NTRCH-CHE-123.456.789
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>UID</translation>
+                        <description>
+                            <technical>
+                                UID Nr. selon le registre UID du OFS
+                                OID Object Identifier (2.5.4.97)
+                                mit Beispiel
+                                NTRCH-CHE-123.456.789
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>UID</translation>
+                        <description>
+                            <technical>
+                                UID Nr. secondo il registro UID UST
+                                OID Object Identifier (2.5.4.97)
+                                mit Beispiel
+                                NTRCH-CHE-123.456.789
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation>
+                        <usage>all</usage>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="X509CertificateIDRef" type="c:InstanceRefIDType" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="de">
+                    <translation>X509Certificate Identifikation Referenz</translation>
+                </xs:documentation>
+                <xs:documentation xml:lang="fr">
+                    <translation>Référence X509Certificate Identificateur</translation>
+                </xs:documentation>
+                <xs:documentation xml:lang="it">
+                    <translation>Riferimento X509Certificate Identificazione</translation>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+
+    <xs:complexType name="DuplicateType">
+        <xs:sequence>
+            <xs:element name="LastDistributorRequestID" type="c:IDType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SubstitutionMappingType">
+        <xs:sequence>
+            <xs:element name="MappedPredecessorDistributorRequestID" type="c:IDType"/>
+            <xs:element name="MappedPredecessorConsumerResponseID" type="c:IDType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ProducerSecurityTokensType">
+        <xs:sequence>
+            <xs:element name="Timestamp" type="xs:dateTime" maxOccurs="unbounded"/>
+            <xs:element name="X509Certificate" type="sdcc:X509CertificateType"
+                        maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="X509CertificateType">
+        <xs:sequence>
+            <xs:element name="Usage" type="sdcc:UsageType"/>
+            <xs:element name="DistinguishedNameOwner" type="xs:string"/>
+            <xs:element name="DistinguishedNameIssuer" type="xs:string"/>
+            <xs:element name="SecuredElement" type="xs:string" maxOccurs="unbounded"/>
+            <xs:element name="PEM" type="xs:base64Binary"/>
+        </xs:sequence>
+        <xs:attribute name="X509CertificateID" type="c:InstanceRefIDType" use="required">
+            <xs:annotation>
+                <xs:documentation xml:lang="de">
+                    <translation>X509Certificate Identifikation</translation>
+                </xs:documentation>
+                <xs:documentation xml:lang="fr">
+                    <translation>Identificateur X509Certificate</translation>
+                </xs:documentation>
+                <xs:documentation xml:lang="it">
+                    <translation>Identificazione X509Certificate</translation>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:simpleType name="UsageType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="Signature"/>
+            <xs:enumeration value="QualifiedSignature"/>
+            <xs:enumeration value="Encryption"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="ProducerResponseNotificationsType">
+        <xs:sequence>
+            <xs:element name="Warning" type="sdcc:ProducerNotificationsType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Warnungen, die an den Producer /Transmitter zurückgeschickt werden</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Avertissement, qui sont renvoyés au producteur/transmetteur</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Attenzione, che vengono rispediti al produttore/trasmettitore</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Info" type="sdcc:ProducerNotificationsType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Informationen, die an den Producer /Transmitter zurückgeschickt werden
+                        </translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Informationen, qui sont renvoyés au producteur/transmetteur</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Informationen, che vengono rispediti al produttore/trasmettitore</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ProducerNotificationsType">
+        <xs:sequence>
+            <xs:element name="Notification" type="sdcc:ProducerNotificationType" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Hinweise</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Remarques</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Note</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ProducerNotificationType">
+        <xs:sequence>
+            <xs:element name="QualityLevel" type="c:QualityLevelType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Qualitäts-Stufe</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Niveau de qualité</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Livello di qualità</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DescriptionCode" type="c:DescriptionCodeType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Code der Beschreibung</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Code de la description</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Codice di descrizione</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Description" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Beschreibungstext</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Description</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Descrizione</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ConsumerNotificationsType">
+        <xs:sequence>
+            <xs:element name="Warning" type="sdcc:ConsumerNotificationType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Warnungen, die an den Consumer/Endreceiver geschickt werden</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Avertissement, qui sont envoyés au consommateur/récepteur final</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Attenzione, che vengono inviati al consumatore/ricevitore finale</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Info" type="sdcc:ConsumerNotificationType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Informationen, die an den Consumer/Endreceiver zurückgeschickt werden</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Informations, qui sont envoyés au consommateur/récepteur final</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Informazioni, che vengono inviati al consumatore/ricevitore finale
+                        </translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ConsumerNotificationType">
+        <xs:sequence>
+            <xs:element name="Notification" type="sdcc:MinimalNotificationType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MinimalNotificationType">
+        <xs:sequence>
+            <xs:element name="DescriptionCode" type="c:DescriptionCodeType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Code der Beschreibung</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Code de description</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Codice di descrizione</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Description" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Beschreibungstext</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Description</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Descrizione</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DeclareSalaryConsumerResponseType">
+        <xs:sequence>
+            <xs:element name="ConsumerResponseContext" type="sdcc:ConsumerResponseContextType"/>
+            <xs:element name="JobState" type="sdcc:ReducedJobStateType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ReducedJobStateType">
+        <xs:choice>
+            <xs:element name="AHV-AVS" type="sdc:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>AHV</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>AVS</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>AVS</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="FAK-CAF" type="sdc:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>FAK</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>CAF</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>CAF</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="UVG-LAA" type="sdc:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>UVG</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>LAA</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>LAINF</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="UVGZ-LAAC" type="sdc:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>UVGZ</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>LAAC</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>LAINFC</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="KTG-AMC" type="sdc:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>KTG</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>IJM</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>IGM</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="BVG-LPP" type="sdc:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>BVG</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>LPP</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>LPP</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Tax" type="sdc:ReducedTaxWorkingStateType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Lohnausweis, Rentenbescheinigung</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Certificat de salaire, Attestation de rente</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Certificato di salario, Attestazione delle rendite</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="TaxAtSource" type="sdc:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>QST (Quellensteuer)</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>IS (Impôt à la source)</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>IF (Imposta alla fonte)</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="TaxCrossborder" type="sdc:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Grenzgänger</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Frontaliers</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Frontalieri</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Statistic" type="sdc:ReducedWorkingStateType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Statistik</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Statistique</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Statistica</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="UnemploymentCertificates" type="sdc:ReducedTaxWorkingStateType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Lohnausweis, Rentenbescheinigung</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Certificat de salaire, Attestation de rente</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Certificato di salario, Attestazione delle rendite</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ConsumerResponseContextType">
+        <xs:sequence>
+            <xs:element name="ConsumerResponseID" type="c:IDType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>AntwortID</translation>
+                        <description>
+                            <short>ID der Antwort</short>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Réponse ID</translation>
+                        <description>
+                            <short>ID de la réponse</short>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Rispondi ID</translation>
+                        <description>
+                            <short>ID della risposta</short>
+                        </description>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DistributorRequestID" type="c:IDType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Distributor AuftragsID</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Distributor Identificateur de la demande</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Distributor Identificatore di applicazione</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="TestCase" type="c:EmptyType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Testfall</translation>
+                        <description>
+                            <short>Testfall-Kennzeichnung</short>
+                            <technical>Die Daten wurden empfangen und quittiert. Aber OHNE
+                                PRODUKTIVE VERARBEITUNG!!!
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Cas de test</translation>
+                        <description>
+                            <short>Marquage pour cas de test</short>
+                            <technical>Les données sont reçus et acquittés. Mais SANS
+                                TRAITEMENT PRODUCTIVE!!!
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">
+                        <translation>Casi di test</translation>
+                        <description>
+                            <short>Marcatura per i casi di test</short>
+                            <technical>I dati vengono ricevuti e riconosciuti. Ma SENZA
+                                TRATTAMENTO PRODUTTIVO!!!!
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GetResultFromDeclareSalaryConsumerType">
+        <xs:sequence>
+            <xs:element name="DistributorRequestContext" type="sdcc:DistributorRequestContextType"/>
+            <xs:element name="GetResultFromDeclareSalary" type="sdc:GetResultFromDeclareSalaryType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GetResultFromDeclareSalaryConsumerResponseType">
+        <xs:sequence>
+            <xs:element name="ConsumerResponseContext" type="sdcc:ConsumerResponseContextType"/>
+            <xs:element name="GetResultFromDeclareSalaryResponse"
+                        type="sdc:SalaryResultConsumerType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DeclareMonthTotalConsumerType">
+        <xs:sequence>
+            <xs:element name="DistributorRequestContext" type="sdcc:DistributorRequestContextType"/>
+            <xs:element name="DeclareMonthTotal" type="sdc:MonthTotalDeclarationRequestType">
+                <!-- check Job references;
+                    attention: element name="DeclareMonthTotal" in SalaryDeclarationServiceTypes.xsd  -->
+                <xs:unique name="AHV-AVS-ID-Key2">
+                    <xs:selector xpath="sdc:MonthTotalDeclaration/sd:Company/sd:Institutions/sd:AHV-AVS"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="AHV-AVS-ID-Ref2" refer="sdcc:AHV-AVS-ID-Key2">
+                    <xs:selector xpath="sdc:JobMonthTotal/sdc:Addressees/sdc:AHV-AVS"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="FAK-CAF-ID-Key2">
+                    <xs:selector xpath="sdc:MonthTotalDeclaration/sd:Company/sd:Institutions/sd:FAK-CAF"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="FAK-CAF-ID-Ref2" refer="sdcc:FAK-CAF-ID-Key2">
+                    <xs:selector xpath="sdc:JobMonthTotal/sdc:Addressees/sdc:FAK-CAF"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DeclareMonthTotalConsumerResponseType">
+        <xs:sequence>
+            <xs:element name="ConsumerResponseContext" type="sdcc:ConsumerResponseContextType"/>
+            <xs:element name="JobStateMonthTotal" type="sdcc:ReducedJobStateMonthTotalType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ReducedJobStateMonthTotalType">
+        <xs:complexContent>
+            <xs:restriction base="sdcc:ReducedJobStateType">
+                <xs:choice>
+                    <xs:element name="AHV-AVS" type="sdc:ReducedWorkingStateMultiType">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">
+                                <translation>AHV</translation>
+                            </xs:documentation>
+                            <xs:documentation xml:lang="fr">
+                                <translation>AVS</translation>
+                            </xs:documentation>
+                            <xs:documentation xml:lang="it">
+                                <translation>AVS</translation>
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="FAK-CAF" type="sdc:ReducedWorkingStateMultiType">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">
+                                <translation>FAK</translation>
+                            </xs:documentation>
+                            <xs:documentation xml:lang="fr">
+                                <translation>CAF</translation>
+                            </xs:documentation>
+                            <xs:documentation xml:lang="it">
+                                <translation>CAF</translation>
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:choice>
+            </xs:restriction>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="GetResultFromDeclareMonthTotalConsumerType">
+        <xs:sequence>
+            <xs:element name="DistributorRequestContext" type="sdcc:DistributorRequestContextType"/>
+            <xs:element name="GetResultFromDeclareMonthTotal" type="sdc:GetResultFromDeclareMonthTotalType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GetResultFromDeclareMonthTotalConsumerResponseType">
+        <xs:sequence>
+            <xs:element name="ConsumerResponseContext" type="sdcc:ConsumerResponseContextType"/>
+            <xs:element name="GetResultFromDeclareMonthTotalResponse" type="sdc:MonthTotalSalaryResultConsumerType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="GetDialogConsumerType">
+        <xs:sequence>
+            <xs:element name="DistributorRequestContext" type="sdcc:DistributorRequestContextType"/>
+            <xs:element name="GetDialog" type="sdc:GetResultFromDeclareSalaryType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GetDialogConsumerResponseType">
+        <xs:sequence>
+            <xs:element name="ConsumerResponseContext" type="sdcc:ConsumerResponseContextType"/>
+            <xs:element name="GetDialogResponse" type="sdc:ReducedGetDialogResponse"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ReplyDialogConsumerType">
+        <xs:sequence>
+            <xs:element name="DistributorRequestContext" type="sdcc:DistributorRequestContextType"/>
+            <xs:element name="ReplyDialog" type="sdc:ReplyDialogType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ReplyDialogConsumerResponseType">
+        <xs:sequence>
+            <xs:element name="ConsumerResponseContext" type="sdcc:ConsumerResponseContextType"/>
+            <xs:element name="ReplyDialogResponse" type="sdc:ReducedGetDialogResponse"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="VersionMappingFromType">
+        <xs:sequence>
+            <xs:element name="WSDLNamespace" type="xs:anyURI"/>
+            <xs:element name="ServiceTypesNamespace" type="xs:anyURI"/>
+            <xs:element name="SalaryDeclarationMinorVersion" type="xs:decimal"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SalaryDeclarationConsumerFaultType">
+        <xs:sequence>
+            <xs:element name="ConsumerFaultContext" type="sdcc:ConsumerResponseContextType"/>
+            <xs:element name="SalaryDeclarationFault" type="sdc:SalaryDeclarationFaultType"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

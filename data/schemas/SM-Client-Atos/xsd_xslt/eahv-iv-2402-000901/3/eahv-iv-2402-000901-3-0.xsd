@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- eahv-iv-2402-000901 edited with XMLSpy v2013 sp1 (http://www.altova.com) by Patrick Blaser -->
+<xs:schema xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010-f/5" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4"
+    xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:eahv-iv-2402-common="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-common/3"
+     xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4"
+    xmlns:eahv-iv-2402-000901="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-000901/3" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-000901/3" elementFormDefault="qualified"
+    attributeFormDefault="unqualified" version="3.0">
+
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Info Versicherung Kinder</xs:documentation>
+        <xs:documentation xml:lang="fr">Informations sur l’assurance des enfants</xs:documentation>
+        <xs:documentation xml:lang="it">Informazioni sull'assicurazione dei bambini</xs:documentation>
+    </xs:annotation>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0010-f/5" />
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4" />
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4" />
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-common/3" />
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" />
+
+    <xs:complexType name="headerType">
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType" />
+            <xs:element name="recipientId" type="eCH-0058:participantIdType" />
+            <xs:element name="messageId" type="eCH-0058:messageIdType" />
+            <xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" />
+            <xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType" />
+            <xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" />
+            <xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" />
+            <xs:element name="messageType" type="eCH-0058:messageTypeType" fixed="2402" />
+            <xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000901" />
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType" />
+            <xs:element name="subject" type="eCH-0058:subjectType" />
+            <xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" />
+            <xs:element name="messageDate" type="eCH-0058:messageDateType" />
+            <xs:element name="action">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:actionType">
+                        <xs:enumeration value="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="de">Neu</xs:documentation>
+                                <xs:documentation xml:lang="fr">Nouveau</xs:documentation>
+                                <xs:documentation xml:lang="it">Nuovo</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="6">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="de">Antwort</xs:documentation>
+                                <xs:documentation xml:lang="fr">Réponse</xs:documentation>
+                                <xs:documentation xml:lang="it">Risposta</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="attachment" type="eahv-iv-2402-common:attachmentType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType" />
+            <xs:element name="responseExpected" type="eCH-0058:responseExpectedType" fixed="false" />
+            <xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" fixed="true" />
+            <xs:element name="extension" type="eahv-iv-2402-common:extensionType" />
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="contentType">
+        <xs:sequence>
+            <xs:element name="insuredPerson" type="eahv-iv-common:naturalPersonsOASIDIType"></xs:element>
+            <xs:element name="child" type="eahv-iv-2402-common:childType" minOccurs="1" maxOccurs="unbounded">
+              <xs:annotation>
+                  <xs:documentation xml:lang="de">Kinder, welche den Versicherten begleiten</xs:documentation>
+                  <xs:documentation xml:lang="fr">Enfants qui accompagnent l’assuré</xs:documentation>
+                  <xs:documentation xml:lang="it">Bambini che accompagnano l’assicurato</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="message">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+            <xs:documentation xml:lang="fr">Déclaration de l'élément Root pour message.xml</xs:documentation>
+            <xs:documentation xml:lang="it">Dichiarazione dell'elemento Root per message.xml</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eahv-iv-2402-000901:headerType" />
+                <xs:element name="content" type="eahv-iv-2402-000901:contentType" minOccurs="0" />
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

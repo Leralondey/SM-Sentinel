@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	2009-05-01 - v 0.1 - First Release
+	2009-05-05 - v 0.2 - ValidityPeriod - Number of workdays has a maximum of 31
+    2009-05-08 - v 0.3 - NewVn - Addition of this element
+    2009-05-20 - v 0.4 - Comment - Can contain only an enumeration
+    2009-05-22 - v 0.5 - Schema - Version only contains minor version
+    2009-05-28 - v 0.6 - DateOfBirth - Type coherent with eCH-0044
+    2009-06-04 - v 0.7 - Error - The textual description is not used any more
+                                 Use of the schema eCH-0044f for person identification data
+    2009-06-09 - v 0.8 - DateOfDeath - Addition of this element
+    2009-06-26 - v 0.9 - DateOfDeath - Deletion of this element
+                                 FamilyAllowanceType - Change of the labels for the items 11, 21, 32
+                                 ReturnCode - Use of type instead of element
+    2009-08-14 - v 0.10 - RecordNumber - Change the max length to 16
+                                   OfficeType - Addition of this element
+                                   FamilyAllowanceOffice - Change the type to officeType
+                                   Contact - Addition of this element
+    2009-08-17 - v 0.11 - DeliveryOffice - Addition of this element instead of office
+                                   LegalOffice - Addition of this element instead of office
+    2009-09-07 - v 0.12 - DateOfDeath - Addition of this element
+                                   OfficeIdentifier - Addition of this element
+                                   OfficeIdentificationType - Deletion of the type part
+                                   LegalOffice - Change
+    2009-10-08 - v 0.13 - Contact - Deletion of the contact office
+    2009-10-21 - v 0.13 - FamilyAllowanceType - Addition of the items 03 and 04
+    2009-10-21 - v 0.13 - FamilialStatus - Deletion of the adoptive parents and reordering of the items
+    2009-10-21 - v 0.13 - OverlapPeriod - Addition of this element
+    2009-10-23 - v 0.13 - OfficeIdentifier - Change of the pattern
+    2009-11-04 - v 0.14 - Refactored to have a global type declaration for every global element declaration
+                                   Deletion of the schemaLocations of the import statements
+	2009-11-10 - v 0.15 - Back to the old concise method of declaration
+                                   Come back of the schemaLocation in the import statements
+                                   DeliveryOffice - Refactored
+    2009-11-18 - v 0.16 - Enumerated types - The type xs:string replaces xs:unsignedInt
+    2009-12-10 - v 0.17 - FamilyAllowanceType - Addition of the item 23
+                                   Comment - Addition of the item 'A'
+                                   Local reference to other schemas
+    2010-02-10 - v 0.19 - FamilyAllowanceType - Removal of the item 23
+    2010-02-10 - v 1.0
+    2010-02-22 - v 1.1 -   OverlapPeriod - Renamed errorPeriod
+    2010-02-23               Comment - Must be a two-digits number (not restricted to enumeration)
+                                   SpecialTreatment - Addition of this element
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0104="http://www.ech.ch/xmlns/eCH-0104/1" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/4" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/1" targetNamespace="http://www.ech.ch/xmlns/eCH-0104/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1">
+	<xs:annotation>
+		<xs:documentation xml:lang="fr">Schéma pour l'échange de données entre les caisses d'allocations familiales et la Centrale de Compensation</xs:documentation>
+		<xs:documentation xml:lang="de">Datenaustauschschema zwischen den Familienausgleichskassen und der zentralen Ausgleichsstelle</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0007/4" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/1" />
+	<xs:element name="deliveryOffice">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Caisse qui envoie/reçoit l'annonce</xs:documentation>
+			<xs:documentation xml:lang="de">Kasse, welche die Meldung schickt/bekommt</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="officeIdentifier">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Identifiant de la caisse</xs:documentation>
+						<xs:documentation xml:lang="de">Kennzeichnung der Kasse</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]{1,3}|ALK[0-9]{1,2}"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="branch" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Agence</xs:documentation>
+						<xs:documentation xml:lang="de">Zweigstelle</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:unsignedInt">
+							<xs:totalDigits value="3"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="legalOffice">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Entité juridique (caisse) qui est responsable de l'allocation familiale</xs:documentation>
+			<xs:documentation xml:lang="de">Für die Familienzulage zuständigen juristischen Einheit (Kasse)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="officeIdentifier">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Identifiant de la caisse</xs:documentation>
+						<xs:documentation xml:lang="de">Kennzeichnung der Kasse</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]{3}\.[0-9]{3}|ALK\.[0-9]{3}"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="contact">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Institution à contacter pour le suivi du dossier</xs:documentation>
+			<xs:documentation xml:lang="de">Kontaktstelle für die Nachbearbeitung des Dossiers</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="employer">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Employeur</xs:documentation>
+						<xs:documentation xml:lang="de">Arbeitgeber</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="name">
+								<xs:annotation>
+									<xs:documentation xml:lang="fr">Nom de l'employeur</xs:documentation>
+									<xs:documentation xml:lang="de">Name des Arbeitgebers</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="100"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:choice>
+								<xs:element name="contactInformation">
+									<xs:annotation>
+										<xs:documentation xml:lang="fr">Information de contact</xs:documentation>
+										<xs:documentation xml:lang="de">Kontaktinformation</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:string">
+											<xs:maxLength value="100"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:element>
+								<xs:element name="webSite">
+									<xs:annotation>
+										<xs:documentation xml:lang="fr">Page web avec informations de contact</xs:documentation>
+										<xs:documentation xml:lang="de">Webseite mit Kontaktinformationen</xs:documentation>
+									</xs:annotation>
+									<xs:simpleType>
+										<xs:restriction base="xs:anyURI">
+											<xs:maxLength value="100"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:element>
+							</xs:choice>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="recordNumber">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Numéro d'enregistrement</xs:documentation>
+			<xs:documentation xml:lang="de">Recordnummer</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:unsignedInt">
+				<xs:totalDigits value="16"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="familyAllowanceType">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Genre d'allocation familiale</xs:documentation>
+			<xs:documentation xml:lang="de">Arten von Familienzulagen</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="01">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Allocation de naissance</xs:documentation>
+						<xs:documentation xml:lang="de">Geburtszulage</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="02">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Allocation d'adoption</xs:documentation>
+						<xs:documentation xml:lang="de">Adoptionszulage</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="03">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Allocation différentielle sur une allocation de naissance</xs:documentation>
+						<xs:documentation xml:lang="de">Differenz Geburtszulage</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="04">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Allocation différentielle sur une allocation d’adoption</xs:documentation>
+						<xs:documentation xml:lang="de">Differenz Adoptionszulage</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="10">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Allocation pour enfant</xs:documentation>
+						<xs:documentation xml:lang="de">Kinderzulage</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="11">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Allocation pour enfant avec supplément plusieurs enfants</xs:documentation>
+						<xs:documentation xml:lang="de">Kinderzulage mit Zuschuss für eine kinderreiche Familie</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="12">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Allocation pour enfant incapable d'exercer une activité lucrative (jusqu'à 20 ans)</xs:documentation>
+						<xs:documentation xml:lang="de">Kinderzulage für ein Kind, das erwerbsunfähig ist (bis 20 Jahre)</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="20">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Allocation de formation professionnelle</xs:documentation>
+						<xs:documentation xml:lang="de">Ausbildungszulage</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="21">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Allocation de formation professionnelle avec supplément plusieurs enfants</xs:documentation>
+						<xs:documentation xml:lang="de">Ausbildungszulage mit Zuschuss für eine kinderreiche Familie</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="22">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Allocation avec supplément pour formation professionnelle anticipée</xs:documentation>
+						<xs:documentation xml:lang="de">Zulage mit Zuschlag für eine vorgezogene Ausbildung</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="30">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Allocation différentielle</xs:documentation>
+						<xs:documentation xml:lang="de">Differenzzulage</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="31">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Allocation différentielle internationale</xs:documentation>
+						<xs:documentation xml:lang="de">Internationale Differenzzulage</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="32">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Supplément pour enfant IJAI</xs:documentation>
+						<xs:documentation xml:lang="de">Kindergeld gestützt auf das IVG </xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="vn" type="eCH-0044:vnType">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Numéro d'assuré (NAVS13)</xs:documentation>
+			<xs:documentation xml:lang="de">Versichertennummer (AHVN13)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="newVn" type="eCH-0044:vnType">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Nouveau numéro d'assuré (NAVS13)</xs:documentation>
+			<xs:documentation xml:lang="de">Neue Versichertennummer (AHVN13)</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="dateOfDeath" type="eCH-0044:datePartiallyKnownType">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Date de décès</xs:documentation>
+			<xs:documentation xml:lang="de">Sterbedatum</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:simpleType name="lawType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="01">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">LAFam</xs:documentation>
+					<xs:documentation xml:lang="de">FamZG</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="02">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">LACI</xs:documentation>
+					<xs:documentation xml:lang="de">AVIG</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="03">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">LFA - régime plaine</xs:documentation>
+					<xs:documentation xml:lang="de">FLG - Regelung Talgebiet</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="04">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">LFA - régime montagne</xs:documentation>
+					<xs:documentation xml:lang="de">FLG - Regelung Berggebiet</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="05">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">LAI</xs:documentation>
+					<xs:documentation xml:lang="de">IVG</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="legalBasis">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="law" type="eCH-0104:lawType">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Base légale</xs:documentation>
+						<xs:documentation xml:lang="de">Gesetzliche Grundlage</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="canton" type="eCH-0007:cantonAbbreviationType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Canton dont la législation s'applique</xs:documentation>
+						<xs:documentation xml:lang="de">Kanton, dessen Gesetzgebung anwendbar ist</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="validityPeriod">
+		<xs:complexType>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="start" type="xs:date">
+						<xs:annotation>
+							<xs:documentation xml:lang="fr">Date de début de droit</xs:documentation>
+							<xs:documentation xml:lang="de">Anfangsdatum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="end" type="xs:date">
+						<xs:annotation>
+							<xs:documentation xml:lang="fr">Date de fin de droit</xs:documentation>
+							<xs:documentation xml:lang="de">Enddatum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:element name="controlMonth" type="xs:gYearMonth">
+						<xs:annotation>
+							<xs:documentation xml:lang="fr">Mois de contrôle</xs:documentation>
+							<xs:documentation xml:lang="de">Kontrollmonat</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="numberOfWorkdays">
+						<xs:annotation>
+							<xs:documentation xml:lang="fr">Nombre de jours ouvrables où l'allocation a été perçue</xs:documentation>
+							<xs:documentation xml:lang="de">Anzahl der Arbeitstage, für welche die Leistung beansprucht wurde</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:unsignedInt">
+								<xs:maxInclusive value="31"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+				</xs:sequence>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="familialStatus">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Statut familial du bénéficiaire</xs:documentation>
+			<xs:documentation xml:lang="de">Familienstatus des Bezügers</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="10">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Mère</xs:documentation>
+						<xs:documentation xml:lang="de">Mutter</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="11">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Belle-mère</xs:documentation>
+						<xs:documentation xml:lang="de">Stiefmutter</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="12">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Mère nourricière (enfants recueillis)</xs:documentation>
+						<xs:documentation xml:lang="de">Pflegemutter (Kinder aufgenommen)</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="13">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Soeur</xs:documentation>
+						<xs:documentation xml:lang="de">Schwester</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="14">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Grand-mère</xs:documentation>
+						<xs:documentation xml:lang="de">Grossmutter</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="20">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Père</xs:documentation>
+						<xs:documentation xml:lang="de">Vater</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="21">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Beau-père</xs:documentation>
+						<xs:documentation xml:lang="de">Stiefvater</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="22">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Père nourricier (enfants recueillis)</xs:documentation>
+						<xs:documentation xml:lang="de">Pflegevater (Kinder aufgenommen)</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="23">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Frère</xs:documentation>
+						<xs:documentation xml:lang="de">Bruder</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="24">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Grand-père</xs:documentation>
+						<xs:documentation xml:lang="de">Grossvater</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="occupationStatus">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Statut de l'activité du bénéficiaire</xs:documentation>
+			<xs:documentation xml:lang="de">Erwerbsstatus des Bezügers</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:enumeration value="01">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Salarié</xs:documentation>
+						<xs:documentation xml:lang="de">Arbeitnehmende</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="02">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Indépendant</xs:documentation>
+						<xs:documentation xml:lang="de">Selbständig erwerbend</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="03">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Sans activité lucrative</xs:documentation>
+						<xs:documentation xml:lang="de">Nicht erwerbstätig</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="04">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Chômeur</xs:documentation>
+						<xs:documentation xml:lang="de">Arbeitslos</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="05">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Agriculteur (soumis à la LFA)</xs:documentation>
+						<xs:documentation xml:lang="de">Landwirt (dem FLG unterstellt)</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="06">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Membre de la famille travaillant dans l'exploitation (soumis à la LFA)</xs:documentation>
+						<xs:documentation xml:lang="de">Im Betrieb mitarbeitendes Familienmitglied (dem FLG unterstellt)</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="07">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Travailleur agricole (soumis à la LFA)</xs:documentation>
+						<xs:documentation xml:lang="de">Landwirtschaftlicher Arbeitnehmer (dem FLG unterstellt)</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="08">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Bénéficiaire IJAI</xs:documentation>
+						<xs:documentation xml:lang="de">IVTG-Bezüger</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="09">
+					<xs:annotation>
+						<xs:documentation xml:lang="fr">Travailleur sans employeur (TSE)</xs:documentation>
+						<xs:documentation xml:lang="de">Arbeitnehmer ohne beitragspflichtigen Arbeitgeber (ANobAG)</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="comment">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Remarque</xs:documentation>
+			<xs:documentation xml:lang="de">Bemerkung</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[0-9]{2}"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="specialTreatment">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Traitement spécial</xs:documentation>
+			<xs:documentation xml:lang="de">Besondere Verarbeitung</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:string">
+				<xs:pattern value="[A-Z]"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="creationDate" type="xs:date">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Date de création donnée par la CdC</xs:documentation>
+			<xs:documentation xml:lang="de">Datum des Eintrages gemäss Definition der Zentrale</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="mutationDate" type="xs:date">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Date de dernière modification donnée par la CdC</xs:documentation>
+			<xs:documentation xml:lang="de">Datum der letzten Anpassung gemäss Definition der Zentrale</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="error">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Plausibilité non respectée</xs:documentation>
+			<xs:documentation xml:lang="de">Nicht eingehaltenen Plausibilität</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+			<xs:restriction base="xs:unsignedInt">
+				<xs:totalDigits value="3"/>
+			</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+	<xs:element name="errorPeriod">
+		<xs:annotation>
+			<xs:documentation xml:lang="fr">Période où l'allocation est en contradiction avec une autre allocation dans le registre</xs:documentation>
+			<xs:documentation xml:lang="de">Die Periode, wo die Zulage im Widerspruch zu einer anderen Zulage im Register steht</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="start" type="xs:date"/>
+				<xs:element name="end" type="xs:date"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="receiptReturnCodeType">
+		<xs:restriction base="xs:unsignedInt">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">Exécuté</xs:documentation>
+					<xs:documentation xml:lang="de">Verarbeitet</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">Exécuté, mais annonce mise en erreur</xs:documentation>
+					<xs:documentation xml:lang="de">Verarbeitet, Meldung weist aber Fehler auf</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">Non exécuté, annonce refusée</xs:documentation>
+					<xs:documentation xml:lang="de">Nicht verarbeitet, Meldung zurückgewiesen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">Annonce annulée</xs:documentation>
+					<xs:documentation xml:lang="de">Meldung aufgehoben</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="noticeReturnCodeType">
+		<xs:restriction base="xs:unsignedInt">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">Situation normalisée</xs:documentation>
+					<xs:documentation xml:lang="de">Situation bereinigt</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">Situation conflictuelle</xs:documentation>
+					<xs:documentation xml:lang="de">Situation widersprüchlich</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UPIReturnCodeType">
+		<xs:restriction base="xs:unsignedInt">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">Exécuté</xs:documentation>
+					<xs:documentation xml:lang="de">Verarbeitet</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="fr">Exécuté, mais annonce mise en erreur</xs:documentation>
+					<xs:documentation xml:lang="de">Verarbeitet, Meldung weist aber Fehler auf</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

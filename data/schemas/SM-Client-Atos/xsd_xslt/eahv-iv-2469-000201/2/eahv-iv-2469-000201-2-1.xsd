@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright : Centrale de Compensation AVS/AI, Genève (2019). -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eahv-iv-2469-000201="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-000201/2"
+           xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-common/2"
+           xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-000201/2" elementFormDefault="qualified"
+           attributeFormDefault="unqualified" version="2.1">
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-common/2"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/4"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5"/>
+    <xs:complexType name="headerType">
+		<xs:complexContent>
+            <xs:extension base="common:commonHeaderType">
+                <xs:sequence>
+					<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000201"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:simpleType name="decisionKindRef0">
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="decisionKindRef1">
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+            <xs:enumeration value="7"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="rejectedDecisionType">
+        <xs:complexContent>
+            <xs:extension base="common:commonDecisionType">
+                <xs:sequence>
+                    <xs:choice>
+                        <xs:element name="decisionKindRef0" type="eahv-iv-2469-000201:decisionKindRef0" minOccurs="1" maxOccurs="1"/>
+                        <xs:element name="decisionKindRef1" type="eahv-iv-2469-000201:decisionKindRef1" minOccurs="1" maxOccurs="1"/>
+                    </xs:choice>
+                    <xs:element name="businessCaseIdRPC" minOccurs="1" maxOccurs="1">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:maxLength value="100"/>
+                                <xs:pattern value="[A-Za-z0-9]+"/>
+                                <xs:whiteSpace value="collapse"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="vn" type="eCH-0044:vnType" minOccurs="1" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="contentType">
+        <xs:complexContent>
+            <xs:extension base="eahv-iv-2469-000201:rejectedDecisionType"/>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+				<xs:element name="header" type="eahv-iv-2469-000201:headerType"/>
+                <xs:element name="content" type="eahv-iv-2469-000201:contentType"/>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:unsignedShort" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

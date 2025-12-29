@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:el-2417-000102="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-000102/1"
+		   xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-common/1" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+		   xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/5" xmlns:eCH-0011="http://www.ech.ch/xmlns/eCH-0011/8"
+		   targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-000102/1" elementFormDefault="qualified" version="1.0">
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-common/1" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0007/5" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0011/8" />
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Datenaustausch Prämienverbilligung EL: Mutation</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="headerType">
+		<xs:complexContent>
+			<xs:extension base="common:commonHeaderType">
+				<xs:sequence>
+					<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000102" />
+					<xs:element name="action" type="eCH-0058:actionType" fixed="1" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="municipalityIdNrBFS" type="eCH-0007:municipalityNameType" />
+			<xs:element name="keyLieferapplikation" type="common:keySupplierApplicationType" minOccurs="0" />
+			<xs:element name="pvMeldungen" type="el-2417-000102:pvMeldungType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="pvMeldungType">
+		<xs:sequence>
+			<xs:element name="person" type="common:personType" />
+			<!-- im Moment in ZLZH bei 01, 02, 03, 04, 05, 00-->
+			<xs:element name="maritalStatus" type="eCH-0011:maritalStatusType" />
+			<xs:element name="healthInsuranceBagNr" type="common:healthInsuranceBagNrType" />
+			<xs:element name="elMessageType" type="common:elMessageType" />
+			<xs:element name="beginnAnspruch" type="xs:gYearMonth" />
+			<xs:element name="endeAnspruch" type="xs:gYearMonth" minOccurs="0" />
+			<xs:element name="praemienRegion" type="common:premiumRegionType" />
+			<xs:element name="pvEntitlementMonthly" type="xs:unsignedInt">
+				<xs:annotation>
+					<xs:documentation>PV Anspruch in Rappen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="laufnummer" type="common:laufnummerType" />
+			<xs:element name="cantonAbbreviation" type="eCH-0007:cantonFlAbbreviationType" />
+			<xs:element name="abgangsgrund" type="common:abgangsgrundType" minOccurs="0" />
+			<xs:element name="uebergangsbestimmung" type="common:uebergangsbestimmungType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="el-2417-000102:headerType" />
+				<xs:element name="content" type="el-2417-000102:contentType" />
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:unsignedShort" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

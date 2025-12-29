@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited by Daniel Wittwer (IBM Schweiz AG) daniel.wittwer@ch.ibm.com -->
+<xs:schema xmlns:eCH-0039G0="http://www.ech.ch/xmlns/eCH-0039G0/3/0"
+	xmlns:eCH-0039="http://www.ech.ch/xmlns/eCH-0039/3" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.ech.ch/xmlns/eCH-0039G0/3/0" elementFormDefault="qualified"
+	attributeFormDefault="unqualified" version="3.0">
+	<xs:annotation>
+		<xs:documentation xml:lang="DE">Nachrichtengruppe "G-Null" [eCH-0039G0] der E-Government-Schnittstelle [eCH-0039]</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0039/3" schemaLocation="eCH-0039-3-0.xsd"/>
+
+	<xs:element name="header" type="eCH-0039:headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">Definition des Root-Elements für header.xml.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="message" type="eCH-0039G0:messageType">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">Definition des Root-Elements für message.xml einer Erstmeldung.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="eventReport" type="eCH-0039G0:eventReport">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">Definition des Root-Elements für message.xml einer Antwortmeldung.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="messageType">
+		<xs:sequence>
+			<xs:element name="header" type="eCH-0039:headerType"/>
+			<xs:element name="content" type="eCH-0039G0:contentType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="eventReport">
+		<xs:sequence>
+			<xs:element name="header" type="eCH-0039:headerType"/>
+			<xs:element name="info" type="eCH-0039G0:infoType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">Definiert den fachlichen Inhalt der Nachricht.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="directive" type="eCH-0039G0:directiveType" maxOccurs="unbounded"
+				minOccurs="0"/>
+			<xs:element name="dossier" type="eCH-0039G0:dossierType" maxOccurs="unbounded"
+				minOccurs="0"/>
+			<xs:element name="document" type="eCH-0039:documentType" maxOccurs="unbounded"
+				minOccurs="0"/>
+			<xs:element name="address" type="eCH-0039:addressType" maxOccurs="unbounded"
+				minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="dossierType">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">Einem Dossier können alle anderen Basiskomponenten angehängt / Untergeordnet werden. Der Datentyp wird daher in der Nachrichtengruppe an dieser Stelle neu definiert.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="uuid" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="DE">UUID: Universally Unique Identifier des
+						Dossiers. Referenz des Objekts, nicht der Nachricht.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="eCH-0039:dossierStatusType" minOccurs="0" maxOccurs="1"> </xs:element>
+			<xs:element name="titles" type="eCH-0039:titlesType" minOccurs="0" maxOccurs="1"> </xs:element>
+			<xs:element name="classification" type="eCH-0039:classificationType" minOccurs="0"
+				maxOccurs="1"> </xs:element>
+			<xs:element name="hasPrivacyProtection" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="DE">Datenschutzstufe: Markierung, die angibt, ob das
+						Dokument besonders Schützenswerte Personendaten oder Persönlichkeitsprofile
+						gemäss Datenschutzrecht enthält.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="openToThePublic" type="eCH-0039:openToThePublicType" minOccurs="0"
+				maxOccurs="1"> </xs:element>
+			<xs:element name="caseReferenceLocalId" type="xs:token" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="DE">Ordnungsmerkmal: Ordnungsmerkmal des Dossiers,
+						welches durch den Absender vergeben wird.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="openingDate" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="DE">Eröffnungsdatum: Tag, an welchem das Dossier im
+						GEVER-System registriert wurde.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="keywords" type="eCH-0039:keywordsType" minOccurs="0" maxOccurs="1"> </xs:element>
+			<xs:element name="comments" type="eCH-0039:commentsType" minOccurs="0" maxOccurs="1"> </xs:element>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="subdossier"
+				type="eCH-0039G0:dossierType"/>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="document"
+				type="eCH-0039:documentType"/>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="directive"
+				type="eCH-0039G0:directiveType"/>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="address"
+				type="eCH-0039:addressType"/>
+		</xs:sequence>
+		<xs:attribute ref="eCH-0039:lang"/>
+	</xs:complexType>
+	<xs:complexType name="directiveType">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">Einer Anweisung können alle anderen Basiskomponenten angehängt / Untergeordnet werden. Der Datentyp wird daher in der Nachrichtengruppe an dieser Stelle neu definiert.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="uuid" type="xs:token" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="DE">UUID: Universally Unique Identifier der
+						Anweisung. Referenz des Objekts, nicht der Nachricht.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="instruction" type="eCH-0039:directiveInstructionType" minOccurs="0"
+				maxOccurs="1"> </xs:element>
+			<xs:element name="serviceId" type="xs:token" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="DE">Leistungsidentifikation: Identifikation der
+						Leistung gemäss eCH-0070 Leistungsinventar eGov CH.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="titles" type="eCH-0039:titlesType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="DE">Titel: Benennung von Tätigkeit und Gegenstand
+						des Geschäftsvorfalls.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element minOccurs="0" name="priority" type="eCH-0039:priorityType" maxOccurs="1"> </xs:element>
+			<xs:element name="deadline" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="DE">Bearbeitungsfrist: Tag, an dem die Aktivität erledigt sein soll.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="comments" type="eCH-0039:commentsType" minOccurs="0"> </xs:element>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="dossier"
+				type="eCH-0039G0:dossierType"/>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="document"
+				type="eCH-0039:documentType"/>
+			<xs:element maxOccurs="unbounded" minOccurs="0" name="address"
+				type="eCH-0039:addressType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="infoType">
+		<xs:choice>
+			<xs:element name="positiveReport" type="eCH-0039G0:positiveReportType"/>
+			<xs:element name="negativeReport" type="eCH-0039G0:negativeReportType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="positiveReportType">
+		<xs:sequence>
+			<xs:element name="notice" type="xs:anyType"/>
+			<xs:element name="data" type="xs:anyType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="negativeReportType">
+		<xs:sequence>
+			<xs:element name="notice" type="xs:anyType"/>
+			<xs:element name="data" type="xs:anyType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

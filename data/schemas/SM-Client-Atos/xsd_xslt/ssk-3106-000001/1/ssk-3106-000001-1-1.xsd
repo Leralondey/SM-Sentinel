@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Lars Steffen (AWK Group AG) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/5" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:ssk-common="http://www.steuerkonferenz.ch/xmlns/ssk-common/2" xmlns:ssk-3106-000001="http://www.steuerkonferenz.ch/xmlns/ssk-3106-000001/1" targetNamespace="http://www.steuerkonferenz.ch/xmlns/ssk-3106-000001/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Repartition NP</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0007/5"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0008/3"/>
+	<xs:import namespace="http://www.steuerkonferenz.ch/xmlns/ssk-common/2"/>
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von ssk-common:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="eCH-0058:declarationLocalReferenceType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType"/>
+			<xs:element name="ourBusinessReferenceID" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="uniqueIdBusinessTransaction" type="eCH-0058:uniqueIdBusinessTransactionType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="3106"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000001"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="eventDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="modificationDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:actionType">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue Nachricht</xs:documentation>
+								<xs:documentation xml:lang="fr">Message nouveau</xs:documentation>
+								<xs:documentation xml:lang="it">Nuovo messaggio</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Widerruf</xs:documentation>
+								<xs:documentation xml:lang="fr">Révocation</xs:documentation>
+								<xs:documentation xml:lang="it">Revoca</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Korrektur</xs:documentation>
+								<xs:documentation xml:lang="fr">Correction</xs:documentation>
+								<xs:documentation xml:lang="it">Correzione</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="ssk-common:attachmentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" fixed="false"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" fixed="true"/>
+			<xs:element name="extension" type="ssk-3106-000001:extensionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="extensionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Attribute, welche im eCH-0058/4-Standard nicht vorgesehen sind, werden im Attribut „extension“ geführt.</xs:documentation>
+			<xs:documentation xml:lang="fr">Les éléments qui ne sont pas prévus dans le standard eCH-0058/4 sont définis dans l'élément 'extension'</xs:documentation>
+			<xs:documentation xml:lang="it">Gli elementi che non sono incluse nello standard eCH-0058/4 sono definiti in 'estensione' l'elemento</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contactInformation" type="ssk-common:contactInformationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="amountType">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="repartitionValueCantonType ">
+		<xs:sequence>
+			<xs:element name="canton" type="eCH-0007:cantonAbbreviationType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kanton</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="percentage" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anteil des Kantons am gesamten Repartitionsbetrag in %</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="repartitionParticipationExact" type="ssk-3106-000001:amountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Repartitionsbetrag des Kantons</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="repartitionParticipation" type="ssk-3106-000001:amountType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Absoluter Repartitionsbetrag des Kantons</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="reason" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:enumeration value="0">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">0 = Veranlagungskanton</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">1 = Minimale unterschritten</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">2 = Nicht individuell</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="taxPeriod" type="xs:gYear">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Steuerperiode (Jahr)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxCollectionFrom" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bezugszeit von</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxCollectionTo" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bezugszeit bis</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxpayer" type="ssk-common:naturalPersonsTaxType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Steuerpflichtiger</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="federalEarningTax" type="xs:long">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Direkte Bundessteuern, Einkommen steuerbar in CHF</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="incomeForCalculatingTaxRate" type="xs:long">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Satzbestimmendes Einkommen in CHF</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="totalTaxAmount" type="ssk-3106-000001:amountType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gesamt-Steuerbetrag (bezahlt) in CHF inkl. Rappen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="deduction" type="ssk-3106-000001:amountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Abschreibungen (Total Erlass / Verlust) in CHF inkl. Rappen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="repartitionPercent" type="xs:decimal">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Repartitionsbetrag in %</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="totalRepartitionAmount" type="ssk-3106-000001:amountType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Repartitionsbetrag in CHF inkl. Rappen (vor der Aufteilung auf die betroffenen Kantone)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="compensation" type="ssk-3106-000001:amountType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Entschädigung für den Veranlagungskanton in CHF inkl. Rappen (Provision)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="repartitionAmount" type="ssk-3106-000001:amountType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Repartitionsbetrag absolut in CHF inkl. Rappen (für den Kanton, dem die Meldung zugestellt wird)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="remarks" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bemerkungen</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="500"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="repartitionCompilation" type="ssk-3106-000001:repartitionValueCantonType " maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zusammenstellung der Repartitionen des Steuerpflichtigen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="ssk-3106-000001:headerType"/>
+				<xs:element name="content" type="ssk-3106-000001:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

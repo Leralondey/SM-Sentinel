@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-common/1"
+           xmlns="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-000201/1"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-000201/1"
+           version="1.0">
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="eCH-0058-5-0.xsd"/>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-common/1"
+               schemaLocation="eahv-iv-2005-common-1-0.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation xml:lang="fr">
+            SubMessageType: 201
+            Annonce envoyée par une caisse à la CdC afin de demander la clôture d'un cas.
+        </xs:documentation>
+        <xs:documentation xml:lang="de">
+            SubMessageType: 201
+            Meldung, die von einer Kasse an die ZAS geschickt wird, um den Abschluss eines Falls zu beantragen.
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType name="headerType">
+        <xs:complexContent>
+            <xs:extension base="common:headerType">
+                <xs:sequence>
+                    <xs:element name="subMessageType">
+                        <xs:simpleType>
+                            <xs:restriction base="eCH-0058:subMessageTypeType">
+                                <xs:enumeration value="000201"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="headerType"/>
+                <xs:element name="content" type="common:emptyTagType">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Le content est vide, il n'y a pas de données à transmettre.
+                            Le business process id du header est utilisé afin d'identifier le cas à clôturer
+                        </xs:documentation>
+                        <xs:documentation xml:lang="de">
+                            Der Inhalt ist leer, es gibt keine Daten zu übermitteln. Die business process id des Headers
+                            wird verwendet, um den abzuschließenden Fall zu identifizieren.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+ 

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/2"
+	xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/1"
+	xmlns:eahv-iv-2701-000103="http://www.eahv-iv.ch/xmlns/eahv-iv-2701-000103/1"
+	targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2701-000103/1"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">OSIV-RAD-Abklärung</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/2" />
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/1" />
+	
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von eahv-iv-common:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="eahv-iv-common:declarationLocalReferenceType" minOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0"/>
+			<xs:element name="businessProcessId" type="eahv-iv-common:businessProcessIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						Hier kann die ID eines meldungsübergreifenden Business Prozesses eingetragen werden.
+						GUID, sollte in jedem Fall für den Empfänger eindeutig sein, analog businessReferenceIdType
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ourBusinessReferenceID" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="2701"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000103"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="0"/>
+			<xs:element name="object" type="eahv-iv-common:naturalPersonsOASIDIType" minOccurs="0"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0"/>
+			<xs:element name="messageDate" type="xs:dateTime"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:initialMessageDateType" minOccurs="0"/>
+			<xs:element name="eventDate" type="xs:dateTime" minOccurs="0"/>
+			<xs:element name="modificationDate" type="xs:dateTime" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="3"/>
+						<xs:enumeration value="4"/>
+						<xs:enumeration value="5"/>
+						<xs:enumeration value="6"/>
+						<xs:enumeration value="7"/>
+						<xs:enumeration value="10"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="eahv-iv-2701-000103:attachmentType" maxOccurs="unbounded"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="testData" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="messagePriority" type="eahv-iv-common:messagePriorityType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="attachmentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Hilfstyp zur Beschreibung von Message Attachments. Abgeleitet von eahv-iv-common:attachmentType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="title" type="eahv-iv-common:attachmentTitleType"/>
+			<xs:element name="documentDate" type="eahv-iv-common:documentDateType" minOccurs="0"/>
+			<xs:element name="leadingDocument" type="eahv-iv-common:leadingDocumentType"/>
+			<xs:element name="sortOrder" type="eahv-iv-common:sortOrderType"/>
+			<xs:element name="documentFormat">
+				<xs:simpleType>
+					<xs:restriction base="eahv-iv-common:documentFormatType">
+						<xs:enumeration value="application/pdf"/>
+						<xs:enumeration value="application/zip"/>
+						<xs:enumeration value="image/tiff"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="documentType" type="eahv-iv-common:documentTypeType" minOccurs="0"/>
+			<xs:element name="file" type="eahv-iv-common:attachmentFileType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="header">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für header.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="eahv-iv-2701-000103:headerType">
+					<xs:attribute name="minorVersion" type="xs:integer" use="required"></xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="eahv-iv-2701-000103:headerType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"></xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

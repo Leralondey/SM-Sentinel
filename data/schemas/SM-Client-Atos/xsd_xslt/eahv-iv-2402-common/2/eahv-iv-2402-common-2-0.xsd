@@ -1,0 +1,1386 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by Patrick Blaser -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4"
+    xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010-f/5"
+    xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" xmlns:eahv-iv-2402-common="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-common/2"
+    targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-common/2" elementFormDefault="qualified"
+    attributeFormDefault="unqualified" version="2.0">
+
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Basistypen für die Meldungen ALPS 2402. Die Header für die
+            jeweiligen Messages sind in einem separaten File definiert (eahv-iv-2402-000001) - sie sind direkt von
+            eCH-0058 abgeleitet werden.
+        </xs:documentation>
+        <xs:documentation xml:lang="fr">Types de base pour les messages ALPS 2402. Les Header pour les
+            messages respectifs sont définis dans un fichier séparé (eahv-iv-2402-000001) - ils sont directement dérivés
+            de eCH-0058.
+        </xs:documentation>
+        <xs:documentation xml:lang="it">Tipi di base per i messaggi ALPS 2402. I Header per i rispettivi
+            messaggi sono definiti in un file separato (eahv-iv-2402-000001) - sono derivati ​​direttamente da eCH-0058.
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0010-f/5" />
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4" />
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4" />
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" />
+
+    <!-- ALPS header specifics -->
+
+    <xs:simpleType name="documentTypeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Dokumenttyp, fachliche Beschreibung des Dokuments.
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">Type de document, description technique du document.
+            </xs:documentation>
+            <xs:documentation xml:lang="it">Tipo di documento, descrizione tecnica del documento.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(01)(\.[0-9][0-9])*" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="attachmentType">
+        <xs:sequence>
+            <xs:element name="title" type="eahv-iv-common:attachmentTitleType" />
+            <xs:element name="documentDate" type="eahv-iv-common:documentDateType" />
+            <xs:element name="leadingDocument" type="eahv-iv-common:leadingDocumentType" />
+            <xs:element name="sortOrder" type="eahv-iv-common:sortOrderType" />
+            <xs:element name="documentFormat">
+                <xs:simpleType>
+                    <xs:restriction base="eahv-iv-common:documentFormatType">
+                        <xs:enumeration value="application/pdf" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="documentType" type="eahv-iv-common:documentKindType" />
+            <xs:element name="file" type="eahv-iv-common:attachmentFileType" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="extensionType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Attribute, welche im eCH-0058/4-Standard nicht vorgesehen sind,
+                werden im Attribut "extension" geführt.
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">Les attributs qui ne sont pas prévus dans eCH-0058/4-Standard
+                doivent être effectués dans l'attribut "extension".
+            </xs:documentation>
+            <xs:documentation xml:lang="it">Gli attributi che non sono previsti nel eCH-0058/4-Standard
+                vengono effettuati nel attributo "extension".
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="contactInformation" type="eahv-iv-common:contactInformationType" />
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <!-- ALPS content specifics -->
+    <xs:simpleType name="employmentKindType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Erwerbsart</xs:documentation>
+            <xs:documentation xml:lang="fr">Type d'activité lucrative</xs:documentation>
+            <xs:documentation xml:lang="it">Tipo di attività lucrativa</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="1" />
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Arbeitnehmer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Salarié</xs:documentation>
+                    <xs:documentation xml:lang="it">Dipendente</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Selbständiger</xs:documentation>
+                    <xs:documentation xml:lang="fr">Indépendant</xs:documentation>
+                    <xs:documentation xml:lang="it">Indipendente</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="deploymentType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Einsatzzeiten</xs:documentation>
+            <xs:documentation xml:lang="fr">Périodes d'engagement</xs:documentation>
+            <xs:documentation xml:lang="it">Periodi di impegno</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="startDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Einsatzzeit Von</xs:documentation>
+                    <xs:documentation xml:lang="fr">Période d'engagement du</xs:documentation>
+                    <xs:documentation xml:lang="it">Periodo di impegno dal</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="endDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Einsatzzeit Bis</xs:documentation>
+                    <xs:documentation xml:lang="fr">Période d'engagement jusqu'au</xs:documentation>
+                    <xs:documentation xml:lang="it">Periodo di impegno al</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="organisationUIDType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">UID der Orgisnation</xs:documentation>
+            <xs:documentation xml:lang="fr">UID de l'organisation</xs:documentation>
+            <xs:documentation xml:lang="it">UID dell'organizzazione</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:maxLength value="20" />
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="institutionType">
+        <xs:sequence>
+            <xs:element name="id" type="xs:token">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">ID der Institution</xs:documentation>
+                    <xs:documentation xml:lang="fr">ID de l'institution</xs:documentation>
+                    <xs:documentation xml:lang="it">ID dell'istituzione</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="nameDe" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Name der Institution (deutsch)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Nom de l'institution (allemand)</xs:documentation>
+                    <xs:documentation xml:lang="it">Nome dell'istituzione (tedesco)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="nameFr" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Name der Institution (französisch)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Nom de l'institution (français)</xs:documentation>
+                    <xs:documentation xml:lang="it">Nome dell'istituzione (francese)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="nameIt" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Name der Institution (italienisch)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Nom de l'institution (italien)</xs:documentation>
+                    <xs:documentation xml:lang="it">Nome dell'istituzione (italiano)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="socialinsurancePayerType">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="2" />
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Einsatzbetrieb</xs:documentation>
+                    <xs:documentation xml:lang="fr">Entreprise locataire de services</xs:documentation>
+                    <xs:documentation xml:lang="it">Impresa acquisitrice</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Arbeitgeber CH</xs:documentation>
+                    <xs:documentation xml:lang="fr">Employeur CH</xs:documentation>
+                    <xs:documentation xml:lang="it">Datore di lavoro CH</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="wagesPayerType">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="2" />
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Einsatzbetrieb</xs:documentation>
+                    <xs:documentation xml:lang="fr">Entreprise locataire de services</xs:documentation>
+                    <xs:documentation xml:lang="it">Impresa acquisitrice</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Arbeitgeber CH</xs:documentation>
+                    <xs:documentation xml:lang="fr">Employeur CH</xs:documentation>
+                    <xs:documentation xml:lang="it">Datore di lavoro CH</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="workContractPartyType">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="2" />
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Einsatzbetrieb</xs:documentation>
+                    <xs:documentation xml:lang="fr">Entreprise locataire de services</xs:documentation>
+                    <xs:documentation xml:lang="it">Impresa acquisitrice</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Arbeitgeber CH</xs:documentation>
+                    <xs:documentation xml:lang="fr">Employeur CH</xs:documentation>
+                    <xs:documentation xml:lang="it">Datore di lavoro CH</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="addressInformationType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Der Standard addressInformationType aus eCH-0010 ist zu
+                umfangreich und wird daher nur partiell verwendet - im vorliegenden Fall für eine allgemeine Addresse
+                (Inland oder Ausland)
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">Le standard addressInformationType de eCH-0010 est trop vaste et
+                n'est donc que partiellement utilisé
+            </xs:documentation>
+            <xs:documentation xml:lang="it">Il standard addressInformationType da eCH-0010 è troppo vasto ed
+                è quindi utilizzato solo parzialmente
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="additionalAddressInfoOrPostbox" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Adresszusatz oder Postfach</xs:documentation>
+                    <xs:documentation xml:lang="fr">Complément d'adresse ou case postale</xs:documentation>
+                    <xs:documentation xml:lang="it">Complemento d'indirizzo o casella postale
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="streetWithNr" type="eCH-0010:streetType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Strasse und Nummer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Rue et numéro</xs:documentation>
+                    <xs:documentation xml:lang="it">Via e numero</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="zipCode" type="eCH-0010:foreignZipCodeType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Postleitzahl Ausland</xs:documentation>
+                    <xs:documentation xml:lang="fr">Code postal étranger</xs:documentation>
+                    <xs:documentation xml:lang="it">Codice postale estero</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="town" type="eCH-0010:townType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Stadt</xs:documentation>
+                    <xs:documentation xml:lang="fr">Ville</xs:documentation>
+                    <xs:documentation xml:lang="it">Città</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="country" type="eCH-0010:countryIdIso2Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Land ISO2</xs:documentation>
+                    <xs:documentation xml:lang="fr">Pays ISO2</xs:documentation>
+                    <xs:documentation xml:lang="it">Paese ISO2</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="phone" type="eahv-iv-common:phoneNumberType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Telefonnummer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Numéro de téléphone</xs:documentation>
+                    <xs:documentation xml:lang="it">Numero di telefono</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="email" type="eahv-iv-common:emailAddressType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">E-mail</xs:documentation>
+                    <xs:documentation xml:lang="fr">E-mail</xs:documentation>
+                    <xs:documentation xml:lang="it">E-mail</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="addressInformationStrictType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Der Standard addressInformationType aus eCH-0010 ist zu
+                umfangreich und wird daher nur partiell verwendet - im vorliegenden Fall für eine strikte allgemeine
+                Addresse (Inland oder Ausland)
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">Le standard addressInformationType de eCH-0010 est trop vaste et
+                n'est donc que partiellement utilisé
+            </xs:documentation>
+            <xs:documentation xml:lang="it">Il standard addressInformationType da eCH-0010 è troppo vasto ed
+                è quindi utilizzato solo parzialmente
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="additionalAddressInfoOrPostbox" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Adresszusatz oder Postfach</xs:documentation>
+                    <xs:documentation xml:lang="fr">Complément d'adresse ou case postale
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Complemento d'indirizzo o casella postale
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="streetWithNr" type="eCH-0010:streetType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Strasse und Nummer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Rue et numéro</xs:documentation>
+                    <xs:documentation xml:lang="it">Via e numero</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:choice>
+                <xs:sequence>
+                    <xs:element name="swissZipCode" type="eCH-0010:swissZipCodeType">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">Postleitzahl Schweiz</xs:documentation>
+                            <xs:documentation xml:lang="fr">Code postal Suisse</xs:documentation>
+                            <xs:documentation xml:lang="it">Codice postale Svizzera
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="town" type="eCH-0010:townType">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">Stadt</xs:documentation>
+                            <xs:documentation xml:lang="fr">Ville</xs:documentation>
+                            <xs:documentation xml:lang="it">Città</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="country" type="eCH-0010:countryIdIso2Type" fixed="CH">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">Land ISO2</xs:documentation>
+                            <xs:documentation xml:lang="fr">Pays ISO2</xs:documentation>
+                            <xs:documentation xml:lang="it">Paese ISO2</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+                <xs:sequence>
+                    <xs:element name="foreignZipCode" type="eCH-0010:foreignZipCodeType">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">Postleitzahl Ausland</xs:documentation>
+                            <xs:documentation xml:lang="fr">Code postal étranger</xs:documentation>
+                            <xs:documentation xml:lang="it">Codice postale estero</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="town" type="eCH-0010:townType">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">Stadt</xs:documentation>
+                            <xs:documentation xml:lang="fr">Ville</xs:documentation>
+                            <xs:documentation xml:lang="it">Città</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="country" type="eCH-0010:countryIdIso2Type">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">Land ISO2</xs:documentation>
+                            <xs:documentation xml:lang="fr">Pays ISO2</xs:documentation>
+                            <xs:documentation xml:lang="it">Paese ISO2</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:choice>
+            <xs:element name="phone" type="eahv-iv-common:phoneNumberType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Telefonnummer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Numéro de téléphone</xs:documentation>
+                    <xs:documentation xml:lang="it">Numero di telefono</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="email" type="eahv-iv-common:emailAddressType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">E-mail</xs:documentation>
+                    <xs:documentation xml:lang="fr">E-mail</xs:documentation>
+                    <xs:documentation xml:lang="it">E-mail</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="companyAddressInformationType">
+        <xs:sequence>
+            <xs:element name="organisationUID" type="eahv-iv-2402-common:organisationUIDType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">UID</xs:documentation>
+                    <xs:documentation xml:lang="fr">UID</xs:documentation>
+                    <xs:documentation xml:lang="it">UID</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="organisationName" type="eCH-0010:organisationNameType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Firmenname</xs:documentation>
+                    <xs:documentation xml:lang="fr">Nom de l'entreprise</xs:documentation>
+                    <xs:documentation xml:lang="it">Nome dell'azienda</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="departmentOrContact" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Department oder Kontaktperson</xs:documentation>
+                    <xs:documentation xml:lang="fr">Département ou personne de contact</xs:documentation>
+                    <xs:documentation xml:lang="it">Dipartimento o persona di contatto</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="additionalAddressInfoOrPostbox" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Adresszusatz oder Postfach</xs:documentation>
+                    <xs:documentation xml:lang="fr">Complément d'adresse ou case postale</xs:documentation>
+                    <xs:documentation xml:lang="it">Complemento d'indirizzo o casella postale
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="streetWithNr" type="eCH-0010:streetType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Strasse und Nummer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Rue et numéro</xs:documentation>
+                    <xs:documentation xml:lang="it">Via e numero</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="zipCode" type="eCH-0010:foreignZipCodeType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Postleitzahl Ausland</xs:documentation>
+                    <xs:documentation xml:lang="fr">Code postal étranger</xs:documentation>
+                    <xs:documentation xml:lang="it">Codice postale estero</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="town" type="eCH-0010:townType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Stadt</xs:documentation>
+                    <xs:documentation xml:lang="fr">Ville</xs:documentation>
+                    <xs:documentation xml:lang="it">Città</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="country" type="eCH-0010:countryIdIso2Type" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Land ISO2</xs:documentation>
+                    <xs:documentation xml:lang="fr">Pays ISO2</xs:documentation>
+                    <xs:documentation xml:lang="it">Paese ISO2</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="phone" type="eahv-iv-common:phoneNumberType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Telefonnummer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Numéro de téléphone</xs:documentation>
+                    <xs:documentation xml:lang="it">Numero di telefono</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="email" type="eahv-iv-common:emailAddressType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">E-mail</xs:documentation>
+                    <xs:documentation xml:lang="fr">E-mail</xs:documentation>
+                    <xs:documentation xml:lang="it">E-mail</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="companyAddressInformationStrictType">
+        <xs:sequence>
+            <xs:element name="organisationUID" type="eahv-iv-2402-common:organisationUIDType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">UID</xs:documentation>
+                    <xs:documentation xml:lang="fr">UID</xs:documentation>
+                    <xs:documentation xml:lang="it">UID</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="organisationName" type="eCH-0010:organisationNameType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Firmenname</xs:documentation>
+                    <xs:documentation xml:lang="fr">Nom de l'entreprise</xs:documentation>
+                    <xs:documentation xml:lang="it">Nome dell'azienda</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="departmentOrContact" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Department oder Kontaktperson</xs:documentation>
+                    <xs:documentation xml:lang="fr">Département ou personne de contact</xs:documentation>
+                    <xs:documentation xml:lang="it">Dipartimento o persona di contatto</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="additionalAddressInfoOrPostbox" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Adresszusatz oder Postfach</xs:documentation>
+                    <xs:documentation xml:lang="fr">Complément d'adresse ou case postale</xs:documentation>
+                    <xs:documentation xml:lang="it">Complemento d'indirizzo o casella postale
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="streetWithNr" type="eCH-0010:streetType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Strasse und Nummer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Rue et numéro</xs:documentation>
+                    <xs:documentation xml:lang="it">Via e numero</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:choice>
+                <xs:sequence>
+                    <xs:element name="swissZipCode" type="eCH-0010:swissZipCodeType">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">Postleitzahl Schweiz</xs:documentation>
+                            <xs:documentation xml:lang="fr">Code postal Suisse</xs:documentation>
+                            <xs:documentation xml:lang="it">Codice postale Svizzera
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="town" type="eCH-0010:townType">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">Stadt</xs:documentation>
+                            <xs:documentation xml:lang="fr">Ville</xs:documentation>
+                            <xs:documentation xml:lang="it">Città</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="country" type="eCH-0010:countryIdIso2Type" fixed="CH">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">Land ISO2</xs:documentation>
+                            <xs:documentation xml:lang="fr">Pays ISO2</xs:documentation>
+                            <xs:documentation xml:lang="it">Paese ISO2</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+                <xs:sequence>
+                    <xs:element name="foreignZipCode" type="eCH-0010:foreignZipCodeType">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">Postleitzahl Ausland</xs:documentation>
+                            <xs:documentation xml:lang="fr">Code postal étranger</xs:documentation>
+                            <xs:documentation xml:lang="it">Codice postale estero</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="town" type="eCH-0010:townType">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">Stadt</xs:documentation>
+                            <xs:documentation xml:lang="fr">Ville</xs:documentation>
+                            <xs:documentation xml:lang="it">Città</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="country" type="eCH-0010:countryIdIso2Type">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="de">Land ISO2</xs:documentation>
+                            <xs:documentation xml:lang="fr">Pays ISO2</xs:documentation>
+                            <xs:documentation xml:lang="it">Paese ISO2</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:choice>
+            <xs:element name="phone" type="eahv-iv-common:phoneNumberType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Telefonnummer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Numéro de téléphone</xs:documentation>
+                    <xs:documentation xml:lang="it">Numero di telefono</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="email" type="eahv-iv-common:emailAddressType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">E-mail</xs:documentation>
+                    <xs:documentation xml:lang="fr">E-mail</xs:documentation>
+                    <xs:documentation xml:lang="it">E-mail</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="decisionArticleType">
+        <xs:sequence>
+            <xs:element name="id" type="xs:token">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">ID</xs:documentation>
+                    <xs:documentation xml:lang="fr">ID</xs:documentation>
+                    <xs:documentation xml:lang="it">ID</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="titleDe" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Titel (deutsch)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Titre (allemand)</xs:documentation>
+                    <xs:documentation xml:lang="it">Titolo (tedesco)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="titleFr" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Titel (französisch)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Titre (français)</xs:documentation>
+                    <xs:documentation xml:lang="it">Titolo (francese)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="titleIt" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Titel (italienisch)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Titre (italien)</xs:documentation>
+                    <xs:documentation xml:lang="it">Titolo (italiano)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="countryType">
+        <xs:sequence>
+            <xs:element name="iso2Code" type="eCH-0010:countryIdIso2Type">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">ID</xs:documentation>
+                    <xs:documentation xml:lang="fr">ID</xs:documentation>
+                    <xs:documentation xml:lang="it">ID</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="titleDe" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Titel (deutsch)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Titre (allemand)</xs:documentation>
+                    <xs:documentation xml:lang="it">Titolo (tedesco)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="titleFr" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Titel (französisch)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Titre (français)</xs:documentation>
+                    <xs:documentation xml:lang="it">Titolo (francese)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="titleIt" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Titel (italienisch)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Titre (italien)</xs:documentation>
+                    <xs:documentation xml:lang="it">Titolo (italiano)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="changeOfResidenceType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Wohnsitzstaatverlegung während der Entsendung
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">Déplacement du lieu de résidence pendant le détachement
+            </xs:documentation>
+            <xs:documentation xml:lang="it">Trasferimento del luogo di residenza durante il distacco
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="changeOfResidenceFromCountry" type="eahv-iv-2402-common:countryType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Wohnsitzstaat Verlegung Von</xs:documentation>
+                    <xs:documentation xml:lang="fr">Déplacement du lieu de résidence du</xs:documentation>
+                    <xs:documentation xml:lang="it">Trasferimento del luogo di residenza dal
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="changeOfResidenceToCountry" type="eahv-iv-2402-common:countryType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Wohnsitzstaat Verlegung Nach</xs:documentation>
+                    <xs:documentation xml:lang="fr">Déplacement du lieu de résidence après le
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Trasferimento del luogo di residenza dopo il
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="decisionVerdictType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Entscheidungstypen</xs:documentation>
+            <xs:documentation xml:lang="fr">Types de décisions</xs:documentation>
+            <xs:documentation xml:lang="it">Tipi di decisioni</xs:documentation>
+        </xs:annotation>
+
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="2" />
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">positiv</xs:documentation>
+                    <xs:documentation xml:lang="fr">positif</xs:documentation>
+                    <xs:documentation xml:lang="it">positivo</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">partiell positiv</xs:documentation>
+                    <xs:documentation xml:lang="fr">partiellement positif</xs:documentation>
+                    <xs:documentation xml:lang="it">parzialmente positivo</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">negativ</xs:documentation>
+                    <xs:documentation xml:lang="fr">négatif</xs:documentation>
+                    <xs:documentation xml:lang="it">negativo</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="deploymentDecisionType">
+        <xs:sequence>
+            <xs:element name="startDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Datumsformat: YYYY-MM-DD (zB. 2013-01-30 für 30ter
+                        Januar)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Format de la date: AAAA-MM-JJ (p.ex. 2013-01-30 pour 30
+                        janvier)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Formato della data: AAAA-MM-GG (p.es. 2013-01-30 per 30
+                        gennaio)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="endDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Datumsformat: YYYY-MM-DD (zB. 2013-01-30 für 30ter
+                        Januar)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Format de la date: AAAA-MM-JJ (p.ex. 2013-01-30 pour 30
+                        janvier)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Formato della data: AAAA-MM-GG (p.es. 2013-01-30 per 30
+                        gennaio)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="decisionVerdict" type="eahv-iv-2402-common:decisionVerdictType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Entscheid</xs:documentation>
+                    <xs:documentation xml:lang="fr">Décision</xs:documentation>
+                    <xs:documentation xml:lang="it">Decisione</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="article" type="eahv-iv-2402-common:decisionArticleType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Abkommen und Artikel</xs:documentation>
+                    <xs:documentation xml:lang="fr">Accord et article</xs:documentation>
+                    <xs:documentation xml:lang="it">Accordo e articolo</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="employeeActivityCHType">
+        <xs:sequence>
+            <xs:element name="employmentType" type="eahv-iv-2402-common:employmentKindType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Erwerbsart</xs:documentation>
+                    <xs:documentation xml:lang="fr">Type d'activité lucrative</xs:documentation>
+                    <xs:documentation xml:lang="it">Tipo di attività lucrativa</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="companyAddress" type="eahv-iv-2402-common:companyAddressInformationStrictType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Firmenadresse</xs:documentation>
+                    <xs:documentation xml:lang="fr">Adresse de l'entreprise</xs:documentation>
+                    <xs:documentation xml:lang="it">Indirizzo dell'azienda</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="activityStartDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Begin Aktivität - Datumsformat: YYYY-MM-DD (zB.
+                        2013-01-30 für 30ter Januar)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Début de l'activité - Format de la date: AAAA-MM-JJ
+                        (p.ex. 2013-01-30 pour 30 janvier)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Inizio dell'attività - Formato della data: AAAA-MM-GG
+                        (p.es. 2013-01-30 per 30 gennaio)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="contractEndDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Ende Arbeitsvertrag - Datumsformat: YYYY-MM-DD (zB.
+                        2013-01-30 für 30ter Januar)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Fin du contrat de travail - Format de la date:
+                        AAAA-MM-JJ (p.ex. 2013-01-30 pour 30 janvier)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Fine del rapporto di lavoro - Formato della data:
+                        AAAA-MM-GG (p.es. 2013-01-30 per 30 gennaio)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="compensationFund" type="eahv-iv-2402-common:institutionType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">AHV-Ausgleichskasse</xs:documentation>
+                    <xs:documentation xml:lang="fr">Caisse de compensation AVS</xs:documentation>
+                    <xs:documentation xml:lang="it">Cassa di compensazione AVS</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="affiliateID" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Abrechnungsnummer bei der AHV-Ausgleichskasse
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Numéro de compte de la caisse de compensation AVS
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Numero di conto della cassa di compensazione AVS
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="providentInstitution" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Derzeit zuständige Pensionskasse</xs:documentation>
+                    <xs:documentation xml:lang="fr">Caisse de pension actuellement compétente
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Cassa pensione attualmente competente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="bvgLiberation" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Befreiung BVG</xs:documentation>
+                    <xs:documentation xml:lang="fr">Exemption LPP</xs:documentation>
+                    <xs:documentation xml:lang="it">Esenzione LPP</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="healthInsurance" type="eahv-iv-2402-common:institutionType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Derzeit zuständiger Unfallversicherer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Assureur accidents actuellement compétent
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Assicuratore contro gli infortuni attualmente competente
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="employeeActivityAbroadType">
+        <xs:sequence>
+            <xs:element name="countryOfTemporaryActivity" type="eahv-iv-2402-common:countryType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Land der vorübergehenden Tätigkeit</xs:documentation>
+                    <xs:documentation xml:lang="fr">Pays de l'activité temporaire</xs:documentation>
+                    <xs:documentation xml:lang="it">Paese dell'attività temporanea</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:choice>
+                <xs:element name="companyAddress" type="eahv-iv-2402-common:companyAddressInformationType">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="de">Firmenadresse</xs:documentation>
+                        <xs:documentation xml:lang="fr">Adresse de l'entreprise</xs:documentation>
+                        <xs:documentation xml:lang="it">Indirizzo dell'azienda</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="noFixAddress" type="xs:boolean" fixed="true">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="de">Kein feste Anschrift</xs:documentation>
+                        <xs:documentation xml:lang="fr">Sans adresse fixe</xs:documentation>
+                        <xs:documentation xml:lang="it">Senza indirizzo fisso</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:choice>
+
+            <xs:element name="activityStartDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Vorübergehende Tätigkeit Von - Datumsformat: YYYY-MM-DD
+                        (zB. 2013-01-30 für 30ter Januar)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Activité temporaire du - Format de la date: AAAA-MM-JJ
+                        (p.ex. 2013-01-30 pour 30 janvier)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Attività temporanea dal - Formato della data: AAAA-MM-GG
+                        (p.es. 2013-01-30 per 30 gennaio)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="activityEndDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Vorübergehende Tätigkeit Bis - Datumsformat: YYYY-MM-DD
+                        (zB. 2013-01-30 für 30ter Januar)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Activité temporaire jusqu'au - Format de la date:
+                        AAAA-MM-JJ (p.ex. 2013-01-30 pour 30 janvier)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Attività temporanea fino al - Formato della data:
+                        AAAA-MM-GG (p.es. 2013-01-30 per 30 gennaio)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="deploymentsToSameCountryDuringLast24Month" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Einsatz im selben Staat in den letzen 24 Monaten
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Engagement dans le même Etat au cours des 24 derniers
+                        mois
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Impegno nello stesso Stato negli ultimi 24 mesi
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="pastDeployments" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Einsatzeiten</xs:documentation>
+                    <xs:documentation xml:lang="fr">Périodes d'engagement</xs:documentation>
+                    <xs:documentation xml:lang="it">Periodi di impegno</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="deployment" type="eahv-iv-2402-common:deploymentType" minOccurs="1"
+                            maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="occupationKindSimpleType">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="1" />
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Arbeitnehmer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Salarié</xs:documentation>
+                    <xs:documentation xml:lang="it">Dipendente</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Selbständigerwerbender</xs:documentation>
+                    <xs:documentation xml:lang="fr">Indépendant</xs:documentation>
+                    <xs:documentation xml:lang="it">Indipendente</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Beamter</xs:documentation>
+                    <xs:documentation xml:lang="fr">Fonctionnaire</xs:documentation>
+                    <xs:documentation xml:lang="it">Funzionario</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Vertragsbedienstete der EU</xs:documentation>
+                    <xs:documentation xml:lang="fr">Agents contractuels de l'UE</xs:documentation>
+                    <xs:documentation xml:lang="it">Agenti contrattuali dell'UE</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="occupationKindFlightpersonelleType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Flugpersonal</xs:documentation>
+            <xs:documentation xml:lang="fr">Personnel aéronautique</xs:documentation>
+            <xs:documentation xml:lang="it">Personale aeronautico</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="homeBaseCountry" type="eahv-iv-2402-common:countryType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Heimatbasis</xs:documentation>
+                    <xs:documentation xml:lang="fr">Base d'origine</xs:documentation>
+                    <xs:documentation xml:lang="it">Base di origine</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="occupationKindSailorType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Seeleute</xs:documentation>
+            <xs:documentation xml:lang="fr">Marins</xs:documentation>
+            <xs:documentation xml:lang="it">Marittimi</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="boatName" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Name des Schiffes</xs:documentation>
+                    <xs:documentation xml:lang="fr">Nom du navire</xs:documentation>
+                    <xs:documentation xml:lang="it">Nome della nave</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="countryFlag" type="eahv-iv-2402-common:countryType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Flaggenstaat</xs:documentation>
+                    <xs:documentation xml:lang="fr">Etat du pavillon</xs:documentation>
+                    <xs:documentation xml:lang="it">Stato di bandiera</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="occupationLocationType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Erwerbstätigkeiten in folgenden Staaten</xs:documentation>
+            <xs:documentation xml:lang="fr">Activités lucratives dans les Etats suivants</xs:documentation>
+            <xs:documentation xml:lang="it">Attività lucrative nei seguenti Stati</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="allOfEFTA" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">alle EFTA</xs:documentation>
+                    <xs:documentation xml:lang="fr">Tous les Etats de l'AELE</xs:documentation>
+                    <xs:documentation xml:lang="it">Tutti gli Stati dell'AELS</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="allOfEU" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">alle EU-Staaten</xs:documentation>
+                    <xs:documentation xml:lang="fr">Tous les Etats de l'UE</xs:documentation>
+                    <xs:documentation xml:lang="it">Tutti gli Stati dell'UE</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="country" type="eahv-iv-2402-common:countryType" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Land (ISO2-Kürzel)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Pays (ISO2-Kürzel)</xs:documentation>
+                    <xs:documentation xml:lang="it">Paese (ISO2-Kürzel)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="occupationKindType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Erwerbsarttypen</xs:documentation>
+            <xs:documentation xml:lang="fr">Types d'activités lucratives</xs:documentation>
+            <xs:documentation xml:lang="it">Tipi di attività lucrative</xs:documentation>
+        </xs:annotation>
+
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="occupationKindSimple" type="eahv-iv-2402-common:occupationKindSimpleType"></xs:element>
+                <xs:element name="occupationKindFlightpersonelle" type="eahv-iv-2402-common:occupationKindFlightpersonelleType"></xs:element>
+                <xs:element name="occupationKindSailor" type="eahv-iv-2402-common:occupationKindSailorType"></xs:element>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="occupationType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Tätigkeit</xs:documentation>
+            <xs:documentation xml:lang="fr">Activité</xs:documentation>
+            <xs:documentation xml:lang="it">Attività</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="occupationKind" type="eahv-iv-2402-common:occupationKindType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Erwerbsart</xs:documentation>
+                    <xs:documentation xml:lang="fr">Type d'activité lucrative</xs:documentation>
+                    <xs:documentation xml:lang="it">Tipo di attività lucrativa</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="companyAddress" type="eahv-iv-2402-common:companyAddressInformationType"
+                minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Firmenadresse</xs:documentation>
+                    <xs:documentation xml:lang="fr">Adresse de l'entreprise</xs:documentation>
+                    <xs:documentation xml:lang="it">Indirizzo dell'azienda</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="activityStartDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Beginn Tätigkeit - Datumsformat: YYYY-MM-DD (zB.
+                        2013-01-30 für 30ter Januar)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Début de l'activité - Format de la date: AAAA-MM-JJ
+                        (p.ex. 2013-01-30 pour 30 janvier)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Inizio dell'attività - Formato della data: AAAA-MM-GG
+                        (p.es. 2013-01-30 per 30 gennaio)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="contractEndDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Ende Arbeitsvertrag - Datumsformat: YYYY-MM-DD (zB.
+                        2013-01-30 für 30ter Januar)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="compensationFund" type="eahv-iv-2402-common:institutionType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">AHV-Ausgleichskasse</xs:documentation>
+                    <xs:documentation xml:lang="fr">Caisse de compensation AVS</xs:documentation>
+                    <xs:documentation xml:lang="it">Cassa di compensazione AVS</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="affiliateID" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Abrechnungsnummer AHV-Ausgleichskasse</xs:documentation>
+                    <xs:documentation xml:lang="fr">Numéro de compte de la caisse de compensation AVS
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Numero di conto della cassa di compensazione AVS
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="occupationLocation" type="eahv-iv-2402-common:occupationLocationType"
+                maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Erwerbstätigkeiten in folgenden Staaten
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Activités lucratives dans les Etats suivants
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Attività lucrative nei seguenti Stati</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="infoEmployedType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Angaben zur unselbstständigen Erwerbstätigkeit
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">Renseignements sur l'activité lucrative salariée
+            </xs:documentation>
+            <xs:documentation xml:lang="it">Informazioni sull'attività lucrativa dipendente
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="replacesEmployee" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Ersetzt eine andere entsandten Person</xs:documentation>
+                    <xs:documentation xml:lang="fr">Remplace une autre personne détachée</xs:documentation>
+                    <xs:documentation xml:lang="it">Sostituisce un'altra persona distaccata
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="noticeAuthorityChEmployer" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Kündigungsbefugnis CH Arbeitgeber</xs:documentation>
+                    <xs:documentation xml:lang="fr">Droit de l'employeur CH à mettre fin au rapport de
+                        travail
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Diritto del datore di lavoro CH di porre fine al
+                        rapporto di lavoro
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ordinanceChEmployer" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Tätigkeitbestimmung durch CH Arbeitgeber
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Maintien du rapport de subordination avec l'employeur CH
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Mantenimento del rapporto di subordinazione con il
+                        datore di lavoro CH
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="resumptionOfWorkAtChEmployer" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Wiederaufnahme Arbeit nach Entsendung bei CH Arbeitgeber
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Reprise du travail pour employeur CH après détachement
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Ripresa del lavoro per datore di lavoro CH dopo distacco
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="workContractParty" type="eahv-iv-2402-common:workContractPartyType" maxOccurs="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Arbeitsvertrag mit</xs:documentation>
+                    <xs:documentation xml:lang="fr">Contrat de travail avec</xs:documentation>
+                    <xs:documentation xml:lang="it">Contratto di lavoro con</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="wagesPaidBy" type="eahv-iv-2402-common:wagesPayerType" maxOccurs="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Entlöhnung durch</xs:documentation>
+                    <xs:documentation xml:lang="fr">Rémunération par</xs:documentation>
+                    <xs:documentation xml:lang="it">Remunerazione da</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="socialinsurancePaidBy" type="eahv-iv-2402-common:socialinsurancePayerType"
+                maxOccurs="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Sozialversicherungen bezahlt durch</xs:documentation>
+                    <xs:documentation xml:lang="fr">Assurances sociales payées par</xs:documentation>
+                    <xs:documentation xml:lang="it">Assicurazioni sociali pagate da</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="requestBasedOnMobiliteIntragroup" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Der Antrag basiert auf der Vereinbarung mobilite
+                        intragroupe.
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">La demande se base sur l’accord mobilité intragroupe.
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">La richiesta si basa sull'accordo mobilité intragroupe.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="infoSelfEmployedType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Angaben zur selbstständigen Erwerbstätigkeit</xs:documentation>
+            <xs:documentation xml:lang="fr">Renseignements sur l'activité lucrative indépendante
+            </xs:documentation>
+            <xs:documentation xml:lang="it">Informazioni sull'attività lucrativa indipendente
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="chInfrastructur" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Hat CH-Infrastruktur</xs:documentation>
+                    <xs:documentation xml:lang="fr">La CH a-t-elle une infrastructure</xs:documentation>
+                    <xs:documentation xml:lang="it">La Svizzera ha un'infrastruttura?</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="similarJobFunctionAsInCH" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Selbe Tätigkeit wie in CH</xs:documentation>
+                    <xs:documentation xml:lang="fr">Même activité qu'en Suisse</xs:documentation>
+                    <xs:documentation xml:lang="it">Stessa attività che in Svizzera</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="jobDescription" type="xs:string" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Beschreibung der Tätigkeit</xs:documentation>
+                    <xs:documentation xml:lang="fr">Description de l'activité</xs:documentation>
+                    <xs:documentation xml:lang="it">TODO_IT</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="infoKvgHealthInsuranceType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Angaben zur KVG-Krankenversicherung</xs:documentation>
+            <xs:documentation xml:lang="fr">Renseignements sur l'assurance-maladie LAMal</xs:documentation>
+            <xs:documentation xml:lang="it">Informazioni sull'assicurazione malattie LAMal
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="kvgHealthInsurance" type="eahv-iv-2402-common:institutionType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">KVG-Krankenversicherer</xs:documentation>
+                    <xs:documentation xml:lang="fr">Assureur-maladie LAMal</xs:documentation>
+                    <xs:documentation xml:lang="it">Assicuratore malattie LAMal</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="kvgLiberation" type="xs:boolean" fixed="true">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Befreiung KVG</xs:documentation>
+                    <xs:documentation xml:lang="fr">Exemption LAMal</xs:documentation>
+                    <xs:documentation xml:lang="it">Esenzione LAMal</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    
+    <xs:complexType name="partnerType">
+		<xs:sequence>
+			<xs:element name="vn" type="eCH-0044:vnType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Sozialversicherungsnummer der Schweiz (AHV-Nr)
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">Numéro de sécurité sociale en Suisse (N° AVS)</xs:documentation>
+					<xs:documentation xml:lang="it">Numero di sicurezza sociale in Svizzera (N. AVS)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="officialName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Name</xs:documentation>
+					<xs:documentation xml:lang="fr">Nom</xs:documentation>
+					<xs:documentation xml:lang="it">Cognome</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="firstName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vorname</xs:documentation>
+					<xs:documentation xml:lang="fr">Prénom</xs:documentation>
+					<xs:documentation xml:lang="it">Nome</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sex" type="eCH-0044:sexType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschlecht</xs:documentation>
+					<xs:documentation xml:lang="fr">Sexe</xs:documentation>
+					<xs:documentation xml:lang="it">Sesso</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateOfBirth" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geburtsdatum - Datumsformat: YYYY-MM-DD (zB. 1961-01-11
+						für 11ter Januar)
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">Date de naissance - Format de la date: AAAA-MM-JJ (p.ex. 1961-01-11 pour 11 janvier)
+					</xs:documentation>
+					<xs:documentation xml:lang="it">Data di nascita - Formato della data: AAAA-MM-GG (p.es. 1961-01-11 per 11 gennaio)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateOfMarriage" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Heiratsdatum oder Datum eingetragener Partnerschaft - Datumsformat: YYYY-MM-DD (zB. 1961-01-11
+						für 11ter Januar)
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">TODO_FR - Format de la date: AAAA-MM-JJ (p.ex. 1961-01-11 pour 11 janvier)
+					</xs:documentation>
+					<xs:documentation xml:lang="it">TODO_IT  - Formato della data: AAAA-MM-GG (p.es. 1961-01-11 per 11 gennaio)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+    <xs:complexType name="childType">
+		<xs:sequence>
+			<xs:element name="vn" type="eCH-0044:vnType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Sozialversicherungsnummer der Schweiz (AHV-Nr)
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">Numéro de sécurité sociale en Suisse (N° AVS)</xs:documentation>
+					<xs:documentation xml:lang="it">Numero di sicurezza sociale in Svizzera (N. AVS)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="officialName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Name</xs:documentation>
+					<xs:documentation xml:lang="fr">Nom</xs:documentation>
+					<xs:documentation xml:lang="it">Cognome</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="firstName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vorname</xs:documentation>
+					<xs:documentation xml:lang="fr">Prénom</xs:documentation>
+					<xs:documentation xml:lang="it">Nome</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sex" type="eCH-0044:sexType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschlecht</xs:documentation>
+					<xs:documentation xml:lang="fr">Sexe</xs:documentation>
+					<xs:documentation xml:lang="it">Sesso</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateOfBirth" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geburtsdatum - Datumsformat: YYYY-MM-DD (zB. 1961-01-11
+						für 11ter Januar)
+					</xs:documentation>
+					<xs:documentation xml:lang="fr">Date de naissance - Format de la date: AAAA-MM-JJ (p.ex. 1961-01-11 pour 11 janvier)
+					</xs:documentation>
+					<xs:documentation xml:lang="it">Data di nascita - Formato della data: AAAA-MM-GG (p.es. 1961-01-11 per 11 gennaio)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isStudent" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ist Student</xs:documentation>
+					<xs:documentation xml:lang="fr">TODO_FR</xs:documentation>
+					<xs:documentation xml:lang="it">TODO_IT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="childResidenceAddressBefore" type="eahv-iv-2402-common:addressInformationStrictType">
+			</xs:element>
+			<xs:element name="childResidenceAddressDuring" type="eahv-iv-2402-common:addressInformationStrictType">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+
+    <xs:complexType name="familyMembersType">
+		<xs:sequence>
+			<xs:element name="partner" type="eahv-iv-2402-common:partnerType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ehepartner oder registrierter Partner</xs:documentation>
+					<xs:documentation xml:lang="fr">TODO_FR</xs:documentation>
+					<xs:documentation xml:lang="it">TODO_IT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="child" type="eahv-iv-2402-common:childType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kinderr</xs:documentation>
+					<xs:documentation xml:lang="fr">Enfants</xs:documentation>
+					<xs:documentation xml:lang="it">TODO_IT</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

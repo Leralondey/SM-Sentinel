@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:common-napg="http://www.eahv-iv.ch/xmlns/eahv-iv-napg-common/3"
+           xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/6"
+           xmlns="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-common/6"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-common/6"
+           elementFormDefault="qualified"
+           version="6.0">
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/6" schemaLocation="../external/eCH-0097-6-0.xsd"/>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-napg-common/3"
+               schemaLocation="../common/eahv-iv-napg-common-3-0.xsd"/>
+
+    <xs:complexType name="headerWithAttachmentsType">
+        <xs:complexContent>
+            <xs:extension base="common-napg:headerType">
+                <xs:sequence>
+                    <xs:element name="attachment" type="attachmentType" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="attachmentType">
+        <xs:sequence>
+            <xs:element name="documentId" type="xs:token" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Identifiant du document défini par la CdC.
+                        Champ ignoré par la CdC dans le cas d'un message de transfert.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="title" type="attachmentTitleType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Identifiant du document défini par la CdC.
+                        Champ ignoré par la CdC dans le cas d'un message de transfert.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="documentDate" type="documentDateType"/>
+            <xs:element name="leadingDocument" type="xs:boolean"/>
+            <xs:element name="sortOrder" type="xs:nonNegativeInteger"/>
+            <xs:element name="documentFormat" type="mimeTypeType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Seuls les pdfs sont supportés pour l'instant.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="documentType" type="categoryType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Catégorie de la pièce jointe.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="file" type="attachmentFileType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Path complet de la pièce jointe à partir de la racine du fichier zip.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="sourceCompensationOffice" type="eCH-0097:uidStructureType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Caisse de compensation ayant ajouté la pièce jointe.
+                        Entrée absente si la pièce jointe a été fournie par l'astreint.
+                        Champ ignoré par la CdC dans le cas d'un message de transfert.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="attachmentTitleType">
+        <xs:restriction base="xs:token">
+            <xs:maxLength value="100"/>
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="documentDateType">
+        <xs:restriction base="xs:date"/>
+    </xs:simpleType>
+    <xs:simpleType name="mimeTypeType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="application/pdf"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="categoryType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="FEUCOMP_001">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Feuille Complémentaire 1- Feuille annexe 1 à la demande APG pour les enfant recueillis
+                        https://www.ahv-iv.ch/p/318.740.f
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FEUCOMP_002">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Feuille Complémentaire 2 - Feuille complémentaire 2 du formulaire APG pour les allocations
+                        d’exploitation agricole https://www.ahv-iv.ch/p/318.741.f pour les personnes accomplissant du
+                        service qui, en tant que membres de la famille travaillant dans l'exploitation agricole,
+                        demandent une allocation d'exploitation
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FEUCOMP_003">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Feuille Complémentaire 3 - Demande d’allocation pour frais de garde dans le régime des APG
+                        https://www.ahv-iv.ch/p/318.743.f
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FEUCOMP_004">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Feuille Complémentaire 4 - Feuille complémentaire 4 (318.753) au formulaire APG en cas de
+                        service militaire, attestation de l’inactivité entre deux services d’instruction pour les
+                        services de type 15/16
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ATTFORMENF_001">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Attestation de formation enfant - Attestation de formation de l’enfant de l’astreint
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ATTFORMENF_002">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Attestation de formation enfant recueilli - Attestation de formation de l’enfant recueilli de
+                        l’astreint
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FICHEETRAN_001">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Fiche de salaire employeur étranger - Fiche de salaire pour un employeur à l’étranger
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CHOMAGE_001">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Décompte des indemnités chômage - Décompte des indemnités de l’assurance chômage
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="FINFORMAST_001">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Certificat de fin de formation astreint - Certificat d’une fin de formation ou de la réussite
+                        d’un examen par l’astreint
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ATTFORMAST_001">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Attestation de formation astreint - Attestation de formation d’un astreint aux études
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DIVERS_001">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">
+                        Autres documents - Autre document que l’astreint peut fournir avec sa demande APG
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="attachmentFileType">
+        <xs:sequence>
+            <xs:element name="pathFileName" type="pathFileNameType"/>
+            <xs:element name="internalSortOrder" type="xs:nonNegativeInteger"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="pathFileNameType">
+        <xs:restriction base="xs:token">
+            <xs:maxLength value="250"/>
+            <xs:minLength value="1"/>
+            <xs:pattern value="[A-Za-z0-9/_\-.]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="languageType">
+        <xs:restriction base="xs:token">
+            <xs:maxLength value="2"/>
+            <xs:enumeration value="FR"/>
+            <xs:enumeration value="DE"/>
+            <xs:enumeration value="IT"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/2"
+	xmlns:ssk-common="http://www.steuerkonferenz.ch/xmlns/ssk-common/1"
+	xmlns:ssk-3001-000302="http://www.steuerkonferenz.ch/xmlns/ssk-3001-000302/2"
+	targetNamespace="http://www.steuerkonferenz.ch/xmlns/ssk-3001-000302/2"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Kantonsdossiermeldung JP</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/2" />
+	<xs:import namespace="http://www.steuerkonferenz.ch/xmlns/ssk-common/1" />
+	
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von ssk-common:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="ssk-common:declarationLocalReferenceType" minOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Darf nur bei Rektifikat gesetzt werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ourBusinessReferenceID" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType" >
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="3001"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000302"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="object" type="ssk-common:legalEntitiesTaxType"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0"/>
+			<xs:element name="messageDate" type="xs:dateTime"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:initialMessageDateType" minOccurs="0"/>
+			<xs:element name="eventDate" type="xs:dateTime" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="modificationDate" type="xs:dateTime" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="3"/>
+						<xs:enumeration value="4"/>
+						<xs:enumeration value="7"/>
+						<xs:enumeration value="10"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="ssk-3001-000302:attachmentType" minOccurs="1" maxOccurs="unbounded"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="testData" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="messagePriority" type="ssk-common:messagePriorityType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="eventPeriod" type="xs:gYear" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Bodys. Abgeleitet von ssk-common:messageType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dossierType" type="ssk-3001-000302:dossierType" maxOccurs="unbounded">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="attachmentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Hilfstyp zur Beschreibung von Message Attachments. Abgeleitet von ssk-common:attachmentType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="title" type="ssk-common:attachmentTitleType"/>
+			<xs:element name="documentDate" type="ssk-common:documentDateType" minOccurs="0"/>
+			<xs:element name="leadingDocument" type="ssk-common:leadingDocumentType"/>
+			<xs:element name="sortOrder" type="ssk-common:sortOrderType"/>
+			<xs:element name="documentFormat">
+				<xs:simpleType>
+					<xs:restriction base="ssk-common:documentFormatType">
+						<xs:enumeration value="application/pdf"/>
+						<xs:enumeration value="image/tiff"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="documentType" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="file" type="ssk-common:attachmentFileType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+				<xs:simpleType name="dossierType">
+					<xs:restriction base="xs:string">
+								<xs:enumeration value="01"/>
+								<xs:enumeration value="02"/>
+								<xs:enumeration value="03"/>
+								<xs:enumeration value="04"/>
+								<xs:enumeration value="05"/>
+<!-- 								<xs:enumeration value="06"/> -->
+<!-- 								<xs:enumeration value="07"/> -->
+<!-- 								<xs:enumeration value="08"/> -->
+<!-- 								<xs:enumeration value="09"/> -->
+<!-- 								<xs:enumeration value="10"/> -->
+								<xs:enumeration value="11"/>
+								<xs:enumeration value="12"/>
+								<xs:enumeration value="13"/>
+								<xs:enumeration value="14"/>
+								<xs:enumeration value="15"/>
+								<xs:enumeration value="16"/>
+<!-- 								<xs:enumeration value="17"/> -->
+<!-- 								<xs:enumeration value="18"/> -->
+<!-- 								<xs:enumeration value="19"/> -->
+<!-- 								<xs:enumeration value="20"/> -->
+								<xs:enumeration value="21"/>
+								<xs:enumeration value="22"/>
+								<xs:enumeration value="23"/>
+								<xs:enumeration value="24"/> 
+								<xs:enumeration value="25"/>
+								<xs:enumeration value="98"/>
+								<xs:enumeration value="99"/>
+					</xs:restriction>
+				</xs:simpleType>
+
+	
+	<xs:element name="header">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für header.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="ssk-3001-000302:headerType">
+					<xs:attribute name="minorVersion" type="xs:integer" use="required"></xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="ssk-3001-000302:headerType"/>
+				<xs:element name="content" type="ssk-3001-000302:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"></xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

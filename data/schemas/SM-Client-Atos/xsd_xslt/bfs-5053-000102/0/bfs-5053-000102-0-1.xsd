@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/3"
+	xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/1"
+	xmlns:bfs-5053-000102="http://www.bfs.admin.ch/xmlns/bfs-5053-000102/0"
+	targetNamespace="http://www.bfs.admin.ch/xmlns/bfs-5053-000102/0"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Jährliche Lieferung Verknüpfungen</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/3" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/1" />
+		
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von eCH-0058:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="eCH-0058:declarationLocalReferenceType" minOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="5053"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000102"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" minOccurs="0" maxOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="uniqueIdBusinessCase" type="eCH-0058:uniqueIdBusinessCaseType"/>
+						<xs:element name="totalNumberOfPackages" type="eCH-0058:totalNumberOfPackagesType"/>
+						<xs:element name="numberOfActualPackage" type="eCH-0058:numberOfActualPackageType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="object" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0"/>
+			<xs:element name="messageDate" type="xs:dateTime"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:initialMessageDateType" minOccurs="0"/>
+			<xs:element name="eventDate" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+			<xs:element name="modificationDate" type="xs:dateTime" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="testData" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="combinationType" >
+		<xs:sequence>
+			<xs:element name="combinationCode">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+						<xs:enumeration value="01">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">beschränkt haftender Gesellschafter zu Personengesellschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="02">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">unbeschränkt haftender Gesellschafter zu Personengesellschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="03">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Inhaber zu Einzelfirma</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="04">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Gesellschafter zu Personengesellschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="accountNumberU" type="xs:string"/>
+			<xs:element name="compensationOfficeU" type="xs:decimal"/>
+			<xs:element name="uidU" type="eCH-0097:uidStructureType" minOccurs="0"/>
+			<xs:element name="burNrU" type="xs:string" minOccurs="0"/>
+			<xs:element name="entIdU" type="xs:string" minOccurs="0"/>
+			<xs:element name="accountNumberO" type="xs:string"/>
+			<xs:element name="compensationOfficeO" type="xs:decimal"/>
+			<xs:element name="uidO" type="eCH-0097:uidStructureType" minOccurs="0"/>
+			<xs:element name="burNrO" type="xs:string" minOccurs="0"/>
+			<xs:element name="entIdO" type="xs:string" minOccurs="0"/>
+			<xs:element name="dateOfValidity" type="xs:date"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="combination" type="bfs-5053-000102:combinationType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="header">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für header.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="bfs-5053-000102:headerType">
+					<xs:attribute name="minorVersion" type="xs:integer" use="required" />
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="bfs-5053-000102:headerType" />
+				<xs:element name="content" type="bfs-5053-000102:contentType" />
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

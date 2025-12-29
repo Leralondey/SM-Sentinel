@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema  
+    xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010-f/6" 
+    xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4" 
+    xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4"
+    xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" 
+    xmlns:eahv-iv-2401-common="http://www.eahv-iv.ch/xmlns/eahv-iv-2401-common/2"
+    xmlns:eahv-iv-2401-000401="http://www.eahv-iv.ch/xmlns/eahv-iv-2401-000401/2" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2401-000401/2" elementFormDefault="qualified"
+    attributeFormDefault="unqualified" version="2.0">
+
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Weiterleiten Rentenantrag</xs:documentation>
+        <xs:documentation xml:lang="fr">Transmettre la demande de rente</xs:documentation>
+        <xs:documentation xml:lang="it">Trasmettere la richiesta di rendita</xs:documentation>
+    </xs:annotation>
+    
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0010-f/6" />
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4" />
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4" />
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2401-common/2" />
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" />
+
+    <xs:complexType name="headerType">
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType"/>
+            <xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+            <xs:element name="messageId" type="eCH-0058:messageIdType"/>
+            <xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+            <xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType"/>
+            <xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType"/>
+            <xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+            <xs:element name="messageType" type="eCH-0058:messageTypeType" fixed="2401"/>
+            <xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000401"/>
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+            <xs:element name="subject" type="eCH-0058:subjectType"/>
+            <xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+            <xs:element name="action">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:actionType">
+                        <xs:enumeration value="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="de">Neu</xs:documentation>
+                                <xs:documentation xml:lang="fr">Nouveau</xs:documentation>
+                                <xs:documentation xml:lang="it">Nuovo</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="attachment" type="eahv-iv-2401-common:attachmentType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+            <xs:element name="responseExpected" type="eCH-0058:responseExpectedType" fixed="false"/>
+            <xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" fixed="true"/>
+            <xs:element name="extension" type="eahv-iv-2401-common:extensionType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="contentType">
+        <xs:sequence>
+            <xs:element name="insuredPerson" type="eahv-iv-common:naturalPersonsOASIDIType"></xs:element>
+            <xs:element name="pensionRequestType" type="eahv-iv-2401-common:enumPensionRequestType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Typ des Rentenantrags</xs:documentation>
+                    <xs:documentation xml:lang="fr">Type de demande de rente</xs:documentation>
+                    <xs:documentation xml:lang="it">Tipo di richiesta di rendita</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="caseIdInSWAP" type="xs:token">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Id des Antrages in SWAP</xs:documentation>
+                    <xs:documentation xml:lang="fr">Id de la demande dans SWAP</xs:documentation>
+                    <xs:documentation xml:lang="it">Id della richiesta in SWAP</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="linkToCaseInSWAP" type="xs:token">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Link auf den konkreten Fall innerhalb SWAP
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Lien vers le cas spécifique dans SWAP</xs:documentation>
+                    <xs:documentation xml:lang="it">Link al caso specifico all'interno di SWAP
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="message">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+            <xs:documentation xml:lang="fr">Déclaration de l'élément Root pour message.xml
+            </xs:documentation>
+            <xs:documentation xml:lang="it">Dichiarazione dell'elemento Root per message.xml
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eahv-iv-2401-000401:headerType"/>
+                <xs:element name="content" type="eahv-iv-2401-000401:contentType" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

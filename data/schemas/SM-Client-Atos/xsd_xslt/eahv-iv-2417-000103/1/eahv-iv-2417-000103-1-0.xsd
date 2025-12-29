@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:el-2417-000103="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-000103/1"
+		   xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-common/1" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+		   targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-000103/1" elementFormDefault="qualified" version="1.0">
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-common/1" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" />
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Quittierung Verarbeitung</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="headerType">
+		<xs:complexContent>
+			<xs:extension base="common:commonHeaderType">
+				<xs:sequence>
+					<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" />
+					<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000103" />
+					<xs:element name="action" type="eCH-0058:actionType" fixed="1" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="el-2417-000103:headerType" />
+				<xs:element name="content" type="common:infoType" />
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:unsignedShort" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

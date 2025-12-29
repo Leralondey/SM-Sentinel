@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007-f/6"
+           xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008-f/3"
+           xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010-f/7"
+           xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4"
+           xmlns:eCH-0046="http://www.ech.ch/xmlns/eCH-0046-f/5"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           xmlns="http://www.eahv-iv.ch/xmlns/eahv-iv-2014-000101/1"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2014-000101/1"
+           elementFormDefault="qualified"
+           version="1.3">
+  <xs:import namespace="http://www.ech.ch/xmlns/eCH-0007-f/6" schemaLocation="../external/eCH-0007-6-0f.xsd"/>
+  <xs:import namespace="http://www.ech.ch/xmlns/eCH-0008-f/3" schemaLocation="../external/eCH-0008-3-0f.xsd"/>
+  <xs:import namespace="http://www.ech.ch/xmlns/eCH-0010-f/7" schemaLocation="../external/eCH-0010-7-0f.xsd"/>
+  <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4" schemaLocation="../external/eCH-0044-4-1f.xsd"/>
+  <xs:import namespace="http://www.ech.ch/xmlns/eCH-0046-f/5" schemaLocation="../external/eCH-0046-5-0f.xsd"/>
+  <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="../external/eCH-0058-5-0.xsd"/>
+
+  <xs:complexType name="headerType">
+    <xs:sequence>
+      <xs:element name="senderId" type="eCH-0058:participantIdType"/>
+      <xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+      <xs:element name="declarationLocalReference" type="eCH-0058:declarationLocalReferenceType" minOccurs="0"/>
+      <xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+      <xs:element name="messageId" type="eCH-0058:messageIdType"/>
+      <xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0"/>
+      <xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType"/>
+      <xs:element name="version" type="versionType" minOccurs="0"/>
+      <xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+      <xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+      <xs:element name="uniqueIdBusinessTransaction" type="eCH-0058:uniqueIdBusinessTransactionType" minOccurs="0"/>
+      <xs:element name="messageType">
+        <xs:simpleType>
+          <xs:restriction base="eCH-0058:messageTypeType">
+            <xs:enumeration value="2014"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="subMessageType">
+        <xs:simpleType>
+          <xs:restriction base="eCH-0058:subMessageTypeType">
+            <xs:enumeration value="000101"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+      <xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0"/>
+      <xs:element name="subject" type="eCH-0058:subjectType"/>
+      <xs:element name="comment" type="eCH-0058:commentType" minOccurs="0"/>
+      <xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+      <xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0"/>
+      <xs:element name="eventDate" type="eCH-0058:eventDateType" minOccurs="0"/>
+      <xs:element name="modificationDate" type="eCH-0058:eventDateType" minOccurs="0"/>
+      <xs:element name="action" type="eCH-0058:actionType"/>
+      <xs:element name="attachment" type="xs:anyType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+      <xs:element name="responseExpected" type="eCH-0058:responseExpectedType" minOccurs="0"/>
+      <xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" minOccurs="0"/>
+      <xs:element name="namedMetaData" type="eCH-0058:namedMetaDataType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="extension" type="xs:anyType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="contentType">
+    <xs:sequence>
+      <xs:element name="formType" type="formTypeType"/>
+      <xs:element name="insurant" type="insurantType"/>
+      <xs:element name="address" type="addressInformationType"/>
+      <xs:element name="insurantDomicile" type="insurantDomicileType"/>
+      <xs:element name="departmentId" type="departmentIdType" minOccurs="0"/>
+      <xs:element name="controlNumber" type="controlNumberType" minOccurs="0"/>
+      <xs:element name="personalNumber" type="personalNumberType" minOccurs="0"/>
+      <xs:element name="referenceNumber" type="referenceNumberType" minOccurs="0"/>
+      <xs:element name="serviceEntryDate" type="xs:date" minOccurs="0"/>
+      <xs:element name="startOfPeriod" type="xs:date"/>
+      <xs:element name="endOfPeriod" type="xs:date"/>
+      <xs:element name="serviceType" type="serviceTypeType"/>
+      <xs:element name="annotation" type="annotationType" minOccurs="0"/>
+      <xs:element name="numberOfDays" type="xs:unsignedInt"/>
+      <xs:element name="userId" type="userIdType" minOccurs="0"/>
+      <xs:element name="mobilePhone" type="eCH-0046:phoneNumberType" minOccurs="0"/>
+      <xs:element name="emailAddress" type="eCH-0046:emailAddressType" minOccurs="0"/>
+      <xs:element name="iban" type="ibanType" minOccurs="0"/>
+      <xs:element name="language" type="languageType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="formTypeType">
+    <xs:annotation>
+      <xs:documentation xml:lang="fr">Type de formulaire (p.ex: 318.730)</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="318.730">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Militärdienst</xs:documentation>
+          <xs:documentation xml:lang="fr">Service Militaire</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="318.731">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Zivildienst</xs:documentation>
+          <xs:documentation xml:lang="fr">Service Civil</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="318.735">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Jugend und Sport</xs:documentation>
+          <xs:documentation xml:lang="fr">Jeunesse et Sport</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="318.737">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Zivilschutz</xs:documentation>
+          <xs:documentation xml:lang="fr">Protection Civile</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="insurantType">
+    <xs:sequence>
+      <xs:element name="vn" type="eCH-0044:vnType"/>
+      <xs:element name="officialName" type="eCH-0044:baseNameType"/>
+      <xs:element name="firstName" type="eCH-0044:baseNameType"/>
+      <xs:element name="sex" type="eCH-0044:sexType"/>
+      <xs:element name="dateOfBirth" type="xs:date"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="addressInformationType">
+    <xs:sequence>
+      <xs:element name="addressLine1" type="eCH-0010:addressLineType" minOccurs="0"/>
+      <xs:element name="addressLine2" type="eCH-0010:addressLineType" minOccurs="0"/>
+      <xs:element name="addressLine3" type="eCH-0010:addressLineType" minOccurs="0"/>
+      <xs:element name="zipCode" type="eCH-0010:foreignZipCodeType"/>
+      <xs:element name="town" type="eCH-0010:townType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="insurantDomicileType">
+    <xs:sequence>
+      <xs:element name="country" type="eCH-0008:countryIdType"/>
+      <xs:element name="canton" type="eCH-0007:cantonAbbreviationType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="departmentIdType">
+    <xs:restriction base="xs:token">
+      <xs:maxLength value="40"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="personalNumberType">
+    <xs:restriction base="xs:token">
+      <xs:maxLength value="40"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="referenceNumberType">
+    <xs:restriction base="xs:token">
+      <xs:maxLength value="40"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="controlNumberType">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="999"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="serviceTypeType">
+    <!-- Le xsd de RAPG import le 0058 v4... -->
+    <xs:restriction base="xs:int">
+      <xs:enumeration value="10">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Armee, Normaldienst</xs:documentation>
+          <xs:documentation xml:lang="fr">Armée, service normal</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="11">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Armee, Dienst als Rekrut</xs:documentation>
+          <xs:documentation xml:lang="fr">Armée, service en qualité de recrue
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="12">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Armee, Gradänderungsdienst</xs:documentation>
+          <xs:documentation xml:lang="fr">Armée, service d'avancement</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="13">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Armee, Rekrutierung</xs:documentation>
+          <xs:documentation xml:lang="fr">Armée, recrutement</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="14">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Armee, Durchdiener Uof</xs:documentation>
+          <xs:documentation xml:lang="fr">Armée, sof en service long</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="15">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Unterbruch vor UOS</xs:documentation>
+          <xs:documentation xml:lang="fr">Interruption de service avant ESO</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="16">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Unterbruch während Gradänderungsdiensten</xs:documentation>
+          <xs:documentation xml:lang="fr">Interruption pendant service d’avancement</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="20">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Zivilschutz, Dienstleistungen Mannschaft (ohne
+            Kader und Spezialisten)
+          </xs:documentation>
+          <xs:documentation xml:lang="fr">Protection civile, services de troupe (sans cadres
+            et spécialistes)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="21">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Zivilschutz, Grundausbildung</xs:documentation>
+          <xs:documentation xml:lang="fr">Protection civile, formation de base
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="22">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Zivilschutz, Dienstleistungen Kader und
+            Spezialisten
+          </xs:documentation>
+          <xs:documentation xml:lang="fr">Protection civile, service cadres et spécialistes
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="23">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Zivilschutz, Dienstleistungen KommandantIn
+          </xs:documentation>
+          <xs:documentation xml:lang="fr">Protection civile, service commandants
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="30">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Kaderbildung Jugend und Sport</xs:documentation>
+          <xs:documentation xml:lang="fr">Formation de cadres jeunesse et sport
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="40">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Zivildienst, Normaldienst</xs:documentation>
+          <xs:documentation xml:lang="fr">Service civil, service normal</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="41">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Zivildienst, Dienst mit Rekrutenansatz
+          </xs:documentation>
+          <xs:documentation xml:lang="fr">Service civil, service avec taux recrues
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="50">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Jungschützenleiterkurs</xs:documentation>
+          <xs:documentation xml:lang="fr">Cours moniteurs de jeunes tireurs
+          </xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="90">
+        <xs:annotation>
+          <xs:documentation xml:lang="de">Mutterschaftsentschädigung</xs:documentation>
+          <xs:documentation xml:lang="fr">Allocation de maternité</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="annotationType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="150"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="userIdType">
+    <xs:restriction base="xs:token">
+      <xs:maxLength value="30"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="errorTypeType">
+    <!-- Le xsd de RAPG import le 0058 v4... -->
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="INVALID_XSD">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The message is not XSD valid.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DELIVERY_FLAG">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Delivery flag value mismatch.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="DUPLICATE_BUSINESS_ID">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Business ID is already used.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="UNKNOWN_BUSINESS_ID">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The Business ID for a modification is unknown.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="BAD_VERSION_VALUE">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The version is invalid.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INVALID_ACTION">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The version is invalid.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OTHER">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Generic error.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="messageFileType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="100"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="errorMessageType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="1000"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="errorType">
+    <xs:all>
+      <xs:element name="messageFileName" type="messageFileType"/>
+      <xs:element name="errorType" type="errorTypeType"/>
+      <xs:element name="errorMessage" type="errorMessageType"/>
+      <xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="noticeType">
+    <xs:all>
+      <xs:element name="messageFileName" type="messageFileType"/>
+      <xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="infoType">
+    <xs:choice>
+      <xs:element name="positiveReport">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="notice" type="noticeType"/>
+            <xs:element name="data" type="xs:anyType" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="negativeReport">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="notice">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="error" type="errorType" maxOccurs="unbounded"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="data" type="xs:anyType" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:simpleType name="versionType">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="9999"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ibanType">
+    <xs:annotation>
+      <xs:documentation xml:lang="fr">IBAN for the payement</xs:documentation>
+      <xs:documentation xml:lang="de">IBAN für die Überweisung</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[A-Z][A-Z]\d\d[ -]?[A-Z\d]{1,30}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="languageType">
+    <xs:restriction base="xs:token">
+      <xs:maxLength value="2"/>
+      <xs:enumeration value="FR"/>
+      <xs:enumeration value="DE"/>
+      <xs:enumeration value="IT"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name="message">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="header" type="headerType"/>
+        <xs:choice>
+          <xs:element name="content" type="contentType"/>
+          <xs:element name="info" type="infoType"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

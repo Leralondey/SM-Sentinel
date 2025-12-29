@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- eahv-iv-2402-000701 edited with XMLSpy v2013 sp1 (http://www.altova.com) by Patrick Blaser -->
+<xs:schema xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4"
+    xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" xmlns:eahv-iv-2402-common="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-common/3"
+    xmlns:eahv-iv-2402-000701="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-000701/3" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-000701/3" elementFormDefault="qualified"
+    attributeFormDefault="unqualified" version="3.0">
+
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Zuständigkeitsmeldung</xs:documentation>
+        <xs:documentation xml:lang="fr">Avis de compétence</xs:documentation>
+        <xs:documentation xml:lang="it">Avviso di competenza</xs:documentation>
+    </xs:annotation>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4" />
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4" />
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2402-common/3" />
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" />
+
+    <xs:complexType name="headerType">
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType" />
+            <xs:element name="recipientId" type="eCH-0058:participantIdType" />
+            <xs:element name="messageId" type="eCH-0058:messageIdType" />
+            <xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" />
+            <xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType" />
+            <xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" />
+            <xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" />
+            <xs:element name="messageType" type="eCH-0058:messageTypeType" fixed="2402" />
+            <xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000701" />
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType" />
+            <xs:element name="subject" type="eCH-0058:subjectType" />
+            <xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" />
+            <xs:element name="messageDate" type="eCH-0058:messageDateType" />
+            <xs:element name="action">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:actionType">
+                        <xs:enumeration value="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="de">Neu</xs:documentation>
+                                <xs:documentation xml:lang="fr">Nouveau</xs:documentation>
+                                <xs:documentation xml:lang="it">Nuovo</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="attachment" type="eahv-iv-2402-common:attachmentType" minOccurs="0" maxOccurs="0" />
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType" />
+            <xs:element name="responseExpected" type="eCH-0058:responseExpectedType" fixed="false" />
+            <xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" fixed="false" />
+            <xs:element name="extension" type="eahv-iv-2402-common:extensionType" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="contentType">
+        <xs:sequence>
+            <xs:element name="insuredPerson" type="eahv-iv-common:naturalPersonsOASIDIType"></xs:element>
+            <xs:element name="vn" type="eCH-0044:vnType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Sozialversicherungsnummer der Schweiz (AHV-Nr)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Numéro de sécurité sociale en Suisse (N° AVS)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="it">Numero di sicurezza sociale in Svizzera (N. AVS)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="officialName" type="eCH-0044:baseNameType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Name</xs:documentation>
+                    <xs:documentation xml:lang="fr">Nom</xs:documentation>
+                    <xs:documentation xml:lang="it">Cognome</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="firstName" type="eCH-0044:baseNameType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Vorname</xs:documentation>
+                    <xs:documentation xml:lang="fr">Prénom</xs:documentation>
+                    <xs:documentation xml:lang="it">Nome</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="dateOfBirth" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Geburtsdatum - Datumsformat: YYYY-MM-DD (zB. 1961-01-11
+                        für 11ter Januar)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="alpsId" type="xs:token">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">ALPS-ID</xs:documentation>
+                    <xs:documentation xml:lang="fr">ALPS-ID</xs:documentation>
+                    <xs:documentation xml:lang="it">ALPS-ID</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="linkToALPS" type="xs:token">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Link auf ALPS (generell)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Lien vers ALPS (général)</xs:documentation>
+                    <xs:documentation xml:lang="it">Link su ALPS (generale)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="linkToCaseInALPS" type="xs:token">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Link auf den konkreten Fall innerhalb ALPS
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Lien vers le cas spécifique dans ALPS</xs:documentation>
+                    <xs:documentation xml:lang="it">Link al caso specifico all'interno di ALPS
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="typeOfCase" type="eahv-iv-2402-000701:caseType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Typ des Falls</xs:documentation>
+                    <xs:documentation xml:lang="fr">Type de cas</xs:documentation>
+                    <xs:documentation xml:lang="it">Tipo di caso</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="caseType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="deployment">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Entsendung</xs:documentation>
+                    <xs:documentation xml:lang="fr">Détachement</xs:documentation>
+                    <xs:documentation xml:lang="it">Distacco</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="multipleactivity">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Mehrfachtätigkeit</xs:documentation>
+                    <xs:documentation xml:lang="fr">Activité multiple</xs:documentation>
+                    <xs:documentation xml:lang="it">Attività multiple</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="relevantinfo">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Relevante Info</xs:documentation>
+                    <xs:documentation xml:lang="fr">TODO_FR</xs:documentation>
+                    <xs:documentation xml:lang="it">TODO_IT</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="continuedinsurance">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Weiterversicherung</xs:documentation>
+                    <xs:documentation xml:lang="fr">Assurance continuée</xs:documentation>
+                    <xs:documentation xml:lang="it">Assicurazione continuata</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:element name="message">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+            <xs:documentation xml:lang="fr">Déclaration de l'élément Root pour message.xml
+            </xs:documentation>
+            <xs:documentation xml:lang="it">Dichiarazione dell'elemento Root per message.xml
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eahv-iv-2402-000701:headerType" />
+                <xs:element name="content" type="eahv-iv-2402-000701:contentType" minOccurs="0" />
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

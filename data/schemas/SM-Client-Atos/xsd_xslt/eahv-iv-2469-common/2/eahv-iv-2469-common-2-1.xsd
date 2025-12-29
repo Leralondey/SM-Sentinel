@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright : Centrale de Compensation AVS/AI, Genève (2019). -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/5"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-common/2"
+		   targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-common/2" elementFormDefault="qualified"
+           attributeFormDefault="unqualified" version="2.1">
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0007/5"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5"/>
+    <xs:simpleType name="decisionIdType">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="100"/>
+            <xs:pattern value="[A-Za-z0-9]+"/>
+            <xs:whiteSpace value="collapse"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="officeType">
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="401"/>
+            <xs:enumeration value="402"/>
+            <xs:enumeration value="403"/>
+            <xs:enumeration value="404"/>
+            <xs:enumeration value="405"/>
+            <xs:enumeration value="406"/>
+            <xs:enumeration value="407"/>
+            <xs:enumeration value="408"/>
+            <xs:enumeration value="409"/>
+            <xs:enumeration value="410"/>
+            <xs:enumeration value="411"/>
+            <xs:enumeration value="412"/>
+            <xs:enumeration value="413"/>
+            <xs:enumeration value="414"/>
+            <xs:enumeration value="415"/>
+            <xs:enumeration value="416"/>
+            <xs:enumeration value="417"/>
+            <xs:enumeration value="418"/>
+            <xs:enumeration value="419"/>
+            <xs:enumeration value="420"/>
+            <xs:enumeration value="421"/>
+            <xs:enumeration value="422"/>
+            <xs:enumeration value="423"/>
+            <xs:enumeration value="424"/>
+            <xs:enumeration value="425"/>
+            <xs:enumeration value="450"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="commonDecisionType">
+        <xs:sequence>
+            <xs:element name="decisionId" type="common:decisionIdType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="decisionDate" type="xs:date" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="validFrom" type="xs:gYearMonth" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="deliveryOffice" type="common:deliveryOfficeType" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="deliveryOfficeType">
+        <xs:sequence>
+            <xs:element name="elOffice" type="common:officeType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="elAgency" type="eCH-0007:municipalityIdType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+	<xs:complexType name="commonHeaderType">
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType"/>
+            <xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+            <xs:element name="messageId" type="eCH-0058:messageIdType"/>
+            <xs:element name="messageType" type="eCH-0058:messageTypeType" fixed="2469"/>
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+            <xs:element name="subject" type="eCH-0058:subjectType" minOccurs="0"/>
+            <xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+            <xs:element name="action" type="eCH-0058:actionType" fixed="1"/>
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

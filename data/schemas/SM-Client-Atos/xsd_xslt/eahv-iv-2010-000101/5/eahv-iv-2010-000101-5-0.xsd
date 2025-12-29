@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/3"
+	xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/1"
+	xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/2"
+	xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/1"
+	xmlns:eahv-iv-2010-000101="http://www.eahv-iv.ch/xmlns/eahv-iv-2010-000101/5"
+	targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2010-000101/5"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Avis de mutation des affiliés</xs:documentation>
+	</xs:annotation>
+	
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0010/3"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/1"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/2" />
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/1" />
+		
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Ableitung von eCH-0058:headerType.
+				Dieser Type kann nicht direkt benutzt werden. Er muss für jede Meldung abgeleitet werden
+				und kann dann für die Meldung (für alle Meldungen bei Meldungsprozessen mit mehreren Meldungen),
+				die Weiterleitung, das Rektifikat und den Widerruf benutzt werden.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="eahv-iv-common:declarationLocalReferenceType" minOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="ourBusinessReferenceID" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="2010"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000101"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" minOccurs="0" maxOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="uniqueIDBusinessCase" type="eCH-0058:uniqueIDBusinessCaseType"/>
+						<xs:element name="totalNumberOfPackages" type="eCH-0058:totalNumberOfPackagesType"/>
+						<xs:element name="numberOfActualPackage" type="eCH-0058:numberOfActualPackageType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="object" type="xs:anyType" minOccurs="0" maxOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zu definieren durch konkreten Message Header</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0"/>
+			<xs:element name="messageDate" type="xs:dateTime"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:initialMessageDateType" minOccurs="0"/>
+			<xs:element name="eventDate" type="xs:dateTime"/>
+			<xs:element name="modificationDate" type="xs:dateTime" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue Meldung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="eahv-iv-common:attachmentType" minOccurs="0" maxOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zu definieren durch konkreten Message Header, ob und welche Attachements erlaubt sind.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="testData" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="messagePriority" type="eahv-iv-common:messagePriorityType" minOccurs="0"/>
+			<xs:element name="eventPeriod" type="xs:gYear" minOccurs="0" maxOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mutation" type="eahv-iv-2010-000101:mutationType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="communicationCodeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="D">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Décédé</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ouvert par erreur</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="F">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Fermeture (fin d'activité)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="H">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hors d'âge</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="K">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Transfert dans une autre Caisse</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">nouveau numéro d'affilié (si radiation et nouvelle affiliation)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Plus de personnel</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Q">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Quitté le canton</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="R">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Remise de l'exploitation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="T">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Transfert dans une autre commune</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="X">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Autre raison</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="mutationType">
+		<xs:sequence >
+			<xs:element name="reason" >
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Grund der Mutationsmeldung</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:enumeration value="11" >
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="12">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="13">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="14">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="15">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="20">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue, abweichende Angaben</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="21">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="22">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="23">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="24">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="25">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="31">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="32">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="33">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="34">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="35">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">???</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="accountNumber" type="xs:string" />
+			<xs:element name="otherOrganisationId" type="eahv-iv-common:namedOrganisationIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="legalForm" >
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="A">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Raison individuelle</xs:documentation>
+							</xs:annotation>					
+						</xs:enumeration>
+						<xs:enumeration value="B">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Non - actif</xs:documentation>
+							</xs:annotation>					
+						</xs:enumeration>
+						<xs:enumeration value="C">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Société simple</xs:documentation>
+							</xs:annotation>					
+						</xs:enumeration>
+						<xs:enumeration value="D">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Société en nom collectif</xs:documentation>
+							</xs:annotation>					
+						</xs:enumeration>
+						<xs:enumeration value="E">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Société en commandite</xs:documentation>
+							</xs:annotation>					
+						</xs:enumeration>
+						<xs:enumeration value="F">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Communauté héréditaire</xs:documentation>
+							</xs:annotation>					
+						</xs:enumeration>
+						<xs:enumeration value="G">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Société anonyme</xs:documentation>
+							</xs:annotation>					
+						</xs:enumeration>
+						<xs:enumeration value="H">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Sàrl</xs:documentation>
+							</xs:annotation>					
+						</xs:enumeration>
+						<xs:enumeration value="I">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Société cooperéative</xs:documentation>
+							</xs:annotation>					
+						</xs:enumeration>
+						<xs:enumeration value="K">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Société en commandite par par actions</xs:documentation>
+							</xs:annotation>					
+						</xs:enumeration>
+						<xs:enumeration value="L">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Association</xs:documentation>
+							</xs:annotation>					
+						</xs:enumeration>
+						<xs:enumeration value="M">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Fondation</xs:documentation>
+							</xs:annotation>					
+						</xs:enumeration>
+						<xs:enumeration value="N">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Corporation de droit pubic</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="title" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Monsieur</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Madame</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="vn" type="eCH-0044:vnType" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>checksum.groovy</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateOfBirth" type="eCH-0044:datePartiallyKnownType" minOccurs="0"/>
+			<xs:element name="sex" type="eCH-0044:sexType" minOccurs="0"/>
+			<xs:element name="officialName" type="eCH-0044:baseNameType" minOccurs="0"/>
+			<xs:element name="firstName" type="eCH-0044:baseNameType" minOccurs="0"/>
+			<xs:element name="organisationName1" type="eahv-iv-common:organisationNameType" minOccurs="0"/>
+			<xs:element name="organisationName2" type="eahv-iv-common:organisationNameType" minOccurs="0"/>
+			<xs:element name="kindOfActivity" type="xs:string" minOccurs="0"/>
+			<xs:element name="address" type="eCH-0010:addressInformationType"/>
+			<xs:element name="dateOfValidity" type="xs:date" />
+			<xs:element name="oasiDateOfAcceptance" type="xs:date" minOccurs="0"/>
+			<xs:element name="oasiDateOfDeletion" type="xs:date" minOccurs="0"/>
+			<xs:element name="oasiCompensationOffice" type="xs:integer" minOccurs="0"/>
+			<xs:element name="oasiCommunication" type="eahv-iv-2010-000101:communicationCodeType" minOccurs="0"/>
+			<xs:element name="faoDateOfAcceptance" type="xs:date" minOccurs="0" />
+			<xs:element name="faoDateOfDeletion" type="xs:date" minOccurs="0" />
+			<xs:element name="faoCompensationOffice" type="xs:integer" minOccurs="0" />
+			<xs:element name="faoCommunication" type="eahv-iv-2010-000101:communicationCodeType" minOccurs="0"/>
+			<xs:element name="nameReturnAddress1" type="xs:string" minOccurs="0" />
+			<xs:element name="nameReturnAddress2" type="xs:string" minOccurs="0"/>
+			<xs:element name="nameReturnAddress3" type="xs:string" minOccurs="0" />
+			<xs:element name="returnAddress" type="eCH-0010:addressInformationType" minOccurs="0" />
+			<xs:element name="additionalObservations" minOccurs="0" >
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="4000" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="header">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für header.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="eahv-iv-2010-000101:headerType">
+					<xs:attribute name="minorVersion" type="xs:integer" use="required" />
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="eahv-iv-2010-000101:headerType" />
+				<xs:element name="content" type="eahv-iv-2010-000101:contentType" />
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"></xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-common/5"
+           xmlns:eahv-iv-2015-000701="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-000701/5"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:ech-0058="http://www.ech.ch/xmlns/eCH-0058/4"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-000701/5"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="5.2">
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-common/5"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+    <xs:element name="message">
+
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">Déclaration de l'élément root pour message.xml
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="messageId" type="ech-0058:messageIdType"/>
+                <xs:element name="deliveryOffice" type="common:deliveryOfficeType"/>
+                <xs:element name="commandDetail" type="common:commandDetailsType"/>
+                <xs:element name="requestProcessDate" type="xs:date">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Date de traitement souhaitée</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="status" type="eahv-iv-2015-000701:statusType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Pour le retour du WS, donne l'état de la commande
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="action" type="eahv-iv-2015-000701:actionType">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Action. Les chiffre 1,3,4 et 5 sont pour l'envoi
+                            au WS. Les chiffres 8 et 9 sont pour la réponse.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="referenceMessageId" type="ech-0058:messageIdType" minOccurs="0"/>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:int" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="statusType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="scheduled"/>
+            <xs:enumeration value="inProgress"/>
+            <xs:enumeration value="ended"/>
+            <xs:enumeration value="error"/>
+            <xs:enumeration value="canceled"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="actionType">
+        <xs:restriction base="ech-0058:actionType">
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Neue Bestellung</xs:documentation>
+                    <xs:documentation xml:lang="fr">Nouvelle commande</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Suppresion d'une commande</xs:documentation>
+                    <xs:documentation xml:lang="de">Löschen eine Bestellung</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Correction d'une commande</xs:documentation>
+                    <xs:documentation xml:lang="de">Eine Bestellung korrigieren</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="5">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Interogation de la commande</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="8">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Réponse négative, message de réponse à une commande
+                        ayant généré des erreurs
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="9">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Réponse positive, message de réponse à un
+                        traitement correct ou un traitement partiellement correct.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

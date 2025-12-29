@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema targetNamespace="http://www.ofit.admin.ch/xmlns/commun-ws/2" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" xmlns:common="http://www.ofit.admin.ch/xmlns/commun-ws/2"
+	attributeFormDefault="unqualified" version="2">
+	<xs:annotation>
+		<xs:documentation>2011-07-28 - v 1.0 - SUM - Première release SHM</xs:documentation>
+		<xs:documentation>2013-03-14 - v 2.0 - KRA - Correction du schéma selon standards.</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="ackType">
+		<xs:sequence>
+			<xs:element name="value" type="common:valueType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="valueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="failure" />
+			<xs:enumeration value="partialfailure" />
+			<xs:enumeration value="success" />
+			<xs:enumeration value="warning" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="erreurMessageType">
+		<xs:sequence>
+			<xs:element name="message" type="xs:string" />
+			<xs:element name="code" type="xs:long" minOccurs="0" maxOccurs="1" />
+			<xs:element name="type" type="common:errorType" />
+			<xs:element name="level" type="common:levelType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="errorType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="business" />
+			<xs:enumeration value="technical" />
+			<xs:enumeration value="other" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="levelType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="WARN" />
+			<xs:enumeration value="ERROR" />
+			<xs:enumeration value="FATAL" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>	

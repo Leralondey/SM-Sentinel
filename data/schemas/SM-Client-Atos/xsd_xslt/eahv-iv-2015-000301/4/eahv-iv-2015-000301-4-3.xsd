@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0044f="http://www.ech.ch/xmlns/eCH-0044/2"
+	xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:eahv-iv-2015-000301="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-000301/4"
+	xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-common/4" targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-000301/4"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="4.3">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Korrekturmeldung für Nachzahlung (Konto 214.3060)
+		</xs:documentation>
+		<xs:documentation xml:lang="fr">Annonce de correction pour paiement rétroactif (compte 214.3060)</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/2" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4" />
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-common/4" />
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml
+			</xs:documentation>
+			<xs:documentation xml:lang="fr">Déclaration de l'élément root pour message.xml
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="eahv-iv-2015-000301:headerType" />
+				<xs:element name="content" type="eahv-iv-2015-000301:contentType" />
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required" />
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von eahv-iv-common:headerType
+			</xs:documentation>
+			<xs:documentation xml:lang="fr">
+				Description du header du message. Inspiré de eahv-iv-common:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="common:headerBaseType">
+				<xs:sequence>
+					<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" />
+					<xs:element name="businessProcessId" minOccurs="0">
+						<xs:simpleType>
+							<xs:restriction base="eCH-0058:businessProcessIdType">
+								<xs:pattern value="\d{3}\.\d{3}\..*" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="subMessageType">
+						<xs:simpleType>
+							<xs:restriction base="eCH-0058:subMessageTypeType">
+								<xs:enumeration value="000301">
+									<xs:annotation>
+										<xs:documentation xml:lang="de">Typ 3: Korrekturmeldung für Nachzahlung (Konto
+											214.3060)</xs:documentation>
+										<xs:documentation xml:lang="fr">Type 3 : Annonce de correction pour paiement
+											rétroactif (compte 214.3060)</xs:documentation>
+									</xs:annotation>
+								</xs:enumeration>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="action">
+						<xs:simpleType>
+							<xs:restriction base="eCH-0058:actionType">
+								<xs:enumeration value="4" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="responseExpected">
+						<xs:simpleType>
+							<xs:restriction base="eCH-0058:responseExpectedType">
+								<xs:pattern value="true" />
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+			<xs:documentation xml:lang="fr">Attributs métiers du message</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="common:contentBaseType">
+				<xs:sequence>
+					<xs:element name="timeStamp" type="xs:dateTime" />
+					<xs:element name="insurant" type="eCH-0044f:personIdentificationType" minOccurs="0" />
+					<xs:element name="insurantMaritalStatus" type="common:maritalStatusType" minOccurs="0" />
+					<xs:element name="insurantDomicile" type="common:insurantDomicileType" minOccurs="0" />
+					<xs:element name="accountingMonth" type="common:yearMonthRestricted" minOccurs="0" />
+					<xs:element name="serviceType" type="common:serviceTypeType" minOccurs="0" />
+					<xs:element name="activityBeforeService" type="common:activityBeforeServiceType"
+						minOccurs="0" />
+					<xs:element name="averageDailyIncome" type="xs:decimal" minOccurs="0" />
+					<xs:element name="startOfPeriod" type="common:dateRestricted" minOccurs="0" />
+					<xs:element name="endOfPeriod" type="common:dateRestricted" minOccurs="0" />
+					<xs:element name="numberOfDays" type="xs:integer" minOccurs="0" />
+					<xs:element name="basicDailyAmount" type="xs:decimal" minOccurs="0" />
+					<xs:element name="dailyIndemnityGuaranteeAI" type="xs:boolean" minOccurs="0" />
+					<xs:element name="allowanceFarm" type="xs:boolean" minOccurs="0" />
+					<xs:element name="allowanceCareExpenses" type="xs:decimal" minOccurs="0" />
+					<xs:element name="totalAPG" type="xs:decimal" minOccurs="0" />
+					<xs:element name="paymentMethod" type="common:paymentMethodType" minOccurs="0" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

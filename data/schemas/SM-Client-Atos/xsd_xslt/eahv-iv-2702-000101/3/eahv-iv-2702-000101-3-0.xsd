@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- édité avec XMLSpy v2021 rel. 3 (x64) (http://www.altova.com) par  (Bundesamt für Informatik und Telekommunikation BIT) -->
+<!-- Copyright : Centrale de Compensation AVS/AI, Genève (2016). -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eahv-iv-2702-000101="http://www.zas.admin.ch/xmlns/eahv-iv-2702-000101/3" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eahv-iv-2702-common="http://www.zas.admin.ch/xmlns/eahv-iv-2702-common/3" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/5" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0011="http://www.ech.ch/xmlns/eCH-0011/8" xmlns:eCH-0044f="http://www.ech.ch/xmlns/eCH-0044/4" targetNamespace="http://www.zas.admin.ch/xmlns/eahv-iv-2702-000101/3" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0">
+	<xs:import namespace="http://www.zas.admin.ch/xmlns/eahv-iv-2702-common/3" schemaLocation="eahv-iv-2702-common-3-0.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="eCH-0058-5-0.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/4" schemaLocation="eCH-0044-4-1.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0007/5" schemaLocation="eCH-0007-5-0.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0008/3" schemaLocation="eCH-0008-3-0.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0011/8" schemaLocation="eCH-0011-8-1.xsd"/>
+	<xs:simpleType name="accountingDateYearType">
+		<xs:restriction base="xs:gYear">
+			<xs:minInclusive value="2000"/>
+			<xs:maxInclusive value="2100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="billingDateYearType">
+		<xs:restriction base="xs:gYear">
+			<xs:minInclusive value="2000"/>
+			<xs:maxInclusive value="2100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="dateOfDisqualificationType">
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="decisionKind">
+		<xs:restriction base="xs:integer">
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+			<xs:enumeration value="6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="moneyType">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="mortgageDebtsRealPropertyType">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+	<xs:simpleType name="mortgageDebtsSelfinhabitedType">
+		<xs:restriction base="xs:unsignedInt"/>
+	</xs:simpleType>
+	<xs:simpleType name="requestDateOfReceiptType">
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="dateofFirstDecisionType">
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="typeOfSicknessAndDisabilityCostsType">
+		<xs:restriction base="xs:short"/>
+	</xs:simpleType>
+	<xs:complexType name="addressType">
+		<xs:choice>
+			<xs:element name="Address">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="canton" type="eCH-0007:cantonAbbreviationType"/>
+						<xs:element name="municipality" type="eCH-0007:municipalityIdType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="countryID" type="eCH-0008:countryIdType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="calculationElementsType">
+		<xs:sequence>
+			<xs:element name="otherWealth" type="xs:unsignedInt"/>
+			<xs:element name="divestedWealth" type="xs:unsignedInt"/>
+			<xs:element name="otherDebts" type="xs:unsignedInt"/>
+			<xs:element name="wealthDeductible" type="xs:unsignedInt"/>
+			<xs:element name="wealthConsidered" type="xs:unsignedInt"/>
+			<xs:element name="wealthIncome" type="xs:unsignedInt"/>
+			<xs:element name="usufructIncome" type="xs:unsignedInt"/>
+			<xs:element name="wealthIncomeConsidered" type="xs:unsignedInt"/>
+			<xs:element name="incomeConsideredTotal" type="xs:unsignedInt"/>
+			<xs:element name="vitalNeeds" type="xs:unsignedInt"/>
+			<xs:element name="children" type="xs:unsignedInt" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="livingSituation">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:whiteSpace value="collapse"/>
+						<xs:enumeration value="normal"/>
+						<xs:enumeration value="usufructuary"/>
+						<xs:enumeration value="rightOfResidence"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="typeOfDivestedWealth" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:whiteSpace value="collapse"/>
+						<xs:enumeration value="noEquivalentCompensation"/>
+						<xs:enumeration value="excessivelyConsume"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="realProperty" type="eahv-iv-2702-000101:realPropertyType" minOccurs="0"/>
+			<xs:element name="housingOwner" type="eahv-iv-2702-000101:housingOwnerType" minOccurs="0"/>
+			<xs:element name="rents" type="eahv-iv-2702-000101:rentsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="caseType">
+		<xs:sequence>
+			<xs:element name="businessCaseIdUel">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100"/>
+						<xs:whiteSpace value="collapse"/>
+						<xs:pattern value="[A-Za-z0-9]+"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="businessCaseIdUelPreviousProvider" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100"/>
+						<xs:whiteSpace value="collapse"/>
+						<xs:pattern value="[A-Za-z0-9]+"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="decision" type="eahv-iv-2702-000101:decisionType" maxOccurs="unbounded"/>
+			<xs:element name="requestDateOfReceipt" type="eahv-iv-2702-000101:requestDateOfReceiptType"/>
+			<xs:element name="dateofFirstDecision" type="eahv-iv-2702-000101:dateofFirstDecisionType"/>
+			<xs:element name="medicalCosts" type="eahv-iv-2702-000101:medicalCostsType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="case" type="eahv-iv-2702-000101:caseType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="decisionType">
+		<xs:sequence>
+			<xs:element name="decisionId" type="eahv-iv-2702-common:decisionIdType"/>
+			<xs:element name="decisionKind" type="eahv-iv-2702-000101:decisionKind"/>
+			<xs:element name="validFrom" type="xs:gYearMonth"/>
+			<xs:element name="validTo" type="xs:gYearMonth" minOccurs="0"/>
+			<xs:element name="decisionDate" type="xs:date"/>
+			<xs:element name="dateOfDisqualification" type="eahv-iv-2702-000101:dateOfDisqualificationType"/>
+			<xs:element name="deliveryOffice" type="eahv-iv-2702-common:deliveryOfficeType"/>
+			<xs:element name="uelAmounts" type="eahv-iv-2702-000101:uelAmountsType"/>
+			<xs:element name="calculationElements" type="eahv-iv-2702-000101:calculationElementsType"/>
+			<xs:element name="persons" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="eahv-iv-2702-000101:personsType"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="uelAmountsType">
+		<xs:sequence>
+			<xs:element name="uelAmount" type="xs:unsignedInt"/>
+			<xs:element name="uelLimit" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="headerType">
+		<xs:complexContent>
+			<xs:extension base="eahv-iv-2702-common:commonHeaderType">
+				<xs:sequence>
+					<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000101"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="housingOwnerType">
+		<xs:sequence>
+			<xs:element name="selfInhabitedProperty" type="xs:unsignedInt"/>
+			<xs:element name="selfInhabitedPropertyDeductible">
+				<xs:simpleType>
+					<xs:restriction base="xs:unsignedInt">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="300000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="rentalValue" type="xs:unsignedInt"/>
+			<xs:element name="mortgageDebtsSelfinhabited" type="eahv-iv-2702-000101:mortgageDebtsSelfinhabitedType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="medicalCostsType">
+		<xs:sequence>
+			<xs:element name="vn" type="eCH-0044f:vnType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="medBills" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="typeOfSicknessAndDisabilityCosts">
+							<xs:simpleType>
+								<xs:restriction base="xs:short">
+									<xs:minInclusive value="1"/>
+									<xs:maxInclusive value="9"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="amountCompensated" type="eahv-iv-2702-000101:moneyType"/>
+						<xs:element name="billingDateYear" type="eahv-iv-2702-000101:billingDateYearType"/>
+						<xs:element name="accountingDateYear" type="eahv-iv-2702-000101:accountingDateYearType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="eahv-iv-2702-000101:headerType"/>
+				<xs:element name="content" type="eahv-iv-2702-000101:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="personalCalculationElementsType">
+		<xs:sequence>
+			<xs:element name="dailyAllowance" type="xs:unsignedInt"/>
+			<xs:element name="lucrativeGrossIncome" type="xs:unsignedInt" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="totalPension" type="xs:unsignedInt" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="lppPension" type="xs:unsignedInt"/>
+			<xs:element name="foreignPension" type="xs:unsignedInt" maxOccurs="1"/>
+			<xs:element name="otherIncomes" type="xs:unsignedInt" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="hcFlatHelp" type="xs:unsignedInt" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="hcEffectiveHelp" type="xs:unsignedInt" maxOccurs="1"/>
+			<xs:element name="otherExpenses" type="xs:unsignedInt" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="rentsType">
+		<xs:sequence>
+			<xs:element name="grossRental" type="xs:unsignedInt"/>
+			<xs:element name="rentCategory">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:whiteSpace value="collapse"/>
+						<xs:enumeration value="NO_RENT"/>
+						<xs:enumeration value="ANNUAL_GROSS"/>
+						<xs:enumeration value="RENTAL_VALUE"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="rentGrossTotal" type="xs:unsignedInt"/>
+			<xs:element name="rentGrossTotalPart" type="xs:unsignedInt"/>
+			<xs:element name="maxRent" type="xs:unsignedInt"/>
+			<xs:element name="wheelchairSurcharge" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="rentRegion">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:whiteSpace value="collapse"/>
+						<xs:enumeration value="BIG_CITY"/>
+						<xs:enumeration value="CITY"/>
+						<xs:enumeration value="COUNTRY"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="personsType">
+		<xs:sequence>
+			<xs:element name="vn" type="eCH-0044f:vnType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="representative" type="xs:boolean"/>
+			<xs:element name="vitalNeedsCategory">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:whiteSpace value="collapse"/>
+						<xs:enumeration value="ALONE"/>
+						<xs:enumeration value="COUPLE"/>
+						<xs:enumeration value="CHILD"/>
+						<xs:enumeration value="TEENAGER"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="maritalStatus" type="eCH-0011:maritalStatusType"/>
+			<xs:element name="legalAddress" type="eahv-iv-2702-000101:addressType"/>
+			<xs:element name="personalCalculationElements" type="eahv-iv-2702-000101:personalCalculationElementsType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="realPropertyType">
+		<xs:sequence>
+			<xs:element name="realProperty" type="xs:unsignedInt"/>
+			<xs:element name="mortgageDebtsRealProperty" type="eahv-iv-2702-000101:mortgageDebtsRealPropertyType"/>
+			<xs:element name="propertyIncome" type="xs:unsignedInt"/>
+			<xs:element name="mortgageInterest" type="xs:unsignedInt"/>
+			<xs:element name="maintenanceFees" type="xs:unsignedInt"/>
+			<xs:element name="interestFeesEligible" type="xs:unsignedInt"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

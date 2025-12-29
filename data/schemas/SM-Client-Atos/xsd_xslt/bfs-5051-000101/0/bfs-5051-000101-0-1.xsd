@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/3"
+	xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/1"
+	xmlns:bfs-5051-000101="http://www.bfs.admin.ch/xmlns/bfs-5051-000101/0"
+	targetNamespace="http://www.bfs.admin.ch/xmlns/bfs-5051-000101/0"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Konkursmeldung</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/3" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/1" />
+		
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von eCH-0058:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="eCH-0058:declarationLocalReferenceType" minOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="5051"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000101"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" minOccurs="0" maxOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="uniqueIdBusinessCase" type="eCH-0058:uniqueIdBusinessCaseType"/>
+						<xs:element name="totalNumberOfPackages" type="eCH-0058:totalNumberOfPackagesType"/>
+						<xs:element name="numberOfActualPackage" type="eCH-0058:numberOfActualPackageType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="object" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0"/>
+			<xs:element name="messageDate" type="xs:dateTime"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:initialMessageDateType" minOccurs="0"/>
+			<xs:element name="eventDate" type="xs:dateTime" minOccurs="0" maxOccurs="0" />
+			<xs:element name="modificationDate" type="xs:dateTime" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="testData" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="bankruptcyType" >
+		<xs:sequence>
+			<xs:element name="NUM_ID" type="xs:string" />
+			<xs:element name="DOC_ID" type="bfs-5051-000101:decimalOrEmptyType" />
+			<xs:element name="URL" type="xs:string" />
+			<xs:element name="PUB_DOC_TM" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="FOSC_NR" type="bfs-5051-000101:decimalOrEmptyType" />
+			<xs:element name="kindOfbankruptcy">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value=""/>
+						<xs:enumeration value="KK01">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Vorläufige Konkursanzeige</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="KK02">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Konkurspublikation/Schuldenruf</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="KK03">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Einstellung des Konkursverfahrens</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="KK04">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kollokationsplan und Inventar</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="KK05">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Verteilungsliste und Schlussrechnung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="KK06">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Schluss des Konkursverfahrens</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="KK07">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Widerruf des Konkurses</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="KK08">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Konkursamtliche Grundstücksteigerung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="KK09">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Lastenverzeichnisse</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="KK10">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Verschiedenes</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="DE" type="xs:string" />
+			<xs:element name="FR" type="xs:string" />
+			<xs:element name="IT" type="xs:string" />
+			<xs:element name="LANG_CD" type="xs:string" />
+			<xs:element name="CANTON_CD" type="xs:string" />
+			<xs:element name="ORGANISATION_TX" type="xs:string" />
+			<xs:element name="POSTAL_CODE_TX" type="xs:string" />
+			<xs:element name="TOWN_TX" type="xs:string" />
+			<xs:element name="LASTNAME" type="xs:string" />
+			<xs:element name="FIRSTNAME" type="xs:string" />
+			<xs:element name="WORK" type="xs:string" />
+			<xs:element name="BIRTH_PLACE" type="xs:string" />
+			<xs:element name="BIRTH_COUNTRY" type="xs:string" />
+			<xs:element name="BIRTH_DATE" type="xs:string" />
+			<xs:element name="DEATH_DATE" type="xs:string" />
+			<xs:element name="FIRM_NAME" type="xs:string" />
+			<xs:element name="STREET" type="xs:string" />
+			<xs:element name="ZIPCODE" type="xs:string" />
+			<xs:element name="CITY" type="xs:string" />
+			<xs:element name="COUNTRY" type="xs:string" />
+			<xs:element name="AK_ID" type="xs:string" />
+			<xs:element name="AK_accountNumber" type="xs:string" />
+			<xs:element name="UID" type="eCH-0097:uidStructureType" />
+			<xs:element name="ENT-ID" type="bfs-5051-000101:decimalOrEmptyType" />
+			<xs:element name="BURNR" type="bfs-5051-000101:decimalOrEmptyType" />
+			<xs:element name="KK_NUM_ID_ALTER" type="xs:string" />
+			<xs:element name="KK01_PROV_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="KK_OPEN_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="KK02_PROC">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value=""/>
+						<xs:enumeration value="FREETEXT">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">freier Text</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="REGULAR">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">ordentlich</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="SUMMAR">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">summarisch</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="KK02_FIRST_CRED_MEET_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="KK02_FIRST_CRED_MEET_TIME" type="xs:string" />
+			<xs:element name="KK02_FIRST_CRED_MEET_LOC" type="xs:string" />
+			<xs:element name="KK02_PLACE" type="xs:string" />
+			<xs:element name="KK_END_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="KK_END_DAY" type="bfs-5051-000101:decimalOrEmptyType" />
+			<xs:element name="KK_CLOSE_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="KK_DELAY_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="COST_ADVANCE_CURRENCY" type="xs:string" />
+			<xs:element name="COST_ADVANCE" type="bfs-5051-000101:decimalOrEmptyType" />
+			<xs:element name="KK04_LIQ_OPP_START_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="KK04_LIQ_OPP_END_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="KK04_LIQ_OPP_DELAY" type="bfs-5051-000101:decimalOrEmptyType" />
+			<xs:element name="KK04_INV_OPP_START_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="KK04_INV_OPP_END_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="KK04_INV_OPP_DELAY" type="bfs-5051-000101:decimalOrEmptyType" />
+			<xs:element name="KK07_REVOC_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="KK08_AUCTION_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="KK08_AUCTION_TIME" type="xs:string" />
+			<xs:element name="KK09_CHARGE_START_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="KK09_CHARGE_END_DATE" type="bfs-5051-000101:dateOrEmptyType" />
+			<xs:element name="NOTICE" type="xs:string" />
+			<xs:element name="REMARK" type="xs:string" />
+			<xs:element name="SUBMITION_ZIPCODE" type="xs:string" />
+			<xs:element name="SUBMITION_CITY" type="xs:string" />
+			<xs:element name="SUBMITION_SUBMITOR" type="xs:string" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="empty">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="dateOrEmptyType">
+		<xs:union memberTypes="xs:date bfs-5051-000101:empty"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="decimalOrEmptyType">
+		<xs:union memberTypes="xs:decimal bfs-5051-000101:empty"/>
+	</xs:simpleType>
+	
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Konkursmeldung" type="bfs-5051-000101:bankruptcyType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="header">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für header.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="bfs-5051-000101:headerType">
+					<xs:attribute name="minorVersion" type="xs:integer" use="required" />
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="bfs-5051-000101:headerType" />
+				<xs:element name="content" type="bfs-5051-000101:contentType" />
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

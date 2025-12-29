@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.zas.admin.ch/xmlns/rafam-6000-69/1"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:rafam="http://www.zas.admin.ch/xmlns/rafam-6000-69/1"
+           xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           elementFormDefault="qualified" version="1.0">
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4" schemaLocation="eCH-0044-4-1f.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="eCH-0058-5-0.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Type - Abfrage FamZReg für Ausbildungszulagen ab 18 Jahren - Antwort</xs:documentation>
+        <xs:documentation xml:lang="fr">
+            Type - Consultation du RAFam pour les allocations de formation à partir de 18 ans - Réponse
+        </xs:documentation>
+    </xs:annotation>
+
+    <!-- Response Message -->
+    <xs:element name="message">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Request with eCH-0058 header</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eCH-0058:headerType"/>
+                <xs:element name="content">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="rafam:educationAllowanceResponse" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="educationAllowanceResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="vnChild" type="eCH-0044:vnType"/>
+                <xs:choice>
+                    <xs:sequence>
+                        <xs:choice>
+                            <xs:element name="hasEducationAllowance" type="xs:boolean" fixed="false"/>
+                            <xs:element name="educationAllowance" type="rafam:educationAllowanceType" maxOccurs="unbounded"/>
+                        </xs:choice>
+                    </xs:sequence>
+                    <xs:sequence>
+                        <xs:element ref="rafam:errorCode"/>
+                        <xs:element name="errorMessage" minOccurs="0">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:maxLength value="255"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <!-- Happy path: error free response -->
+    <xs:complexType name="educationAllowanceType">
+        <xs:sequence>
+            <xs:element ref="rafam:educationAllowanceCode"/>
+            <xs:element name="statusDate" type="xs:date"/>
+            <xs:element ref="rafam:validityPeriod"/>
+            <xs:element name="vnRecipient" type="eCH-0044:vnType"/>
+            <xs:element ref="rafam:familialStatus"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="educationAllowanceCode">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Genre d'allocation familiale</xs:documentation>
+            <xs:documentation xml:lang="de">Arten von Familienzulagen</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:token">
+                <xs:enumeration value="20">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Allocation de formation professionnelle</xs:documentation>
+                        <xs:documentation xml:lang="de">Ausbildungszulage</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="21">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Allocation de formation professionnelle avec supplément
+                            plusieurs enfants
+                        </xs:documentation>
+                        <xs:documentation xml:lang="de">Ausbildungszulage mit Zuschuss für eine kinderreiche Familie
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="30">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Allocation différentielle</xs:documentation>
+                        <xs:documentation xml:lang="de">Differenzzulage</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <xs:element name="validityPeriod">
+        <xs:complexType>
+            <xs:choice>
+                <xs:sequence>
+                    <xs:element name="start" type="xs:date">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="fr">Date de début de droit</xs:documentation>
+                            <xs:documentation xml:lang="de">Anfangsdatum</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="end" type="xs:date">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="fr">Date de fin de droit</xs:documentation>
+                            <xs:documentation xml:lang="de">Enddatum</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+                <xs:sequence>
+                    <xs:element name="controlMonth" type="xs:gYearMonth">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="fr">Mois de contrôle</xs:documentation>
+                            <xs:documentation xml:lang="de">Kontrollmonat</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="numberOfWorkdays">
+                        <xs:annotation>
+                            <xs:documentation xml:lang="fr">Nombre de jours ouvrables où l'allocation a été perçue
+                            </xs:documentation>
+                            <xs:documentation xml:lang="de">Anzahl der Arbeitstage, für welche die Leistung beansprucht
+                                wurde
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:unsignedInt">
+                                <xs:maxInclusive value="31"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+
+    <!-- Structure from ech-104 -->
+    <xs:element name="familialStatus">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Statut familial du bénéficiaire</xs:documentation>
+            <xs:documentation xml:lang="de">Familienstatus des Bezügers</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+            <xs:restriction base="xs:token">
+                <xs:enumeration value="10">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Mère</xs:documentation>
+                        <xs:documentation xml:lang="de">Mutter</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="11">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Belle-mère</xs:documentation>
+                        <xs:documentation xml:lang="de">Stiefmutter</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="12">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Mère nourricière (enfants recueillis)</xs:documentation>
+                        <xs:documentation xml:lang="de">Pflegemutter (Kinder aufgenommen)</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="13">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Soeur</xs:documentation>
+                        <xs:documentation xml:lang="de">Schwester</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="14">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Grand-mère</xs:documentation>
+                        <xs:documentation xml:lang="de">Grossmutter</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="20">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Père</xs:documentation>
+                        <xs:documentation xml:lang="de">Vater</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="21">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Beau-père</xs:documentation>
+                        <xs:documentation xml:lang="de">Stiefvater</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="22">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Père nourricier (enfants recueillis)</xs:documentation>
+                        <xs:documentation xml:lang="de">Pflegevater (Kinder aufgenommen)</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="23">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Frère</xs:documentation>
+                        <xs:documentation xml:lang="de">Bruder</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="24">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Grand-père</xs:documentation>
+                        <xs:documentation xml:lang="de">Grossvater</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+
+    <!-- Errors path: an error code and a message -->
+    <xs:element name="errorCode">
+        <xs:simpleType>
+            <xs:restriction base="xs:token">
+                <xs:enumeration value="1">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Le NAVS13 n'existe pas ou n'est pas valide.</xs:documentation>
+                        <xs:documentation xml:lang="de">Die AHVN13 existiert nicht oder ist ungültig.</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="2">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Exceptions à l'accessibilité publique.</xs:documentation>
+                        <xs:documentation xml:lang="de">Ausnahmen von der öffentlichen Zugänglichkeit.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="10">
+                    <xs:annotation>
+                        <xs:documentation xml:lang="fr">Le service est actuellement indisponible.</xs:documentation>
+                        <xs:documentation xml:lang="de">Der Dienst ist momentan nicht verfügbar.</xs:documentation>
+                    </xs:annotation>
+                </xs:enumeration>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,695 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-common/5"
+           xmlns:eCH-0044f="http://www.ech.ch/xmlns/eCH-0044/2"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-common/5"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="5.2">
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/2"/>
+
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Gemeinsame Codes für alle Meldungen</xs:documentation>
+        <xs:documentation xml:lang="fr">Codes communs à toutes les annonces</xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType name="headerBaseType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Type de base pour les Header.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType"/>
+            <xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+            <xs:element name="messageId" type="eCH-0058:messageIdType"/>
+            <xs:element name="messageType">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:messageTypeType">
+                        <xs:enumeration value="2015"/>
+                        <xs:enumeration value="2016"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+            <xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+            <xs:element name="eventDate" type="eCH-0058:eventDateType"/>
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="maritalStatusType">
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Ledig</xs:documentation>
+                    <xs:documentation xml:lang="fr">Célibataire</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Verheiratet</xs:documentation>
+                    <xs:documentation xml:lang="fr">Marié(e)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Verwitwet</xs:documentation>
+                    <xs:documentation xml:lang="fr">Veuf(ve)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Geschieden</xs:documentation>
+                    <xs:documentation xml:lang="fr">Divorcé(e)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Eingetragene Partnerschaft gleich-geschlechtlicher
+                        Paare
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Partenariat enregistré entre personnes du même sexe
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Gerichtlich aufgelöste Partnerschaft
+                        gleichgeschlechtlicher Paare
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Partenariat dissous judiciairement entre personnes
+                        du même sexe
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="8">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Durch Tod aufgelöste Partnerschaft
+                        gleichgeschlechtlicher Paare
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Partenariat dissous par décès entre personnes du
+                        même sexe
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="insurantDomicileType">
+        <xs:sequence>
+            <xs:element name="canton" type="common:cantonCode" minOccurs="0"/>
+            <xs:element name="country" type="common:countryCode"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="insurantDomicileWeakType">
+        <xs:sequence>
+            <xs:element name="canton" type="common:cantonCode" minOccurs="0"/>
+            <xs:element name="country" type="common:countryCode" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="contentBaseType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+            <xs:documentation xml:lang="fr">Attributs métiers du message</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="deliveryOffice" type="common:deliveryOfficeType"/>
+            <xs:element name="numberOfChildren" type="xs:short" minOccurs="0"/>
+            <xs:element name="referenceNumber" type="xs:int" minOccurs="0"/>
+            <xs:element name="controlNumber" type="common:controlNumberType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Numéro de contrôle pour le service civil
+                        (serviceType = 40, 41 et 30 obligatoire)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Kontrollnummer für Zivildienst (serviceType = 40,
+                        41 und 30 zwingend anzugeben)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="breakRules" type="common:breakRuleType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="cantonCode">
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Zürich</xs:documentation>
+                    <xs:documentation xml:lang="fr">Zurich</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Bern</xs:documentation>
+                    <xs:documentation xml:lang="fr">Berne</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Luzern</xs:documentation>
+                    <xs:documentation xml:lang="fr">Lucerne</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Uri</xs:documentation>
+                    <xs:documentation xml:lang="fr">Uri</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="5">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Schwyz</xs:documentation>
+                    <xs:documentation xml:lang="fr">Schwytz</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Obwalden</xs:documentation>
+                    <xs:documentation xml:lang="fr">Obwald</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="7">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Nidwalden</xs:documentation>
+                    <xs:documentation xml:lang="fr">Nidwald</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="8">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Glarus</xs:documentation>
+                    <xs:documentation xml:lang="fr">Glaris</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="9">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Zug</xs:documentation>
+                    <xs:documentation xml:lang="fr">Zoug</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="10">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Freiburg</xs:documentation>
+                    <xs:documentation xml:lang="fr">Fribourg</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="11">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Solothurn</xs:documentation>
+                    <xs:documentation xml:lang="fr">Soleure</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="12">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Basel-Stadt</xs:documentation>
+                    <xs:documentation xml:lang="fr">Bâle-Ville</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="13">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Basel-Landschaft</xs:documentation>
+                    <xs:documentation xml:lang="fr">Bâle-Campagne</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="14">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Schaffhausen</xs:documentation>
+                    <xs:documentation xml:lang="fr">Schaffhouse</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="15">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Appenzell Ausserrhoden</xs:documentation>
+                    <xs:documentation xml:lang="fr">Appenzell Rhodes-Extérieures</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="16">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Appenzell Innerrhoden</xs:documentation>
+                    <xs:documentation xml:lang="fr">Appenzell Rhodes-Intérieures</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="17">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">St. Gallen</xs:documentation>
+                    <xs:documentation xml:lang="fr">Saint-Gall</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="18">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Graubünden</xs:documentation>
+                    <xs:documentation xml:lang="fr">Grisons</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="19">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Aargau</xs:documentation>
+                    <xs:documentation xml:lang="fr">Argovie</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="20">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Thurgau</xs:documentation>
+                    <xs:documentation xml:lang="fr">Thurgovie</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="21">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Tessin</xs:documentation>
+                    <xs:documentation xml:lang="fr">Tessin</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="22">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Waadt</xs:documentation>
+                    <xs:documentation xml:lang="fr">Vaud</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="23">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Wallis</xs:documentation>
+                    <xs:documentation xml:lang="fr">Valais</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="24">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Neuenburg</xs:documentation>
+                    <xs:documentation xml:lang="fr">Neuchâtel</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="25">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Genf</xs:documentation>
+                    <xs:documentation xml:lang="fr">Genève</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="50">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Jura</xs:documentation>
+                    <xs:documentation xml:lang="fr">Jura</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="countryCode">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Schlüsselzahlen der Staaten gemäss
+                http://www.extranet.ahv-iv.ch/ahv/00504/index.htm
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">Nombres clés des états cf.
+                ttp://www.extranet.ahv-iv.ch/ahv/00504/index.htm
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="100"/>
+            <xs:maxInclusive value="999"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="serviceTypeType">
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="10">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Armee, Normaldienst</xs:documentation>
+                    <xs:documentation xml:lang="fr">Armée, service normal</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="11">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Armee, Dienst als Rekrut</xs:documentation>
+                    <xs:documentation xml:lang="fr">Armée, service en qualité de recrue
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="12">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Armee, Gradänderungsdienst</xs:documentation>
+                    <xs:documentation xml:lang="fr">Armée, service d'avancement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="13">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Armee, Rekrutierung</xs:documentation>
+                    <xs:documentation xml:lang="fr">Armée, recrutement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="14">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Armee, Durchdiener Uof</xs:documentation>
+                    <xs:documentation xml:lang="fr">Armée, sof en service long</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="15">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Unterbruch vor UOS</xs:documentation>
+                    <xs:documentation xml:lang="fr">Interruption de service avant ESO</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="16">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Unterbruch während Gradänderungsdiensten</xs:documentation>
+                    <xs:documentation xml:lang="fr">Interruption pendant service d’avancement</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="20">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Zivilschutz, Dienstleistungen Mannschaft (ohne
+                        Kader und Spezialisten)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Protection civile, services de troupe (sans cadres
+                        et spécialistes)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="21">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Zivilschutz, Grundausbildung</xs:documentation>
+                    <xs:documentation xml:lang="fr">Protection civile, formation de base
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="22">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Zivilschutz, Dienstleistungen Kader und
+                        Spezialisten
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Protection civile, service cadres et spécialistes
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="23">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Zivilschutz, Dienstleistungen KommandantIn
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Protection civile, service commandants
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="30">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Kaderbildung Jugend und Sport</xs:documentation>
+                    <xs:documentation xml:lang="fr">Formation de cadres jeunesse et sport
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="40">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Zivildienst, Normaldienst</xs:documentation>
+                    <xs:documentation xml:lang="fr">Service civil, service normal</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="41">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Zivildienst, Dienst mit Rekrutenansatz
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Service civil, service avec taux recrues
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="50">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Jungschützenleiterkurs</xs:documentation>
+                    <xs:documentation xml:lang="fr">Cours moniteurs de jeunes tireurs
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="90">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Mutterschaftsentschädigung</xs:documentation>
+                    <xs:documentation xml:lang="fr">Allocation de maternité</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="91">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Vaterschaftsentschädigung</xs:documentation>
+                    <xs:documentation xml:lang="fr">Allocation de paternité</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="92">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Betreuungsentschädigung</xs:documentation>
+                    <xs:documentation xml:lang="fr">Allocation de soins</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="activityBeforeServiceType">
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Arbeitnehmende (inkl. ANobAG)</xs:documentation>
+                    <xs:documentation xml:lang="fr">Salarié (y.c. celles et ceux dont l’employeur n’est
+                        pas tenu de payer des cotisations)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Selbstständigerwerbende</xs:documentation>
+                    <xs:documentation xml:lang="fr">Indépendant(e)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Nichterwerbstätige</xs:documentation>
+                    <xs:documentation xml:lang="fr">Non-actif(ve)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Arbeitnehmende und Selbständigerwerbende
+                        gleichzeitig
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Simultanément salarié(e) et indépendant(e)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="5">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Arbeitnehmende und Selbständigerwerbende
+                        Versicherter A.F (SAK)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Salarié(e) ou indépendant(e) assuré(e) A.F (CSC)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="paymentMethodType">
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">An leistungsberechtigte Person direkt
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Directement à l’ayant droit</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">An Arbeitgeber</xs:documentation>
+                    <xs:documentation xml:lang="fr">A l’employeur</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Aufteilung zwischen Arbeitgeber und versicherter
+                        Person
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Répartition entre employeur et personne assurée
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Aufteilung zwischen mehreren Arbeitgeber sowie mit oder ohne der versicherten Person</xs:documentation>
+                    <xs:documentation xml:lang="fr">Répartition entre plusieurs employeurs ainsi que avec ou sans la personne assurée</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="breakRuleType">
+        <xs:sequence>
+            <xs:element name="breakRuleCode" type="common:breakRuleCodeType" maxOccurs="50"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="breakRuleCodeType">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="500"/>
+            <xs:maxInclusive value="600"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="breakRuleWeakType">
+        <xs:sequence>
+            <xs:element name="breakRuleCode" type="common:breakRuleCodeWeakType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="breakRuleCodeWeakType">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="9999"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="deliveryOfficeType">
+        <xs:sequence>
+            <xs:element name="officeIdentifier">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Nummer der Ausgleichskasse</xs:documentation>
+                    <xs:documentation xml:lang="fr">Numéro de la caisse de compensation
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:maxInclusive value="999"/>
+                        <xs:minInclusive value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="branch">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Nummer der Zweigstelle</xs:documentation>
+                    <xs:documentation xml:lang="fr">Numéro de l'agence</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:maxInclusive value="999"/>
+                        <xs:minInclusive value="0"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="dateRestricted">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Datum mit einer Einschränkung, um nicht alles zu
+                erlauben
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">Date avec une restriction pour ne pas tout autoriser
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:date">
+            <xs:minInclusive value="1980-01-01"/>
+            <xs:maxInclusive value="2099-01-01"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="yearMonthRestricted">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Datum im Format Monat-Jahr mit einer Einschränkung,
+                um nicht alles zu erlauben
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">Date au format mois-année avec une restriction pour
+                ne pas tout autoriser
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:gYearMonth">
+            <xs:minInclusive value="1980-01"/>
+            <xs:maxInclusive value="2099-01"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="controlNumberType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Contrainte sur cette valeur pour être représentée en
+                Smallint en DB (32767 étant le max de ce type)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:unsignedInt">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="32767"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="commandDetailsType">
+        <xs:sequence>
+            <xs:element name="inProgress" type="common:enumYesNoAllType"/>
+            <xs:element name="inConflict" type="common:enumYesNoAllType"/>
+            <xs:element name="canceled" type="common:enumYesNoAllType"/>
+            <xs:element name="history" type="common:enumYesNoAllType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="enumYesNoAllType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="All"/>
+            <xs:enumeration value="No"/>
+            <xs:enumeration value="Yes"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="decimal10-2">
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="-99999999.99"/>
+            <xs:maxInclusive value="99999999.99"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="decimal16-2">
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="-99999999999999.99"/>
+            <xs:maxInclusive value="99999999999999.99"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="paternityLeaveDataType">
+        <xs:sequence>
+            <xs:element name="newbornDateOfBirth" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Geburtsdatum des Kindes das Anspruch auf Vaterschaftsurlaub gibt
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="numberOfWorkdays" type="xs:short">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Anzahl entschädigte Werktage</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="paternityLeaveType">
+                <xs:simpleType>
+                    <xs:restriction base="xs:integer">
+                        <xs:enumeration value="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="de">Am Stück (14 aufeinander folgdende Kalendertage)
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="2">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="de">Wochenweise (2 von einander getrennte Urlaube von je 7
+                                    aufeinanderfolgende Kalendertage)
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="3">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="de">Tageweise (einzelne oder zusammenhängende Tage von
+                                    weniger als 7 Tage)
+                                </xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="4">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="de">Gemischt (wochen- und tageweise)</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="childDomicile" type="common:insurantDomicileType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Wohnsitzland des Kindes</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="childInsurantVn" type="eCH-0044f:vnType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">AHV Nummer des zu unterstützenden Kindes</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="careLeaveDataType">
+        <xs:sequence>
+            <xs:element name="childInsurantVn" type="eCH-0044f:vnType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">AHV Nummer des zu unterstützenden Kindes</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="careLeaveEventID" type="xs:int">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Identifikationsnummer pro Fall mit Anspruch auf
+                        Betreuungsentschädi-gung
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

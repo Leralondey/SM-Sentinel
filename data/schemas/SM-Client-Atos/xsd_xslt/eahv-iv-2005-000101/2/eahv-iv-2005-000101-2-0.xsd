@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007-f/6"
+           xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/6"
+           xmlns:eahv-iv-2014="http://www.eahv-iv.ch/xmlns/eahv-iv-2014-000101/1"
+           xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-napg-common/2"
+           xmlns="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-000101/2"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-000101/2"
+           elementFormDefault="qualified"
+           version="2.0">
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0007-f/6" schemaLocation="eCH-0007-6-0f.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4" schemaLocation="eCH-0044-4-1f.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="eCH-0058-5-0.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/6" schemaLocation="eCH-0097-6-0.xsd"/>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2014-000101/1"
+               schemaLocation="eahv-iv-2014-000101-1-2.xsd"/>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-napg-common/2"
+               schemaLocation="eahv-iv-napg-common-2-0.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation xml:lang="fr">
+            SubMessageType: 000101
+            Annonce envoyée par la CdC à une caisse afin de l'informer de l'assignement d'un cas. Contient toutes les
+            données nécessaires pour traitement du cas par la caisse.
+        </xs:documentation>
+        <xs:documentation xml:lang="de">
+            SubMessageType: 000101
+            Meldung, die von der ZAS an eine Ausgleichskasse geschickt wird, um sie über die Zuweisung eines Falls zu
+            informieren.
+            Enthält alle Angaben Daten, die für die Bearbeitung des Falls durch die Kasse erforderlich sind.
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType name="contentType">
+        <xs:sequence>
+            <xs:element name="servicePeriodId" type="servicePeriodIdType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Identifiant de la période de service provenant de Seodor
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Identifikator der Dienstperiode aus Seodor</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="servicePeriod" type="eahv-iv-2014:contentType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">La structure de la période de service est reprise du schéma de
+                        Seodor
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Die Struktur der Dienstzeit wurde aus dem Schema von SEODOR
+                        übernommen.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="form" type="formType" minOccurs="0"/>
+
+            <xs:element name="compensationOfficeChoiceRule" type="common:compensationOfficeChoiceRuleType"/>
+
+            <xs:element name="overlapServicePeriod" type="servicePeriodIdType" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Périodes de services qui entre en conflit avec la période de cette
+                        annonce
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Dienstperioden, die mit dem Zeitraum dieser Meldung in Konflikt
+                        treten
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <!-- TODO Attachment will be added in a future version -->
+            <!-- <xs:element name="attachment" type="attachmentType" minOccurs="0" maxOccurs="unbounded"/>-->
+
+            <xs:element name="assignmentsHistory" type="common:assignmentsHistoryType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="formType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Données complétées par l'astreint.
+                Ce bloc est absent si le formulaire n'est pas confirmé par l'astreint.
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Vom Dienstleistenden ausgefüllte Daten.
+                Dieser Block ist nicht vorhanden, wenn das Formular nicht vom Dienstleistenden bestätigt wird.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="child" type="childType" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Enfants de l'astreint</xs:documentation>
+                    <xs:documentation xml:lang="fr">Kinder des Dienstleistenden</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="fosterStepChild" type="childType" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Enfants recueillis ou beaux-enfants de l'astreint</xs:documentation>
+                    <xs:documentation xml:lang="de">Pflegekinder oder Stiefkinder des Dienstleistenden
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+
+            <xs:element name="additionalChildcareExpenses" type="additionalChildcareExpensesType"/>
+
+            <xs:element name="preServiceActivity" type="preServiceActivityType"/>
+            <xs:element name="bankAccountDetails" type="bankAccountDetailsType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="preServiceActivityType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Activité avant le service de l'astreint.</xs:documentation>
+            <xs:documentation xml:lang="de">Aktivität vor dem Dienst des Dienstleistende.</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="employee" type="employeeType"/>
+            <xs:element name="student" type="studentType"/>
+            <xs:element name="notGainfullyEmployed" type="notGainfullyEmployedType"/>
+            <xs:element name="unemployed" type="unemployedType"/>
+            <xs:element name="freelance" type="freelanceType"/>
+            <xs:element name="apprentice" type="apprenticeType"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="apprenticeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Apprenti</xs:documentation>
+            <xs:documentation xml:lang="de">Lehrling</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="employer" type="employerType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="freelanceType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Indépendant avec/sans emploi additionnel</xs:documentation>
+            <xs:documentation xml:lang="de">Selbständigerwerbender mit/ohne zusätzlichem Beschäftigungsverhältnis
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="compensationOfficeAccountNumber" type="compensationOfficeAccountNumberType"
+                        minOccurs="0"/>
+            <xs:element name="employer" type="employerType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="notGainfullyEmployedType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Astreint sans activité lucrative</xs:documentation>
+            <xs:documentation xml:lang="de">Dienstleistender ohne Erwerbstätigkeit</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="compensationOfficeAccountNumber" type="compensationOfficeAccountNumberType"
+                        minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="compensationOfficeAccountNumberType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Numéro de compte de l'astreint à la caisse de compensation
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Kontonummer des Dienstleistenden bei der Ausgleichskasse
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="100"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="employeeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Employé par un ou plusieurs employeurs</xs:documentation>
+            <xs:documentation xml:lang="de">Bei einem oder mehreren Arbeitgebern beschäftigt</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="mainEmployer" type="employerType"/>
+            <xs:element name="otherEmployer" type="employerType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="employerType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Employeur fourni par l'astreint sous forme d'IDE.
+                Les champs "name" et "address" proviennent du registre IDE.
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Angabe des Arbeitgebers durch den Dienstleistenden in Form der UID. Die
+                Felder "name" und "address" stammen aus dem UID-Register
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="uid" type="eCH-0097:uidStructureType"/>
+            <xs:element name="name">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Nom de l'employeur selon registre IDE</xs:documentation>
+                    <xs:documentation xml:lang="de">Name des Arbeitgebers gemäss UID-Register</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="address">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Adresse de l'employeur selon registre IDE</xs:documentation>
+                    <xs:documentation xml:lang="de">Adresse des Arbeitgebers gemäss UID-Register</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="studentType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Aux études.</xs:documentation>
+            <xs:documentation xml:lang="de">Auf das Studium.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="school" type="schoolType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="additionalChildcareExpensesType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">L'astreint a-t-il des dépenses supplémentaires pour la garde des enfants?
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Hat der Dienstleistende zusätzliche Ausgaben für die Kinderbetreuung?
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:boolean"/>
+    </xs:simpleType>
+
+    <xs:complexType name="childType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Données d'un enfant (propre, beaux-enfants ou recueillis)</xs:documentation>
+            <xs:documentation xml:lang="de">Daten eines Kindes (eigenes, Stief- oder Pflegekind)</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="vn" type="eCH-0044:vnType" minOccurs="0"/>
+            <xs:element name="name" type="eCH-0044:baseNameType"/>
+            <xs:element name="firstName" type="eCH-0044:baseNameType"/>
+            <xs:element name="dateOfBirth" type="eCH-0044:datePartiallyKnownType"/>
+            <xs:element name="schoolChildrenEndDate" type="xs:date" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="schoolType">
+        <xs:sequence>
+            <xs:element name="name" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="canton" type="eCH-0007:cantonAbbreviationType" minOccurs="0"/>
+            <xs:element name="endDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Date de fin de la formation de l'astreint selon l'attestation
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Datum des Abschlusses der Ausbildung des Dienstleistenden gemäß der
+                        Bescheinigung
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="unemployedType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">L'astreint est au chômage.</xs:documentation>
+            <xs:documentation xml:lang="de">Der Dienstleistende ist arbeitslos.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="employer" type="employerType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="bankAccountDetailsType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Détails du compte pour le versement de l'indemnité</xs:documentation>
+            <xs:documentation xml:lang="de">Kontoinformationen für die Auszahlung der Entschädigung</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="accountOwnerName">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Nom du titulaire du compte</xs:documentation>
+                    <xs:documentation xml:lang="de">Name des Kontoinhabers</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="bankName">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Nom de la banque</xs:documentation>
+                    <xs:documentation xml:lang="de">Name der Bank</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="iban">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">IBAN for the payement</xs:documentation>
+                    <xs:documentation xml:lang="de">IBAN für die Überweisung</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[A-Z]{2}[0-9]{2}[A-Z0-9]{1,30}"/>
+                        <xs:minLength value="14"/>
+                        <xs:maxLength value="34"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="servicePeriodIdType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Couple business process id et version permettant d'identifier une
+                période de service de Seodor
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Paar aus business process id und Version zur Identifizierung einer Seodors
+                Dienstperiode
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType"/>
+            <xs:element name="version" type="eahv-iv-2014:versionType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="sourceType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Enumération utilisée par l'attribut de définition de la source
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Aufzählung für die Quellenbezeichnungen</xs:documentation>
+
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <!-- Utiliser des termes en anglais -->
+            <xs:enumeration value="INSURANT"/>
+            <xs:enumeration value="HISTORY"/>
+            <xs:enumeration value="REGISTER"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="common:headerType"/>
+                <xs:element name="content" type="contentType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+ 

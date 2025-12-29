@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Lars Steffen (AWK Group AG) -->
+<!-- Mit XMLSpy v2015 rel. 3 (http://www.altova.com) von IGS GmbH (IGS GmbH - Informatik) bearbeitet -->
+<!--
+==============================================================================
+ Revision History:
+==============================================================================
+¦  Date		¦Ver.	¦Who¦      Change (where, what, why)
+==============================================================================
+¦ 				¦		¦		¦ 
+¦ 24.03.17	¦ 1.0	¦ab	¦ - Namespace xmlns:eCH-0046="http://www.ech.ch/xmlns/eCH-0046/4" entfernt, da in dieser Meldung nicht gebraucht.
+¦ 05.12.16	¦ 1.0	¦ab	¦ - CR-4: Namespace korrigiert von "http://www.eahv-iv.ch/xmlns/203x/1" nach "http://www.eahv-iv.ch/xmlns/eahv-iv-203x-000101/1“ 
+¦ 17.11.16	¦ 1.0	¦ab	¦ - definitive Meldungstypen und Namespaces usw. eingefuegt
+¦ 				¦		¦		¦ - Referenz von eahv-iv-common auf  "eahv-iv-2031:extensionType" obwohl minOccurs="0" maxOccurs="0" ist.
+¦ 11.03.19	¦ 2.0	¦ Stl	¦ - Namespaces für Version 2 angepasst (Änderungen in AGK-common: CR-16, CR-18)
+¦ 				¦		¦		¦ 
+==============================================================================
+-->
+<xs:schema xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" xmlns:AGK-common="http://www.eahv-iv.ch/xmlns/eahv-iv-AGK-common/2" xmlns:eahv-iv-2033="http://www.eahv-iv.ch/xmlns/eahv-iv-2033-000101/2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sd="http://www.swissdec.ch/schema/sd/20130514/SalaryDeclaration" targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2033-000101/2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">AGK-Bestellung Kontrollunterlagen</xs:documentation>
+		<xs:documentation xml:lang="fr">AGK-Commande documents de révision</xs:documentation>
+		<xs:documentation xml:lang="it">AGK-Comanda documenti di revisione</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4"/>
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-AGK-common/2"/>
+	<xs:complexType name="headerType">
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="0"/>
+			<!-- keep minOccurs=maxOccurs=0 for the purpose of keeping track of elements -->
+			<xs:element name="declarationLocalReference" type="eCH-0058:declarationLocalReferenceType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="uniqueIdBusinessTransaction" type="eCH-0058:uniqueIdBusinessTransactionType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="2033"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000101"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="eventDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="modificationDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:actionType">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue Nachricht</xs:documentation>
+								<xs:documentation xml:lang="fr">Message nouveau</xs:documentation>
+								<xs:documentation xml:lang="it">Nuovo messaggio</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" fixed="false"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" fixed="false"/>
+			<xs:element name="attachment" type="eahv-iv-common:attachmentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="extension" type="eahv-iv-2033:extensionType" minOccurs="0" maxOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="extensionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Elemente, welche im eCH-0058/4-Standard nicht vorgesehen sind, werden im Attribut „extension“ geführt.</xs:documentation>
+			<xs:documentation xml:lang="fr">Les éléments qui ne sont pas prévus dans le standard eCH-0058/4 sont définis dans l'élément 'extension'</xs:documentation>
+			<xs:documentation xml:lang="it">Gli elementi che non sono incluse nello standard eCH-0058/4 sono definiti in 'estensione' l'elemento</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contactInformation" type="eahv-iv-common:contactInformationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="orderId" type="AGK-common:orderIdType">
+				<xs:annotation>
+					<xs:documentation>AuftragsId</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="timeStamp" type="AGK-common:timeStampType">
+				<xs:annotation>
+					<xs:documentation>Zeitstempel für ganzen Datensatz</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="orderComment" type="AGK-common:orderCommentType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kommentar zum Auftrag</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sponsor" type="AGK-common:organisationIdentificationExtensionType">
+				<xs:annotation>
+					<xs:documentation>Auftraggeber</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contractor" type="AGK-common:organisationIdentificationExtensionType">
+				<xs:annotation>
+					<xs:documentation>Auftragnehmer</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="organisation" type="AGK-common:organisationExtensionType">
+				<xs:annotation>
+					<xs:documentation>Arbeitgeber/Mitglied zu kontrollierende Organisation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+			<xs:documentation xml:lang="fr">Déclaration de l'élément racine pour le message.xml</xs:documentation>
+			<xs:documentation xml:lang="it">Dichiarazione di l'elemento radice per message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="eahv-iv-2033:headerType"/>
+				<xs:element name="content" type="eahv-iv-2033:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

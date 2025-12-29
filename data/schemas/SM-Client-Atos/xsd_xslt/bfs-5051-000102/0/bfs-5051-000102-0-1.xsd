@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/3"
+	xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/1"
+	xmlns:bfs-5051-000102="http://www.bfs.admin.ch/xmlns/bfs-5051-000102/0"
+	targetNamespace="http://www.bfs.admin.ch/xmlns/bfs-5051-000102/0"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Nachlassvertrag</xs:documentation>
+	</xs:annotation>
+
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/3" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/1" />
+		
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von eCH-0058:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="eCH-0058:declarationLocalReferenceType" minOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="5051"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000102"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" minOccurs="0" maxOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="uniqueIdBusinessCase" type="eCH-0058:uniqueIdBusinessCaseType"/>
+						<xs:element name="totalNumberOfPackages" type="eCH-0058:totalNumberOfPackagesType"/>
+						<xs:element name="numberOfActualPackage" type="eCH-0058:numberOfActualPackageType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="object" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0"/>
+			<xs:element name="messageDate" type="xs:dateTime"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:initialMessageDateType" minOccurs="0"/>
+			<xs:element name="eventDate" type="xs:dateTime" minOccurs="0" maxOccurs="0" />
+			<xs:element name="modificationDate" type="xs:dateTime" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="testData" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="debtRestructuringAgreementType" >
+		<xs:sequence>
+			<xs:element name="NUM_ID" type="xs:string" />
+			<xs:element name="DOC_ID" type="bfs-5051-000102:decimalOrEmptyType" />
+			<xs:element name="URL" type="xs:string" />
+			<xs:element name="PUB_DOC_TM" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="FOSC_NR" type="bfs-5051-000102:decimalOrEmptyType" />
+			<xs:element name="kindOfdebtRestructuringAgreement">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value=""/>
+						<xs:enumeration value="NA00">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nachlassstundungsgesuch</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA01">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Provisorische Nachlassstundung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA02">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nachlassstundung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA03">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Schuldenruf im Nachlassverfahren</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA04">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Liquidation mit Vermögensabtretung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA05">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Verlängerung der Nachlassstundung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA06">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Widerruf der Nachlassstundung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA07">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Verhandlung über die Bestätigung des Nachlassvertrages</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA08">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Bestätigung des Nachlassvertrages</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA09">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Ablehnung des Nachlassvertrages</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA10">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Widerruf des Nachlassvertrages</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA11">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kollokationsplan im Nachlassverfahren mit Vermögensabtretung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA12">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Verteilungsliste und Schlussrechnung im Nachlassverfahren mit Ver-mögensabtretung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA13">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nachlassverfahren von Banken und Sparkassen</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="NA14">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Verschiedenes</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="DE" type="xs:string" />
+			<xs:element name="FR" type="xs:string" />
+			<xs:element name="IT" type="xs:string" />
+			<xs:element name="LANG_CD" type="xs:string" />
+			<xs:element name="CANTON_CD" type="xs:string" />
+			<xs:element name="ORGANISATION_TX" type="xs:string" />
+			<xs:element name="POSTAL_CODE_TX" type="xs:string" />
+			<xs:element name="TOWN_TX" type="xs:string" />
+			<xs:element name="PUB_TITLE" type="xs:string" />
+			<xs:element name="PERS_LASTNAME" type="xs:string" />
+			<xs:element name="PERS_FIRSTNAME" type="xs:string" />
+			<xs:element name="PERS_WORK" type="xs:string" />
+			<xs:element name="BIRTH_PLACE" type="xs:string" />
+			<xs:element name="PERS_BIRTH_COUNTRY" type="xs:string" />
+			<xs:element name="PERS_BIRTH_DATE" type="xs:string" />
+			<xs:element name="PERS_DEATH_DATE" type="xs:string" />
+			<xs:element name="FIRM_NAME" type="xs:string" />
+			<xs:element name="STREET" type="xs:string" />
+			<xs:element name="ZIPCODE" type="xs:string" />
+			<xs:element name="CITY" type="xs:string" />
+			<xs:element name="COUNTRY" type="xs:string" />
+			<xs:element name="AK_ID" type="xs:string" />
+			<xs:element name="AK_accountNumber" type="xs:string" />
+			<xs:element name="UID" type="eCH-0097:uidStructureType" />
+			<xs:element name="ENT-ID" type="bfs-5051-000102:decimalOrEmptyType" />
+			<xs:element name="BURNR" type="bfs-5051-000102:decimalOrEmptyType" />
+			<xs:element name="NA_NUM_ID_ALTER" type="xs:string" />
+			<xs:element name="NOTICE" type="xs:string" />
+			<xs:element name="REMARK" type="xs:string" />
+			<xs:element name="SUBMITION_ZIPCODE" type="xs:string" />
+			<xs:element name="SUBMITION_CITY" type="xs:string" />
+			<xs:element name="SUBMITION_SUBMITOR" type="xs:string" />
+			<xs:element name="NA_DURATION" type="bfs-5051-000102:decimalOrEmptyType" />
+			<xs:element name="NA_DURATION_DATE" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="NA_COURT_ZIPCODE" type="xs:string" />
+			<xs:element name="NA_COURT_CITY" type="xs:string" />
+			<xs:element name="NA_COURT_DATE" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="NA_REVOC_DATE" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="NA_CONFIRM_DATE" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="NA01_PROV_DATE" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="NA01_PROV_DURATION" type="bfs-5051-000102:decimalOrEmptyType" />
+			<xs:element name="NA01_PROV_DURATION_DATE" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="NA01_PROV_CURATOR" type="xs:string" />
+			<xs:element name="NA02_END_DATE" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="NA02_CURATOR" type="xs:string" />
+			<xs:element name="NA04_LIQUIDATOR" type="xs:string" />
+			<xs:element name="NA05_PROLONG_DATE" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="NA05_PROLONG_DELAY_UNIT" >
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value=""/>
+						<xs:enumeration value="DAY">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Tag</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="MONTH">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Monat</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="WEEK">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Woche</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="YEAR">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Jahr</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="NA05_PROLONG_DELAY" type="bfs-5051-000102:decimalOrEmptyType" />
+			<xs:element name="NA05_PROLONG_END_DATE" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="NA07_COURT_TIME" type="xs:string" />
+			<xs:element name="NA07_COURT_ADDRESS" type="xs:string" />
+			<xs:element name="NA09_REJECT_DATE" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="NA11_PLAN_CONTEST_START_DATE" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="NA11_PLAN_CONTEST_END_DATE" type="bfs-5051-000102:dateOrEmptyType" />
+			<xs:element name="NA11_PLAN_CONTEST_DELAY" type="bfs-5051-000102:decimalOrEmptyType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="empty">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=""/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="dateOrEmptyType">
+		<xs:union memberTypes="xs:date bfs-5051-000102:empty"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="decimalOrEmptyType">
+		<xs:union memberTypes="xs:decimal bfs-5051-000102:empty"/>
+	</xs:simpleType>
+	
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Nachlassvertrag" type="bfs-5051-000102:debtRestructuringAgreementType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:element name="header">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für header.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="bfs-5051-000102:headerType">
+					<xs:attribute name="minorVersion" type="xs:integer" use="required" />
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="bfs-5051-000102:headerType" />
+				<xs:element name="content" type="bfs-5051-000102:contentType" />
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

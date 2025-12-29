@@ -1,0 +1,2695 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010-f/8"
+           xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4"
+           xmlns:eai-2401-common="http://www.eahv-iv.ch/xmlns/eahv-iv-2401-common/3"
+           xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2401-common/3"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="3.1">
+
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Basistypen für die Meldungen SWAP 2401.</xs:documentation>
+        <xs:documentation xml:lang="fr">Types de base pour les messages SWAP 2401.</xs:documentation>
+        <xs:documentation xml:lang="it">Tipi di base per i messaggi SWAP 2401.</xs:documentation>
+    </xs:annotation>
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0010-f/8" schemaLocation="eCH-0010-8-0f.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4" schemaLocation="eCH-0044-4-1f.xsd"/>
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" schemaLocation="eahv-iv-common-4-0.xsd"/>
+
+	<!-- SWAP header specifics -->
+
+	<xs:simpleType name="documentTypeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Dokumenttyp, fachliche Beschreibung des Dokuments.
+			</xs:documentation>
+			<xs:documentation xml:lang="fr">Type de document, description technique du document.
+			</xs:documentation>
+			<xs:documentation xml:lang="it">Tipo di documento, descrizione tecnica del documento.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(01)(\.[0-9][0-9])*" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="attachmentType">
+		<xs:sequence>
+			<xs:element name="title" type="eahv-iv-common:attachmentTitleType" />
+			<xs:element name="documentDate" type="eahv-iv-common:documentDateType" />
+			<xs:element name="leadingDocument" type="eahv-iv-common:leadingDocumentType" />
+			<xs:element name="sortOrder" type="eahv-iv-common:sortOrderType" />
+			<xs:element name="documentFormat">
+				<xs:simpleType>
+					<xs:restriction base="eahv-iv-common:documentFormatType">
+						<xs:enumeration value="application/pdf" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="documentType" type="eahv-iv-common:documentKindType" />
+			<xs:element name="file" type="eahv-iv-common:attachmentFileType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="extensionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Attribute, welche im eCH-0058/4-Standard nicht vorgesehen sind,
+				werden im Attribut "extension" geführt.
+			</xs:documentation>
+			<xs:documentation xml:lang="fr">Les attributs qui ne sont pas prévus dans eCH-0058/4-Standard
+				doivent être effectués dans l'attribut
+				"extension".
+			</xs:documentation>
+			<xs:documentation xml:lang="it">Gli attributi che non sono previsti nel eCH-0058/4-Standard
+				vengono effettuati nel attributo
+				"extension".
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contactInformation" type="eahv-iv-common:contactInformationType" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- SWAP content specifics -->
+
+	<xs:complexType name="addressInformationType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Der Standard addressInformationType aus eCH-0010 ist zu
+				umfangreich und wird daher nur partiell
+				verwendet
+			</xs:documentation>
+			<xs:documentation xml:lang="fr">Le standard addressInformationType de eCH-0010 est trop vaste et
+				n'est donc que partiellement utilisé
+			</xs:documentation>
+			<xs:documentation xml:lang="it">Il standard addressInformationType da eCH-0010 e troppo vasto ed
+				e quindi utilizzato solo parzialmente
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="street" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Strasse</xs:documentation>
+					<xs:documentation xml:lang="fr">Rue</xs:documentation>
+					<xs:documentation xml:lang="it">Via</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="houseNumber" type="eai-2401-common:baseNameMax25Type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nummer</xs:documentation>
+					<xs:documentation xml:lang="fr">Numéro</xs:documentation>
+					<xs:documentation xml:lang="it">Numero</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="zipCode" type="eCH-0010:foreignZipCodeType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Postleitzahl</xs:documentation>
+					<xs:documentation xml:lang="fr">Code postal</xs:documentation>
+					<xs:documentation xml:lang="it">Codice postale</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="town" type="eCH-0010:townType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Stadt</xs:documentation>
+					<xs:documentation xml:lang="fr">Ville</xs:documentation>
+					<xs:documentation xml:lang="it">Città</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="region" type="eai-2401-common:baseNameMax65Type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Region</xs:documentation>
+					<xs:documentation xml:lang="fr">Région</xs:documentation>
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="country" type="eCH-0010:countryIdISO2Type">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Land ISO2</xs:documentation>
+					<xs:documentation xml:lang="fr">Pays ISO2</xs:documentation>
+					<xs:documentation xml:lang="it">Paese ISO2</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="institutionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="country" type="eai-2401-common:countryIdIso2EftaType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="institutionCode" type="eai-2401-common:baseNameMax25Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="institutionName" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="address" type="eai-2401-common:addressInformationType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="phone" type="eai-2401-common:phoneNumberType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="fax" type="eai-2401-common:phoneNumberType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="email" type="eai-2401-common:emailAddressType" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="employmentDetailType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="occupation" type="eai-2401-common:baseNameMax255Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="employmentType" type="eai-2401-common:enumEmploymentType" minOccurs="0" />
+			<xs:element name="startDateEmployment" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="endDateEmployment" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="retirementDateFromEmployment" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="workingHoursPerWeek" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+			<xs:element name="incomeAmount" type="eai-2401-common:generalAmountType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumEmploymentType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="purs_emp">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Person still pursuing gainful employment
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="purs_s_emp">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Person still pursuing self-employment</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ceas_emp">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Person ceased to pursue gainful employment
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ceas_s_emp">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Person ceased to pursue self-employment
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="int_ret_e">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Person intends to retire from gainful employment
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="int_ret_se">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Person intends to retire from self-employment
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="int_tu_e">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Person intends to take up gainful employment
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="int_tu_se">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Person intends to take up self-employment
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="generalAmountType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="amount" type="xs:decimal" />
+			<xs:element name="currency" type="eai-2401-common:currencyIdISOType" />
+			<xs:element name="amountEffectivSince" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="paymentFrequency" type="eai-2401-common:enumPaymentFrequencyType" />
+			<xs:element name="paymentFrequencyOther" type="eai-2401-common:baseNameMax255Type" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumPaymentFrequencyType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5" />
+			<xs:enumeration value="year">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">yearly</xs:documentation>
+					<xs:documentation xml:lang="de">jährlich</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="quart">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">quarterly</xs:documentation>
+					<xs:documentation xml:lang="de">viertel jährlich</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mon12">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">monthly (12 months)</xs:documentation>
+					<xs:documentation xml:lang="de">monatlich (12 Monate)</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mon13">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">monthly (13 months)</xs:documentation>
+					<xs:documentation xml:lang="de">monatlich (13 Monate)</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mon14">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">monthly (14 months)</xs:documentation>
+					<xs:documentation xml:lang="de">monatlich (14 Monate)</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="week">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">weekly</xs:documentation>
+					<xs:documentation xml:lang="de">wöchentlich</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="other">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">other</xs:documentation>
+					<xs:documentation xml:lang="de">anderes</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="benefitDetailType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="benefitType" type="eai-2401-common:enumBenefitType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="benefitTypeOther" type="eai-2401-common:baseNameMax255Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="benefitStatus" type="eai-2401-common:enumBenefitStatusType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="benefitStatusOther" type="eai-2401-common:baseNameMax255Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="institution" type="eai-2401-common:institutionType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="pin" type="eai-2401-common:baseNameMax65Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="caseNumber" type="eai-2401-common:baseNameMax65Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="benefitsPaymentStartDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="benefitsPaymentEndDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="entitlementBenefitsStartDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="entitlementBenefitsEndDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="benefitAmount" type="eai-2401-common:generalAmountType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="sicknessBenefitEntitlement" type="eai-2401-common:enumNoYesNotdetermined" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumBenefitType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="4" />
+			<xs:enumeration value="bd1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Continued wage or salary payments in case of illness
+					</xs:documentation>
+					<xs:documentation xml:lang="de">Lohnfortzahlung im Krankheitsfall</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd2">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Sickness insurance cash benefits for incapacity of work
+					</xs:documentation>
+					<xs:documentation xml:lang="de">Krankentagegeld</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd3">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Short term cash benefits for accident at work or
+						occupational disease
+					</xs:documentation>
+					<xs:documentation xml:lang="de">kurzfristige Leistungen wegen Arbeitsunfalls/
+						Berufskrankheit
+					</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd4">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Rehabilitation allowances</xs:documentation>
+					<xs:documentation xml:lang="de">Rehabilitationsbeihilfen</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd5">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Family benefit</xs:documentation>
+					<xs:documentation xml:lang="de">Familienbeihilfe</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd6">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Unemployment benefit</xs:documentation>
+					<xs:documentation xml:lang="de">Arbeitslosenunterstuetzung</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd7">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Pre-retirement benefit</xs:documentation>
+					<xs:documentation xml:lang="de">Vorruhestandsleistung</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd8">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Invalidity pension</xs:documentation>
+					<xs:documentation xml:lang="de">Invaliditaetsrente</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd9">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Early old age pension</xs:documentation>
+					<xs:documentation xml:lang="de">vorzeitige Altersrente</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd10">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Old-age pension</xs:documentation>
+					<xs:documentation xml:lang="de">Altersrente</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd11">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Survivor's pension</xs:documentation>
+					<xs:documentation xml:lang="de">Hinterlassenenrente</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd12">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Pension for accident at work or occupational disease
+					</xs:documentation>
+					<xs:documentation xml:lang="de">Rente wegen Arbeitsunfalls/ Berufskrankheit
+					</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd13">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Pension type benefit payable under compulsory motor
+						insurance (road accident indemnity)
+					</xs:documentation>
+					<xs:documentation xml:lang="de">Rente KfZ-Haftpflicht (Schadensersatz Verkehrsunfall)
+					</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bd14">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Other benefits</xs:documentation>
+					<xs:documentation xml:lang="de">Andere Leistungen</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumBenefitStatusType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5" />
+			<xs:enumeration value="apl">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Applied</xs:documentation>
+					<xs:documentation xml:lang="de">Beantragt</xs:documentation>
+					<xs:documentation xml:lang="fr">Applique</xs:documentation>
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="grn">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Granted</xs:documentation>
+					<xs:documentation xml:lang="de">Erteilt</xs:documentation>
+					<xs:documentation xml:lang="fr">Accorde</xs:documentation>
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="den">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Denied</xs:documentation>
+					<xs:documentation xml:lang="de">Abgelehnt</xs:documentation>
+					<xs:documentation xml:lang="fr">Refuse</xs:documentation>
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="prov">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Provisional</xs:documentation>
+					<xs:documentation xml:lang="de">Provisorisch</xs:documentation>
+					<xs:documentation xml:lang="fr">Provisoire</xs:documentation>
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumNoYesNotdetermined">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="no">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">No</xs:documentation>
+					<xs:documentation xml:lang="de">Nein</xs:documentation>
+					<xs:documentation xml:lang="fr">Non</xs:documentation>
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="yes">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Yes</xs:documentation>
+					<xs:documentation xml:lang="de">Ja</xs:documentation>
+					<xs:documentation xml:lang="fr">Oui</xs:documentation>
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="not_det">
+				<xs:annotation>
+					<xs:documentation xml:lang="en" />
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumNoYes">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="no">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">No</xs:documentation>
+					<xs:documentation xml:lang="de">Nein</xs:documentation>
+					<xs:documentation xml:lang="fr">Non</xs:documentation>
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="yes">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Yes</xs:documentation>
+					<xs:documentation xml:lang="de">Ja</xs:documentation>
+					<xs:documentation xml:lang="fr">Oui</xs:documentation>
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="paymentInfoType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="paymentRecepient" type="eai-2401-common:enumPaymentRecepientType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="bankInformation" type="eai-2401-common:bankWorldType" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="bankWorldType">
+		<xs:sequence>
+			<xs:element name="accountHolderName" type="eai-2401-common:baseNameMax255Type" minOccurs="0" maxOccurs="1">
+			</xs:element>
+			<xs:choice>
+				<xs:element name="SEPAAccount" type="eai-2401-common:SEPABankDetailsType" minOccurs="1" maxOccurs="1" />
+				<xs:element name ="NonSEPAAccount" type="eai-2401-common:NonSEPAAccountType" minOccurs="1" maxOccurs="1" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SEPABankDetailsType">
+		<xs:sequence>
+			<xs:element name="iban" type="eai-2401-common:IBANType" minOccurs="1" maxOccurs="1" />
+			<xs:element name="bicSwift" type="eai-2401-common:BICSWIFTType" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="IBANType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[a-zA-Z0-9]{7}([a-zA-Z0-9]?){0,16}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BICSWIFTType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([a-zA-Z]){4}([a-zA-Z]){2}([0-9a-zA-Z]){2}([0-9a-zA-Z]{3})?" />
+			<xs:minLength value="1" />
+			<xs:maxLength value="11" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="NonSEPAAccountType">
+		<xs:sequence>
+			<xs:element name="accountNumber" type="eai-2401-common:baseNameMax65Type" minOccurs="1" maxOccurs="1" />
+			<xs:element name="bicSwift" type="eai-2401-common:BICSWIFTType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="bankName" type="eai-2401-common:baseNameMax65Type" minOccurs="1" maxOccurs="1" />
+			<xs:element name="BankAddress" type="eai-2401-common:addressInformationType" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="guardianType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="eai-2401-common:baseNameMax155Type" minOccurs="1" maxOccurs="1" />
+			<xs:element name="firstName" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="reason" type="eai-2401-common:baseNameMax255Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="address" type="eai-2401-common:addressInformationType"  minOccurs="0" maxOccurs="1" />
+			<xs:element name="phone" type="eai-2401-common:phoneNumberType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="email" type="eai-2401-common:emailAddressType" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumPaymentRecepientType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3" />
+			<xs:enumeration value="ins">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Claimant</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="leg">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Representative</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="personType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="pinSendingInstitution" type="eCH-0044:vnType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="familyName" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="forenames" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="sex" type="eCH-0044:sexType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dateOfBirth" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dateOfDeath" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="pinReceivingInstitution" type="eai-2401-common:personIdentificationAbroadType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="familyNameAtBirth" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="forenamesAtBirth" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="address" type="eai-2401-common:addressInformationType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="phone" type="eai-2401-common:phoneNumberType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="email" type="eai-2401-common:emailAddressType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="nationality" type="eCH-0010:countryIdISO2Type" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="familyStatus" type="eai-2401-common:familyStatusType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="phoneNumberType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="((\+|[0]{2})?[0-9]{1,3}[\. \-]?([0-9]{1,3}[\- \.]?)([0-9][\- \.]?){5,10}[0-9])" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="emailAddressType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value=".+@.+\..+" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="familyStatusType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="familyStatusType" type="eai-2401-common:enumFamilyStatusType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="familyStatusDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumFamilyStatusType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="single">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Single</xs:documentation>
+					<xs:documentation xml:lang="de">Ledig</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="married">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Married</xs:documentation>
+					<xs:documentation xml:lang="de">Verheiratet</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cohab">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Cohabiting</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="regparship">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Registered partnership</xs:documentation>
+					<xs:documentation xml:lang="de">Registrierte Partnerschaft</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="divorced">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Divorced</xs:documentation>
+					<xs:documentation xml:lang="de">Geschieden</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="div_ps">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Divorced from registered partnership</xs:documentation>
+					<xs:documentation xml:lang="de">Geschieden von registrierter Partnerschaft
+					</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="separated">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Separated</xs:documentation>
+					<xs:documentation xml:lang="de">Getrennt</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="widowed">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Widowed</xs:documentation>
+					<xs:documentation xml:lang="de">Verwitwet</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="personIdentificationAbroadType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:choice>
+			<xs:sequence>
+				<xs:element name="pinReceivingInstitution" type="eai-2401-common:personIdentificationAbroadWithIdType" />
+			</xs:sequence>
+			<xs:sequence>
+				<xs:element name="addtitionalInfoReceivingInstitution" type="eai-2401-common:personIdentificationAbroadWithoutIdType" />
+			</xs:sequence>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="personIdentificationAbroadWithoutIdType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="townOfBirth" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="regionOfBirth" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="countryOfBirth" type="eCH-0010:countryIdISO2Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="familyNameFather" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="forenameFather" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="familyNameMother" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="forenameMother" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="protectedIdentity" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="personIdentificationAbroadWithIdType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="pin" type="eai-2401-common:baseNameMax65Type" />
+			<xs:element name="country" type="eCH-0010:countryIdISO2Type" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="defermentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="defermentDate" type="xs:date" />
+			<xs:element name="country" type="eai-2401-common:countryIdIso2EftaType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="childType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="person" type="eai-2401-common:personType" />
+			<xs:element name="childRelationship" type="eai-2401-common:enumChildRelationshipType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="childRelationshipOther" type="eai-2401-common:baseNameMax255Type" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumChildRelationshipType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="own">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Own child</xs:documentation>
+					<xs:documentation xml:lang="de">Eigenes Kind</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="adopted">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Adopted child</xs:documentation>
+					<xs:documentation xml:lang="de">Adoptivkind</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="foster">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Foster child</xs:documentation>
+					<xs:documentation xml:lang="de">Pflegekind</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="step">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Step child</xs:documentation>
+					<xs:documentation xml:lang="de">Stiefkind</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="grand">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Grand child</xs:documentation>
+					<xs:documentation xml:lang="de">Enkelkind</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="other">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">other</xs:documentation>
+					<xs:documentation xml:lang="de">anderes</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="spouseType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="person" type="eai-2401-common:personType" />
+			<xs:element name="spouseRelationship" type="eai-2401-common:enumSpouseRelationshipType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="spouseRelationshipOther" type="eai-2401-common:baseNameMax255Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="child" type="eai-2401-common:childType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="employmentDetail" type="eai-2401-common:employmentDetailType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumSpouseRelationshipType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="spouse">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Spouse</xs:documentation>
+					<xs:documentation xml:lang="de">Ehegatte</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="reg_par">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Party to a registered partnership</xs:documentation>
+					<xs:documentation xml:lang="de">Eingetragene Lebenspartnerschaft</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="coh_par">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Cohabiting partner</xs:documentation>
+					<xs:documentation xml:lang="de">Lebensgefährte</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumExPartnershipType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20" />
+			<xs:enumeration value="ex_conj">
+			<xs:annotation>
+				<xs:documentation xml:lang="en">Ex-Conjoint</xs:documentation>
+				<xs:documentation xml:lang="de">Ex-Conjoint</xs:documentation>
+				<xs:documentation xml:lang="fr">Ex-Conjoint</xs:documentation>
+				<xs:documentation xml:lang="it">Ex-Conjoint</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+			<xs:enumeration value="veuf">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Veuf-Veuve</xs:documentation>
+					<xs:documentation xml:lang="de">Veuf-Veuve</xs:documentation>
+					<xs:documentation xml:lang="fr">Veuf-Veuve</xs:documentation>
+					<xs:documentation xml:lang="it" >Veuf-Veuve</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ex_conj_part">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Ex-Conjoint</xs:documentation>
+					<xs:documentation xml:lang="de">Ex-Conjoint</xs:documentation>
+					<xs:documentation xml:lang="fr">Ex-Conjoint</xs:documentation>
+					<xs:documentation xml:lang="it">Ex-Conjoint</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="veuf_part">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Veuf-Veuve</xs:documentation>
+					<xs:documentation xml:lang="de">Veuf-Veuve</xs:documentation>
+					<xs:documentation xml:lang="fr">Veuf-Veuve</xs:documentation>
+					<xs:documentation xml:lang="it" >Veuf-Veuve</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="personWithPensionInformationType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="person" type="eai-2401-common:personType" />
+			<xs:element name="personRelationship" type="eai-2401-common:personRelationshipType" minOccurs="0" />
+			<xs:element name="spouse" type="eai-2401-common:spouseType" minOccurs="0" />
+			<xs:element name="child" type="eai-2401-common:childType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="employmentDetail" type="eai-2401-common:employmentDetailType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="benefitDetail" type="eai-2401-common:benefitDetailType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="pensionDetail" type="eai-2401-common:pensionDetailType" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="insurantHistoryType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="employment" type="eai-2401-common:insurantHistoryEmploymentType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="residence" type="eai-2401-common:insurantHistoryGeneralType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="childRaising" type="eai-2401-common:insurantHistoryChildRaisingType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="voluntaryInsurance" type="eai-2401-common:insurantHistoryGeneralType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="militaryService" type="eai-2401-common:insurantHistoryGeneralType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="maternity" type="eai-2401-common:insurantHistoryGeneralType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="training" type="eai-2401-common:insurantHistoryTrainingType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="unemploymentBenefit" type="eai-2401-common:insurantHistoryBenefitType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="sicknessBenefit" type="eai-2401-common:insurantHistoryBenefitType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="other" type="eai-2401-common:insurantHistoryOtherType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="insurantHistoryEmploymentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eai-2401-common:insurantHistoryGeneralType">
+				<xs:sequence>
+					<xs:element name="typeOfPeriod" type="eai-2401-common:enumInsurantHistoryEmploymentType" minOccurs="0" maxOccurs="1" />
+					<xs:element name="occupation" type="eai-2401-common:baseNameMax65Type" minOccurs="0" maxOccurs="1" />
+					<xs:element name="nameEmployer" type="eai-2401-common:baseNameMax255Type" minOccurs="0" maxOccurs="1" />
+					<xs:element name="addressEmployer" type="eai-2401-common:addressInformationType" minOccurs="0" maxOccurs="1" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ongoingPeriodType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="FixedPeriod" type="eai-2401-common:completedPeriodType" minOccurs="1" maxOccurs="1" >
+					<xs:annotation>
+						<xs:documentation xml:lang="en">closed period</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="OpenPeriod" type="eai-2401-common:ongoingIntervalType" minOccurs="1" maxOccurs="1" >
+					<xs:annotation>
+						<xs:documentation xml:lang="en">open period</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="completedPeriodType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">closed period</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="startDate" type="xs:date" minOccurs="1" maxOccurs="1" />
+			<xs:element name="endDate" type="xs:date" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ongoingIntervalType">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">open period</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="typeOpenPeriod" type="eai-2401-common:enumOpenPeriodType" minOccurs="1" maxOccurs="1" />
+			<xs:element name="startDate" type="xs:date" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumOpenPeriodType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2" />
+			<xs:enumeration value="01">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">open period</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="98">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">End date of the period is unknown</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="insurantHistoryGeneralType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="period" minOccurs="0" maxOccurs="1" type="eai-2401-common:ongoingPeriodType" />
+			<xs:element name="uncertainDatesIndicator" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+			<xs:element name="country" type="eCH-0010:countryIdISO2Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="additionalInfo" type="eai-2401-common:baseNameMax255Type" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="insurantHistoryChildRaisingType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eai-2401-common:insurantHistoryGeneralType">
+				<xs:sequence>
+					<xs:element name="childFamilyName" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+					<xs:element name="childForenames" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+					<xs:element name="birthdate" type="xs:date" minOccurs="0" maxOccurs="1" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="insurantHistoryTrainingType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eai-2401-common:insurantHistoryGeneralType">
+				<xs:sequence>
+					<xs:element name="nameTrainingInstitution" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="insurantHistoryBenefitType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eai-2401-common:insurantHistoryGeneralType">
+				<xs:sequence>
+					<xs:element name="namePayingInstitution" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="insurantHistoryOtherType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eai-2401-common:insurantHistoryGeneralType">
+				<xs:sequence>
+					<xs:element name="typeOfPeriod" type="eai-2401-common:baseNameMax65Type" minOccurs="0" maxOccurs="1" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="pensionDataType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="pensionRequestType" type="eai-2401-common:enumPensionRequestType" maxOccurs="1" minOccurs="0" />
+			<xs:element name="claimant" type="eai-2401-common:personWithPensionInformationType" />
+			<xs:element name="insured" type="eai-2401-common:personWithPensionInformationType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="insuranceHistory" type="eai-2401-common:insuranceHistoryType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="insurantHistory" type="eai-2401-common:insurantHistoryType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="guardian" type="eai-2401-common:guardianType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="paymentInformation" type="eai-2401-common:paymentInfoType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="deferment" type="eai-2401-common:defermentType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="dateOfClaim" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="decisionRecipient" type="eai-2401-common:enumDecisionRecepientType" minOccurs="0" />
+			<xs:choice minOccurs="0" maxOccurs="1">
+				<xs:element name="pensionSurvivorAdditionalInfo" type="eai-2401-common:pensionSurvivorAdditionalInfoType" minOccurs="0" />
+				<xs:element name="pensionInvalidityAdditionalInfo" type="eai-2401-common:pensionInvalidityAdditionalInfoType" minOccurs="0" />
+			</xs:choice>
+			<xs:element name="pensionDecision" type="eai-2401-common:pensionDecisionType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumInsurantHistoryEmploymentType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5" />
+			<xs:enumeration value="emp">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Employment</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="s_emp">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Self-employment</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumDecisionRecepientType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3" />
+			<xs:enumeration value="req">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Claimant</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="leg">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Representative</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumPensionRequestType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5" />
+			<xs:enumeration value="oage">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Altersrente</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="surv">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hinterlassenenrente</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="inv">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Rente</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="insuranceHistoryType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="insuranceHistoryPeriod" type="eai-2401-common:insuranceHistoryPeriodType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="insuranceHistoryTotalLength" type="eai-2401-common:insuranceHistoryTotalLengthType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="insuranceHistoryCalculationInfo" type="eai-2401-common:insuranceHistoryCalculationInfoType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="insuranceHistoryPeriodType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="startDate" type="xs:date" />
+			<xs:element name="endDate" type="xs:date" />
+			<xs:element name="years" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="quarters" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="months" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="weeks" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="days" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="dayUnit" type="eai-2401-common:enumDayUnitType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="type" type="eai-2401-common:enumInsuranceHistoryType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="contingencyRelevance" type="eai-2401-common:enumContingencyRelevanceType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="schema" type="eai-2401-common:enumInsuranceHistorySchemaType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="country" type="eCH-0010:countryIdISO2Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="occupation" type="eai-2401-common:occupationIdISOType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="informationOnCalculation" type="eai-2401-common:enumInformationOnCalculationType" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumDayUnitType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1" />
+			<xs:enumeration value="5">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">D/5 days (5 days a week)</xs:documentation>
+					<xs:documentation xml:lang="de">D/5 Tage (5 Tage pro Woche)</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="6">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">D/6 days (6 days a week)</xs:documentation>
+					<xs:documentation xml:lang="de">D/6 Tage (6 Tage pro Woche)</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="7">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">D/7 days (7 days a week)</xs:documentation>
+					<xs:documentation xml:lang="de">D/7 Tage (7 Tage pro Woche)</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumInsuranceHistoryType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2" />
+			<xs:enumeration value="10">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Compulsory contributory periods</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="11">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Compulsory contributory periods - employed
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="12">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Compulsory contributory periods - self employed
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="13">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Compulsory contributory periods - unemployed
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="20">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Voluntary contributory periods</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="21">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Voluntary contributory periods - employed
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="22">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Voluntary contributory periods - self employed
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="23">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Voluntary contributory periods - unemployed
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="30">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Periods of residence</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="40">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: periods without further
+						specifications
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="41">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: periods of sickness / incapacity to
+						work
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="42">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: periods of unemployment without
+						benefits
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="43">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: periods of military service
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="44">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: periods of training or studying
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="45">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: periods of child raising
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="46">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: periods of receipt of pension
+						benefits
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="47">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: periods of pregnancy or maternity
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="48">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: periods of receiving pre-retirement
+						benefits
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="49">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: periods of unemployment with
+						benefits
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="50">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: period during which has been granted
+						the invalidity benefit
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="51">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: periods of dependent person care
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="52">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Equivalent periods: fictitious periods after the
+						beginning of invalidity, the date of death or the
+						start of a pension
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumContingencyRelevanceType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3" />
+			<xs:enumeration value="001">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">For Invalidity pension only</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="010">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">For Survivors pension only</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="011">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">For Survivors and Invalidity pension only
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="100">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">For Old-age pension only</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="101">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">For Old-age pension and Invalidity pension only
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="110">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">For Old-age pension and Survivors pension only
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="111">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">General function for all pension benefits (also to be
+						used, if under national legislation there is no
+						distinction between pension benefits)
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumInsuranceHistorySchemaType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2" />
+			<xs:enumeration value="00">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">General</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="01">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Employment</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="02">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Self-employment</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="03">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Civil servant</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="04">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Miner</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="05">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Residence</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="06">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Farmers</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="07">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Mariner (undefined)</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="08">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Others</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumInformationOnCalculationType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="3" />
+			<xs:enumeration value="000">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">No function</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="001">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">For Invalidity pension only</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="010">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">For Survivors pension only</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="011">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">For Survivors and Invalidity pension only
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="100">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">For Old-age pension only</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="101">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">For Old-age pension and Invalidity pension only
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="110">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">For Old-age pension and Survivors pension only
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="111">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">General function for all pension benefits (also to be
+						used, if under national legislation there is no
+						distinction between pension benefits)
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumImportModusType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="create">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kreiert einen Rentenantrag</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="complete">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vervollstaendigt einen Rentenantrag</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="overwrite">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ueberschreibt einen Rentenantrag vollstaendig
+					</xs:documentation>
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="insuranceHistoryTotalLengthType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="type" type="eai-2401-common:enumInsuranceHistoryType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="contingencyRelevance" type="eai-2401-common:enumContingencyRelevanceType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="startDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="endDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="years" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="quarters" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="months" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="weeks" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="days" type="xs:integer" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="insuranceHistoryCalculationInfoType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="type" type="eai-2401-common:enumInsuranceHistoryType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="informationOnCalculation" type="eai-2401-common:enumInformationOnCalculationType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="startDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="endDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="years" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="quarters" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="months" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="weeks" type="xs:integer" minOccurs="0" maxOccurs="1" />
+			<xs:element name="days" type="xs:integer" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="pensionInvalidityAdditionalInfoType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="startDateCommencementInvalidity" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="startDateCommencementIncapacityWork" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="invalidityResultAccidentWorkOccupationalDisease" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+			<xs:element name="invalidityResultInjuriesMilitary" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+			<xs:element name="invalidityCausedClaimant" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+			<xs:element name="invalidityThirdParty" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="pensionSurvivorAdditionalInfoType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="placeOfDeath" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="causeOfDeathAccidentAtWork" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Accident at work or occupational disease
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="causeOfDeathAccidentOnWayToFromWork" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Accident on the way to/from work</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="causeOfDeathByClaimant" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Caused by claimant</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="causeOfDeathByLiableThirdParty" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Caused by liable third party</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="causeOfDeathRoadAccident" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Road accident</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="causeOfDeathInjuriesInMilitaryService" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Injuries received in military service</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="causeOfDeathDiseaseIllness" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Disease or illness</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="causeOfDeathNatural" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Natural cause of death</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="causeOfDeathUnknown" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Unknown</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="causeOfDeathOther" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Other</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="causeOfDeathOtherDescription" type="eai-2401-common:baseNameMax255Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="pensionRecepientAtTimeOfDeath" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="pensionDetailType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="pensionRecepientAtTimeOfDeath" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+			<xs:element name="pensionReceived" type="eai-2401-common:pensionReceivedType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="pensionReceivedType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="pensionType" type="eai-2401-common:enumPensionReceivedType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="institution" type="eai-2401-common:institutionType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="caseNumber" type="eai-2401-common:baseNameMax65Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="pensionRightStartDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumPensionReceivedType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5" />
+			<xs:enumeration value="oage">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Old-age</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="inv">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Invalidity</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="wid">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Widow(er)</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="orph">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Orphan's</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="surv">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Survivor's (other beneficiaries)</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumPensionDecisionType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="award">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Award</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="reject">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Rejection</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="recalc">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">New calculation / recalculation</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="prov">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Provisional or advance payment</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumAwardBenefitArticleType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="art52a">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">883/2004: Art. 52(1)(a)</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="art52b">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">883/2004: Art. 52(1)(b)</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="art57_2">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">883/2004: Art. 57(2)</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="art57_3">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">883/2004: Art. 57(3)</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="art60_2">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">883/2004: Art. 60(2)</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumNoPartlyCompletely">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="5" />
+			<xs:enumeration value="no">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">No</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="part">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Partly</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="compl">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Completely</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumPensionRejectionReasonType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1" />
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">No insurance periods</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Insurance periods less than 1 year</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Qualifying period not completed or eligibility
+						requirements not met
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">No partial disability or invalidity was found
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="5">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Income ceiling is exceeded</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="6">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Pension age not yet reached</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="7">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Other reasons</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Insufficient information from the claimant</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="9">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Missing participation</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumReducedOverlappingBenefitsSameKindType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="notdepend">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Benefit which does not depend on the duration of period
+						of insurance or residence
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="basiscred">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Benefit which is determined on the basis of a credited
+						period
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumReducedOverlappingBenefitsOtherKindType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="obo01">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Continued wage or salary payments in case of illness
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo02">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Sickness insurance cash benefits for incapacity of work
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo03">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Rehabilitation allowances</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo04">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Invalidity pension</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo05">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Old-age pension</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo06">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Survivor's pension</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo07">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Pension for accident at work or occupational disease
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo08">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Pension type benefit payable under compulsory motor
+						insurance (road accident indemnity)
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo09">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Family benefit</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo10">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Unemployment benefit</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo11">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Early retirement benefit</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo12">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Benefits not covered by the regulation
+					</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo13">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Other benefits</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo14">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Employment income</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo15">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Self-employment income</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo16">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Civil servant income</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo17">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Other sources of income</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo18">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Pre-retirement benefit</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="obo19">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Short term cash benefits for accident at work or occupational disease</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumArticleRuleOfOverlappingType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="art54a">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">883/2004: Art. 54(2)a</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="art54b">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">883/2004: Art. 54(2)b</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="art55">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">883/2004: Art. 55</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="pensionDecisionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="typePension" type="eai-2401-common:enumPensionOldAgeInvaliditySurvivorDisabilityEarlyAge" minOccurs="0" maxOccurs="1" />
+			<xs:element name="definedTypeOfPension" type="eai-2401-common:enumDefinedTypePension" minOccurs="0" maxOccurs="1" />
+			<xs:element name="definedOtherTypeOfPension" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="pensionDecisionType" type="eai-2401-common:enumPensionDecisionType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="awardBenefitArticle" type="eai-2401-common:enumAwardBenefitArticleType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="startDatePensionRight" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="pensionPaymentPeriod" type="eai-2401-common:pensionPaymentPeriodType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="actualStartDateOfPensionPayment" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="supplementsAndAdditionalFrequentPayments" type="eai-2401-common:baseNameMax255Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="basedOnVoluntaryContributions" type="eai-2401-common:enumNoPartlyCompletely" minOccurs="0" maxOccurs="1" />
+			<xs:element name="basedOnOtherPersonsInsurancePeriods" type="eai-2401-common:enumNoPartlyCompletely" minOccurs="0" maxOccurs="1" />
+			<xs:element name="creditedPeriod" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+			<xs:element name="rejectionReason" type="eai-2401-common:enumPensionRejectionReasonType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="rejectionReasonOther" type="eai-2401-common:baseNameMax500Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="pensionPartlySuspended" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+			<xs:element name="amountSuspended" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+			<xs:element name="currencySuspended" type="eai-2401-common:currencyIdISOType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="reasonSuspended" type="eai-2401-common:baseNameMax500Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="additionalInformation" type="eai-2401-common:baseNameMax500Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="pensionReduction" type="eai-2401-common:pensionReductionType" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="benefitsTypeA" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+			<xs:element name="suspensionOfPension" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="withdrawalOfPension" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="decisionIssueDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="timelimitsForReview" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="institutionReviewTo" type="eai-2401-common:deliveryOfficeType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="decisionAsResultofRegulation987" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+			<xs:element name="institutionGivingDecisionIfDifferent" type="eai-2401-common:deliveryOfficeType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="caseNumber" type="eai-2401-common:baseNameMax65Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="referenceNumberDecision" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="otherInformation" type="eai-2401-common:baseNameMax500Type" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumPensionOldAgeInvaliditySurvivorDisabilityEarlyAge">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="oage">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Old age</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="inv">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Invalidity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="surv">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Survivors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="partial">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Partial disability</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="full">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Full disability</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="early">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Early Old age</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumDefinedTypePension">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="residence">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Based on residence</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="working">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Based on working</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="other">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Other</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="pensionPaymentPeriodType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="payableFrom" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="payableTo" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="amountBeforeTaxesReduction" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+			<xs:element name="currency" type="eai-2401-common:currencyIdISOType" minOccurs="0" maxOccurs="1" />
+			<xs:element name="paymentFrequency" type="eai-2401-common:enumPaymentFrequencyType" minOccurs="0" />
+			<xs:element name="paymentFrequencyOther" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="pensionReductionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="reducedOverlappingBenefitsSameKind" type="eai-2401-common:enumReducedOverlappingBenefitsSameKindType" minOccurs="0" />
+			<xs:element name="reducedOverlappingBenefitsOtherKind" type="eai-2401-common:enumReducedOverlappingBenefitsOtherKindType" minOccurs="0" />
+			<xs:element name="otherBenefitsOrSourceOfIncome" type="eai-2401-common:baseNameMax155Type" minOccurs="0" maxOccurs="1" />
+			<xs:element name="articleRuleOfOverlapping" type="eai-2401-common:enumArticleRuleOfOverlappingType" minOccurs="0" />
+			<xs:element name="periodOverlapping" type="eai-2401-common:pensionReductionPeriodOverlappingType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="pensionReductionPeriodOverlappingType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de" />
+			<xs:documentation xml:lang="fr" />
+			<xs:documentation xml:lang="it" />
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="startDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+			<xs:element name="endDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="occupationIdISOType">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="4" />
+			<xs:minLength value="4" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="currencyIdISOType">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="3" />
+			<xs:minLength value="3" />
+			<xs:pattern value="(EUR|BGN|CZK|DKK|GBP|EEK|HUF|LTL|LVL|PLN|RON|SEK|ISK|CHF|NOK| ){0,1}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="baseNameMax155Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="155" />
+			<xs:minLength value="1" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="baseNameMax255Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="255" />
+			<xs:minLength value="1" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="baseNameMax500Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="500" />
+			<xs:minLength value="1" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="baseNameMax65Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="65" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="baseNameMax25Type">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="25" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="countryIdIso2EftaType">
+		<xs:restriction base="eCH-0010:countryIdISO2Type">
+			<xs:pattern value="(AT|BE|BG|CY|CZ|DK|EE|FI|FR|DE|EL|HU|IS|IE|IT|LV|LI|LT|LU|MT|NL|NO|PL|PT|RO|SK|SI|ES|SE|CH|UK| ){0,1}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="deliveryOfficeType">
+		<xs:sequence>
+			<xs:element name="officeIdentifier">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nummer der Ausgleichskasse</xs:documentation>
+					<xs:documentation xml:lang="fr">Numéro de la caisse de compensation
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:maxInclusive value="999" />
+						<xs:minInclusive value="1" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="branch">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nummer der Zweigstelle</xs:documentation>
+					<xs:documentation xml:lang="fr">Numéro de l'agence</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:maxInclusive value="999" />
+						<xs:minInclusive value="0" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="personRelationshipType">
+		<xs:sequence>
+			<xs:element name="personRelationship" type="eai-2401-common:enumPersonRelationshipType" />
+			<xs:element name="livingTogether" type="eai-2401-common:enumNoYes" maxOccurs="1" minOccurs="0" />
+			<xs:element name="livingTogetherSinceDate" type="xs:date" maxOccurs="1" minOccurs="0" />
+			<xs:element name="registrationDatePartnership" type="xs:date" maxOccurs="1" minOccurs="0" />
+			<xs:element name="haveChildInCommon" type="eai-2401-common:enumNoYes" maxOccurs="1" minOccurs="0" />
+			<xs:element name="futureBirtdateOfCommonChild" type="xs:date" maxOccurs="1" minOccurs="0" />
+			<xs:element name="separationType" type="eai-2401-common:enumSeparationTypeType" maxOccurs="1" minOccurs="0" />
+			<xs:element name="registrationDatePartnershipAfter" type="xs:date" maxOccurs="1" minOccurs="0" />
+			<xs:element name="lastNameParterFollowup" type="eai-2401-common:baseNameMax155Type" maxOccurs="1" minOccurs="0" />
+			<xs:element name="firstNameParterFollowup" type="eai-2401-common:baseNameMax155Type" maxOccurs="1" minOccurs="0" />
+			<xs:element name="livingTogetherFollowup" type="eai-2401-common:enumNoYes" maxOccurs="unbounded" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="enumPersonRelationshipType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="spouse">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Spouse</xs:documentation>
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr">Epoux(se)</xs:documentation>
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="reg_par">
+				<xs:annotation>
+					<xs:documentation xml:lang="en" />
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="coh_par">
+				<xs:annotation>
+					<xs:documentation xml:lang="en" />
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="frm_spouse">
+				<xs:annotation>
+					<xs:documentation xml:lang="en" />
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="own_child">
+				<xs:annotation>
+					<xs:documentation xml:lang="en" />
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ado_child">
+				<xs:annotation>
+					<xs:documentation xml:lang="en" />
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fo_child">
+				<xs:annotation>
+					<xs:documentation xml:lang="en" />
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ste_child">
+				<xs:annotation>
+					<xs:documentation xml:lang="en" />
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gra_child">
+				<xs:annotation>
+					<xs:documentation xml:lang="en" />
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sibl">
+				<xs:annotation>
+					<xs:documentation xml:lang="en" />
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="other_rel">
+				<xs:annotation>
+					<xs:documentation xml:lang="en" />
+					<xs:documentation xml:lang="de" />
+					<xs:documentation xml:lang="fr" />
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="enumSeparationTypeType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10" />
+			<xs:enumeration value="divorced">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Divorced</xs:documentation>
+					<xs:documentation xml:lang="de">Geschieden</xs:documentation>
+					<xs:documentation xml:lang="fr">Divorcé</xs:documentation>
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="separated">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">Separated</xs:documentation>
+					<xs:documentation xml:lang="de">Getrennt</xs:documentation>
+					<xs:documentation xml:lang="fr">Séparé</xs:documentation>
+					<xs:documentation xml:lang="it" />
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

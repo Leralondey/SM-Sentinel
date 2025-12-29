@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Lars Steffen (AWK Group AG) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:ssk-common="http://www.steuerkonferenz.ch/xmlns/ssk-common/2" xmlns:ssk-3110-000001="http://www.steuerkonferenz.ch/xmlns/ssk-3110-000001/1" targetNamespace="http://www.steuerkonferenz.ch/xmlns/ssk-3110-000001/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Kantons-Dossiermeldung ohne Personenbezug</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.steuerkonferenz.ch/xmlns/ssk-common/2"/>
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von ssk-common:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0"/>
+			<xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="ourBusinessReferenceID" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="3110"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000001"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="eventDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="modificationDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:actionType">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue Nachricht</xs:documentation>
+								<xs:documentation xml:lang="fr">Message nouveau</xs:documentation>
+								<xs:documentation xml:lang="it">Nuovo messaggio</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Widerruf</xs:documentation>
+								<xs:documentation xml:lang="fr">Révocation</xs:documentation>
+								<xs:documentation xml:lang="it">Revoca</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Korrektur</xs:documentation>
+								<xs:documentation xml:lang="fr">Correction</xs:documentation>
+								<xs:documentation xml:lang="it">Correzione</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="5">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Anfrage</xs:documentation>
+								<xs:documentation xml:lang="fr">Demande</xs:documentation>
+								<xs:documentation xml:lang="it">Domanda</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="6">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Antwort</xs:documentation>
+								<xs:documentation xml:lang="fr">Réponse</xs:documentation>
+								<xs:documentation xml:lang="it">Risposta</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" fixed="false"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType"/>
+			<xs:element name="attachment" type="ssk-3110-000001:attachmentType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="extension" type="ssk-3110-000001:extensionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="attachmentType">
+		<xs:sequence>
+			<xs:element name="title" type="ssk-common:attachmentTitleType"/>
+			<xs:element name="documentDate" type="ssk-common:documentDateType"/>
+			<xs:element name="leadingDocument" type="ssk-common:leadingDocumentType"/>
+			<xs:element name="sortOrder" type="ssk-common:sortOrderType"/>
+			<xs:element name="documentFormat" type="ssk-common:documentFormatType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">MIME-Typ des Dokuments. Erlaubte MIME-Typen müssen pro Message bestimmt werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="documentType">
+				<xs:simpleType>
+					<xs:restriction base="ssk-common:documentKindType">
+						<xs:enumeration value="11.01">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Interkantonale pauschale Repartitionen DBS</xs:documentation>
+								<xs:documentation xml:lang="fr">Répartitions forfaitaires LIFD</xs:documentation>
+								<xs:documentation xml:lang="it">Ripartizione forfettaria LIFD</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="11.02">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Rückmeldung interkantonale pauschale Repartitionen DBS</xs:documentation>
+								<xs:documentation xml:lang="fr">Annonce réponse répartition forfaitaire LIFD</xs:documentation>
+								<xs:documentation xml:lang="it">Risposta ripartizione forfettaria LIFD</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="11.03">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Saldobestätigung</xs:documentation>
+								<xs:documentation xml:lang="fr">Confirmations des soldes</xs:documentation>
+								<xs:documentation xml:lang="it">Conferma del saldo</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="11.04">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Rückmeldung Saldobestätigung</xs:documentation>
+								<xs:documentation xml:lang="fr">Annonce réponse confirmation du solde</xs:documentation>
+								<xs:documentation xml:lang="it">Risposta conferma del saldo</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="11.05">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Interkantonale Quellensteuer-Abrechnung (IKV)</xs:documentation>
+								<xs:documentation xml:lang="fr">Décompte intercantonal de l'impôt à la source</xs:documentation>
+								<xs:documentation xml:lang="it">Conteggio intercantonale di imposta alla fonte</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="11.99">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Andere Dokumente</xs:documentation>
+								<xs:documentation xml:lang="fr">Autres documents</xs:documentation>
+								<xs:documentation xml:lang="it">Altri documenti</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="file" type="ssk-common:attachmentFileType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="extensionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Attribute, welche im eCH-0058/4-Standard nicht vorgesehen sind, werden im Attribut „extension“ geführt.</xs:documentation>
+			<xs:documentation xml:lang="fr">Les éléments qui ne sont pas prévus dans le standard eCH-0058/4 sont définis dans l'élément 'extension'</xs:documentation>
+			<xs:documentation xml:lang="it">Gli elementi che non sono incluse nello standard eCH-0058/4 sono definiti in 'estensione' l'elemento</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contactInformation" type="ssk-common:contactInformationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="remark" type="xs:string" minOccurs="0"/>
+			<xs:element name="dateEnquiry" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="ssk-3110-000001:headerType"/>
+				<xs:element name="content" type="ssk-3110-000001:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

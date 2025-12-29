@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:el-2417-000201="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-000201/1"
+		   xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-common/1" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+		   targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-000201/1"
+		   elementFormDefault="qualified" version="1.0">
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-common/1" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" />
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Datenaustausch Prämienverbilligung EL: Anfrage Tarifprämie</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="headerType">
+		<xs:complexContent>
+			<xs:extension base="common:commonHeaderType">
+				<xs:sequence>
+					<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000201" />
+					<xs:element name="action" type="eCH-0058:actionType" fixed="5" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="requestYear" type="common:requestYearType" />
+			<xs:element name="insurancePremiumRequests" type="el-2417-000201:insurancePremiumRequestType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="insurancePremiumRequestType">
+		<xs:sequence>
+			<xs:element name="person" type="common:personType" />
+			<xs:element name="healthInsuranceBagNr" type="common:healthInsuranceBagNrType" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="el-2417-000201:headerType" />
+				<xs:element name="content" type="el-2417-000201:contentType" />
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:unsignedShort" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

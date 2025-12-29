@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0046="http://www.ech.ch/xmlns/eCH-0046/2" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/3" xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/1" xmlns:eCH-0098="http://www.ech.ch/xmlns/eCH-0098/1" xmlns:bfs-5050-000101="http://www.bfs.admin.ch/xmlns/bfs-5050-000101/1" targetNamespace="http://www.bfs.admin.ch/xmlns/bfs-5050-000101/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">SHAB-Meldung</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0046/2"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/3"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/1"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0098/1"/>
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von eCH-0058:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="bfs-5050-000101:declarationLocalReferenceType" minOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="5050"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000101"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" minOccurs="0" maxOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="uniqueIdBusinessCase" type="eCH-0058:uniqueIdBusinessCaseType"/>
+						<xs:element name="totalNumberOfPackages" type="eCH-0058:totalNumberOfPackagesType"/>
+						<xs:element name="numberOfActualPackage" type="eCH-0058:numberOfActualPackageType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="object" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0"/>
+			<xs:element name="messageDate" type="xs:dateTime"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:initialMessageDateType" minOccurs="0"/>
+			<xs:element name="eventDate" type="xs:dateTime" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="modificationDate" type="xs:dateTime" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="testData" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SHABMsgType">
+		<xs:sequence>
+			<xs:element name="FIRMA_NR" type="xs:decimal"/>
+			<xs:element name="FIRMENIDENT_TX" type="xs:string"/>
+			<xs:element name="SHAB_DT" type="xs:date"/>
+			<xs:element name="SHAB_NR" type="xs:decimal"/>
+			<xs:element name="MB_STATUS_CD" type="xs:decimal"/>
+			<xs:element name="APPL_CD" type="xs:decimal"/>
+			<xs:element name="PROCESS_CD" type="xs:string"/>
+			<xs:element name="PROCESS_DT" type="xs:date"/>
+			<xs:element name="KANTON_TX" type="xs:string"/>
+			<xs:element name="REGISTERAMTID_NR" type="xs:decimal"/>
+			<xs:element name="JOURNAL_DT" type="xs:date"/>
+			<xs:element name="JOURNAL_NR" type="xs:decimal"/>
+			<xs:element name="SHABPAGE_NR" type="xs:decimal"/>
+			<xs:element name="NEUEINTRAG_CD" type="bfs-5050-000101:falseTrueOtherType"/>
+			<xs:element name="MUTSTATUS_CD">
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:enumeration value="0">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nein</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neueintrag</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="11">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Auflösung Fusion</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="12">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Auflösung Liquidation</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="13">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Auflösung Konkurs</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="14">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Auflösung Umwandlung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="20">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Löschung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="30">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Widerruf (Auflage)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="40">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Wiedereintrag</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="MUTFIRMA_CD" type="bfs-5050-000101:noYesType"/>
+			<xs:element name="MUTREFO_CD" type="bfs-5050-000101:noYesType"/>
+			<xs:element name="MUTKAP_CD">
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:enumeration value="0">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nein</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">nominelles Kapital</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">liberiertes Kapital</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">nominelles + liberiertes Kapital</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Stückelung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="5">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">nominelles Kapital + Stückelung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="6">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">liberiertes Kapital + Stückelung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="7">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">nominiertes und liberiertes Kapital + Stückelung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="MUTSITZ_CD">
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:enumeration value="0">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nein</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Ja</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Löschung im alten Register</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="MUTDOMIZIL_CD" type="bfs-5050-000101:falseTrueOtherType"/>
+			<xs:element name="MUTZWECK_CD" type="bfs-5050-000101:falseTrueOtherType"/>
+			<xs:element name="MUTORGAN_CD" type="bfs-5050-000101:falseTrueOtherType"/>
+			<xs:element name="NAME_OLD_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="NAME_NEW_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="MUNIC_OLD_CD" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="MUNIC_NEW_CD" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="STATUTE_DT" type="xs:date" minOccurs="0"/>
+			<xs:element name="STREET_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="STREET_NR" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="ZIP_1_CD" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:pattern value="([0-9]{4}|[0-9]{6})?"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="TOWN_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="LEGAL_FORM_CD" type="bfs-5050-000101:legalFormType"/>
+			<xs:element name="CAPITAL_NR" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="MESSAGE_ID" type="xs:decimal"/>
+			<xs:element name="TREATMENT_CD">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="A">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">automatisch</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="S">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">halbautomatisch</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="M">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">manuell</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="W">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">without treatment</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="LEGALSTATUS_CD">
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Einzelfirma</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kollektivgesellschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Aktiengesellschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">GmbH</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="5">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Genossenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="6">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Verein</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="7">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Stiftung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="8">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Besondere Rechtsformen (gen. Code für nachfolgende Gruppen 8x und 8xy)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="9">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Zweigniederlassung (CH-Zweigniederlassung einer ausländ. Firma = 92 !!!)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kommanditgesellschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="11">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kommanditaktiengesellschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="82">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Selbst. öffentlichrechtliche Körperschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="83">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">öffentlichrechtliche Anstalt</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="84">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Gemeinderschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="85">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Institut</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="86">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nichtkaufmännische Prokura</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="89">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nicht definierte Rechtsform</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="92">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Ausländische Zweigniederlassung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="823">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">öffentlichrechtliche AG</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="824">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">öffentlichrechtliche GmbH</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="825">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">öffentlichrechtliche Genossenschaft</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="826">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">öffentlichrechtlicher Verein</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="STREET_NR_ADD_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="POBOX_NR" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="ZIP_POBOX_CD" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="ZUSATZ_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="CAREOF_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="noga2002" type="xs:string" minOccurs="0"/>
+			<xs:element name="noga2002Old" type="xs:string" minOccurs="0"/>
+			<xs:element name="noga2008" type="eCH-0098:nogaCodeType" minOccurs="0"/>
+			<xs:element name="noga2008Old" type="eCH-0098:nogaCodeType" minOccurs="0"/>
+			<xs:element name="MELDUNG_TX" type="xs:string"/>
+			<xs:element name="ZWECK_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="BUR_LANGUAGE_CD">
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">deutsch</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">französisch</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">italienisch</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">rätoromanisch</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="5">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">englisch</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BUR_LEGAL_FORM_CD" type="bfs-5050-000101:legalFormType"/>
+			<xs:element name="BUR_CAPITAL_NB" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="burNoga2002" type="xs:string"/>
+			<xs:element name="burNoga2008" type="eCH-0098:nogaCodeType"/>
+			<xs:element name="burNr">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:pattern value="([0-9]{8})?"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BUR_ZIP_1_CD" type="xs:decimal"/>
+			<xs:element name="BUR_POBOX_CD" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="BUR_POBOX_NR" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="BUR_ZIP_POBOX_CD" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="BUR_TOWN_TX" type="xs:string"/>
+			<xs:element name="BUR_TOWN_ADD_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="BUR_MUNICIPALITY_CD" type="xs:decimal"/>
+			<xs:element name="BUR_CANTON_CD" type="xs:string"/>
+			<xs:element name="BUR_STREET_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="BUR_STREET_ADD_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="BUR_STREET_NR" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="BUR_STREET_NR_ADD_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="BUR_NAME1_TX" type="xs:string"/>
+			<xs:element name="BUR_NAME2_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="BUR_NAME3_TX" type="xs:string" minOccurs="0"/>
+			<xs:element name="BUR_NAME_ADD_TX" type="xs:string"/>
+			<xs:element name="entId" type="xs:decimal"/>
+			<xs:element name="uid" type="eCH-0097:uidStructureType"/>
+			<xs:element name="SHAB_FREETEXT" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="legalFormType">
+		<xs:restriction base="xs:decimal">
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einzelunternehmen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einfache Gesellschaft</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kollektivgesellschaft</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kommanditgesellschaft</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="5">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kommanditaktiengesellschaft</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="6">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Aktiengesellschaft</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="7">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gesellschaft mit beschränkter Haftung GmbH</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="8">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Genossenschaft</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="9">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verein</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="10">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Stiftung</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="11">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausländische Niederlassung im Handelsregister eingetragen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="12">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausländische Niederlassung nicht im Handelsregister eingetragen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="13">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Besondere Rechtsform</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="14">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kommanditgesellschaft für kollektive Kapitalanlagen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="15">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Investmentgesellschaft mit variablem Kapital (SICAV)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="16">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Investmentgesellschaft mit festem Kapital (SICAF)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="17">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Institut des öffentlichen Rechts</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="18">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nichtkaufmännische Prokuren</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="19">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Haupt von Gemeinderschaften</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="20">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verwaltung des Bundes</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="21">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verwaltung des Kantons</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="22">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verwaltung des Bezirks</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="23">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verwaltung der Gemeinde</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="24">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Öffentlich-rechtliche Körperschaft (Verwaltung)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="25">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Staatlich anerkannte Kirche (zukünftig nicht mehr verwendet)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="27">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausländisches öffentliches Unternehmen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="28">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausländischer öffentliche Verwaltung (z.B. Botschaft)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="29">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Internationale Organisation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="30">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Unternehmen des Bundes</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="31">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Unternehmen des Kantons</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="32">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Unternehmen des Bezirks</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="33">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Unternehmen der Gemeinde</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="34">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Öffentliche-rechtliche Körperschaft (Unternehmen)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="41">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausländische Unternehmen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="51">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Schweizerische Zweigniederlassung im Handelsregister eingetragen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="99">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Unbekannt</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="falseTrueOtherType">
+		<xs:restriction base="xs:decimal">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">False</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">True</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="9">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">anderes</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="noYesType">
+		<xs:restriction base="xs:decimal">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nein</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ja</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="declarationLocalReferenceType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="department" type="xs:string" minOccurs="0"/>
+			<xs:element name="phone" type="eCH-0046:phoneNumberType"/>
+			<xs:element name="email" type="eCH-0046:emailAddressType"/>
+			<xs:element name="other" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SHAB-Meldung" type="bfs-5050-000101:SHABMsgType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="header">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für header.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="bfs-5050-000101:headerType">
+					<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="bfs-5050-000101:headerType"/>
+				<xs:element name="content" type="bfs-5050-000101:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

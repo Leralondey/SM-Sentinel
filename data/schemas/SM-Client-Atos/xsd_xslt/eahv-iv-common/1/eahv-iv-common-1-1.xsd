@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/3"
+	xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/3"
+	xmlns:eCH-0011="http://www.ech.ch/xmlns/eCH-0011/3"
+	xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/1"
+	xmlns:eCH-0046="http://www.ech.ch/xmlns/eCH-0046/1"
+	xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/2"
+	xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/1"
+	targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/1"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="1">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">
+			Basistypen für die Meldungen des Vereins eAHV/IV.
+			Dieses Schema enthält auch eine Vorlage für den Header von eAHV/IV Messages.
+			Diese Vorlage muss für konkrete Implementierungen kopiert werden.
+			Der Report Header und die Report Message ist ebenfalls hier definiert.
+			Sie werden in der Regel nicht abgeleitet, können also direkt verwendet werden.
+			Aus diesen Grund ist bereits ein reportHeader und ein eventReport definiert.
+		</xs:documentation>
+	</xs:annotation>
+	
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0007/3"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0010/3"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0011/3"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/1"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0046/1"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/2"/>
+
+	<xs:complexType name="naturalPersonsTaxReturnsOASIType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Natürliche Personen Steuermeldungen AHV
+				Erweitert eCH-0044:personIdentificationType and schränkt Particle Occurrences ein
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="vn" type="eCH-0044:vnType" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>checksum.groovy</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="localPersonId" type="eCH-0044:namedPersonIdType" minOccurs="0"/>
+			<xs:element name="OtherPersonId" type="eCH-0044:namedPersonIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="EuPersonId" type="eCH-0044:namedPersonIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="officialName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Neu als Pflichtfeld</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="firstName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Neu als Pflichtfeld</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sex" type="eCH-0044:sexType"/>
+			<xs:element name="dateOfBirth" type="eCH-0044:datePartiallyKnownType"/>
+			<xs:element name="address" type="eCH-0010:addressInformationType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Postadresse (neues Feld)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="maritalStatus" type="eCH-0011:maritalStatusType"/>
+			<xs:element name="dateOfMaritalStatus" type="xs:date" minOccurs="0"/>
+			<xs:element name="dateOfEntry" type="xs:date" minOccurs="0"/>
+			<xs:element name="dateOfDeparture" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="naturalPersonsOASIDIType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Erweitert eCH-0044:personIdentificationType and schränkt Particle Occurrences ein.
+				Ausserdem wird das neue Element "address" eingeführt.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="vn" type="eCH-0044:vnType" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>checksum.groovy</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="localPersonId" type="eCH-0044:namedPersonIdType" minOccurs="0"/>
+			<xs:element name="OtherPersonId" type="eCH-0044:namedPersonIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="EuPersonId" type="eCH-0044:namedPersonIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="officialName" type="eCH-0044:baseNameType" minOccurs="0"/>
+			<xs:element name="firstName" type="eCH-0044:baseNameType" minOccurs="0"/>
+			<xs:element name="sex" type="eCH-0044:sexType" minOccurs="0"/>
+			<xs:element name="dateOfBirth" type="eCH-0044:datePartiallyKnownType" minOccurs="0"/>
+			<xs:element name="address" type="eCH-0010:addressInformationType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Postadresse (neues Feld)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="messagePriorityType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Basistyp für die Nachrichtenpriorität</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:enumeration value="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Normale Priorität</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hohe Priorität</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="businessProcessIdType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Datentyp für die businessProcessId.
+				ACHTUNG: Datentyp wird wahrscheinlich wechseln, sobald das Feld in eCH-0058 aufgenommen wurde.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Ableitung von eCH-0058:headerType.
+				Dieser Type kann nicht direkt benutzt werden. Er muss für jede Meldung abgeleitet werden
+				und kann dann für die Meldung (für alle Meldungen bei Meldungsprozessen mit mehreren Meldungen),
+				die Weiterleitung, das Rektifikat und den Widerruf benutzt werden.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="eahv-iv-common:declarationLocalReferenceType" minOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0"/>
+			<xs:element name="businessProcessId" type="eahv-iv-common:businessProcessIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						Hier kann die ID eines meldungsübergreifenden Business Prozesses eingetragen werden.
+						GUID, sollte in jedem Fall für den Empfänger eindeutig sein, analog businessReferenceIdType
+						Dieses Feld wurde mit Version 1.1 neu eingefügt - der Datentyp kann noch ändern.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ourBusinessReferenceID" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="messageType" type="eCH-0058:messageTypeType"/>
+			<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" minOccurs="0"/>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" minOccurs="0" maxOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="uniqueIDBusinessCase" type="eCH-0058:uniqueIDBusinessCaseType"/>
+						<xs:element name="totalNumberOfPackages" type="eCH-0058:totalNumberOfPackagesType"/>
+						<xs:element name="numberOfActualPackage" type="eCH-0058:numberOfActualPackageType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="object" type="xs:anyType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zu definieren durch konkreten Message Header</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0"/>
+			<xs:element name="messageDate" type="xs:dateTime"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:initialMessageDateType" minOccurs="0"/>
+			<xs:element name="eventDate" type="xs:dateTime"/>
+			<xs:element name="modificationDate" type="xs:dateTime" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue Meldung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="5">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Anfrage</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="6">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Antwort</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Widerruf</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Korrektur</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="7">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Schlüsselaustausch</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Weiterleitung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="12">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Mahnung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="eahv-iv-common:attachmentType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zu definieren durch konkreten Message Header, ob und welche Attachements erlaubt sind.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="testData" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="messagePriority" type="eahv-iv-common:messagePriorityType" minOccurs="0"/>
+			<xs:element name="eventPeriod" type="xs:gYear" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="reportHeaderType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Ableitung von eCH-0058:reportHeaderType.
+				Dieser Typ wird benutzt für die Header von Protokollquittung und fachlicher Rückmeldung.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="0"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="businessProcessId" type="eahv-iv-common:businessProcessIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+						Hier kann die ID eines meldungsübergreifenden Business Prozesses eingetragen werden.
+						GUID, sollte in jedem Fall für den Empfänger eindeutig sein, analog businessReferenceIdType
+						Dieses Feld wurde mit Version 1.1 neu eingefügt - der Datentyp kann noch ändern.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ourBusinessReferenceID" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="messageType" type="eCH-0058:messageTypeType"/>
+			<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" minOccurs="0"/>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="object" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:initialMessageDateType" minOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+						<xs:enumeration value="8">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Negative Quittierung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="9">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Positive Quittierung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="11">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Fachliche Rückmeldung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="testData" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="messagePriority" type="eahv-iv-common:messagePriorityType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="reportType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Ableitung von eCH-0058:reportType.
+				Dieser Typ wird benutzt für den Message-Inhalt von Protokollquittung und fachlicher Rückmeldung.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="positiveReport" type="xs:anyType"/>
+			<xs:element name="negativeReport">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="errorCode">
+							<xs:simpleType>
+								<xs:restriction base="xs:integer">
+									<xs:enumeration value="1">
+										<xs:annotation>
+											<xs:documentation xml:lang="de">Ungültige/korrupte ZIP Datei</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="2">
+										<xs:annotation>
+											<xs:documentation xml:lang="de">Fehlendes header.xml Dokument</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="3">
+										<xs:annotation>
+											<xs:documentation xml:lang="de">Fehlendes message.xml Dokument</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="4">
+										<xs:annotation>
+											<xs:documentation xml:lang="de">Ungültiges/korruptes header.xml Dokument</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="5">
+										<xs:annotation>
+											<xs:documentation xml:lang="de">Ungültiges/korruptes message.xml Dokument</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="6">
+										<xs:annotation>
+											<xs:documentation xml:lang="de">Fehlende Attachments (referenziert aus header.xml und message.xml)</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="7">
+										<xs:annotation>
+											<xs:documentation xml:lang="de">Nicht referenzierte Attachments</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+									<xs:enumeration value="99">
+										<xs:annotation>
+											<xs:documentation xml:lang="de">Weitere Fehler</xs:documentation>
+										</xs:annotation>
+									</xs:enumeration>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="errorText" type="xs:string">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Möglichst genaue Beschreibung des Fehlers</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="specialistFeedback">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="errorText" type="xs:string">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Möglichst genaue Beschreibung der fachlichen Rückmeldung</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+
+	<xs:complexType name="declarationLocalReferenceType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="department" type="xs:string" minOccurs="0"/>
+			<xs:element name="phone" type="eCH-0046:phoneNumberType"/>
+			<xs:element name="email" type="eCH-0046:emailAddressType"/>
+			<xs:element name="other" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="attachmentType">
+		<xs:sequence>
+			<xs:element name="title" type="eahv-iv-common:attachmentTitleType"/>
+			<xs:element name="documentDate" type="eahv-iv-common:documentDateType" minOccurs="0"/>
+			<xs:element name="leadingDocument" type="eahv-iv-common:leadingDocumentType"/>
+			<xs:element name="sortOrder" type="eahv-iv-common:sortOrderType"/>
+			<xs:element name="documentFormat" type="eahv-iv-common:documentFormatType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">MIME-Typ des Dokuments. Erlaubte MIME-Typen müssen pro Message bestimmt werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="documentType" type="eahv-iv-common:documentTypeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Art des Dokuments, kodiert als 4-stellige Zahl</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="file" type="eahv-iv-common:attachmentFileType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="attachmentTitleType">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="100"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="attachmentFileType">
+		<xs:sequence>
+			<xs:element name="pathFileName" type="eahv-iv-common:pathFileNameType"/>
+			<xs:element name="internalSortOrder" type="eahv-iv-common:sortOrderType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="pathFileNameType">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="250"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="leadingDocumentType">
+		<xs:restriction base="xs:boolean"/>
+	</xs:simpleType>
+	<xs:simpleType name="sortOrderType">
+		<xs:restriction base="xs:nonNegativeInteger"/>
+	</xs:simpleType>
+	<xs:simpleType name="documentFormatType">
+		<xs:restriction base="xs:token"/>
+	</xs:simpleType>
+	<xs:simpleType name="documentTypeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="000001">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Vorbescheid</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000002">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Ausweis</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000003">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Anmeldung</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000004">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Scheidungsurteil</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000005">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verrechnungsantrag</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000006">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vollmacht</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000007">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Personalnachweis</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000008">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausbildungsbescheinigung</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000009">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Mitteilung des Beschlusses</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000010">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Verfügungsteil 2</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000011">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Mitteilung</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000012">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IK-Auszug</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000013">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Lohnausweis</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000014">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">AK-Verfügung RE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000015">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">AK-Verfügung HE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000016">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">AK-Verfügung Taggeld</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000017">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Vorbescheid (RE)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000018">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Vorbescheid (HE)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000019">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Vorbescheid (TG)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000020">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Mitteilung des Beschlusses (RE)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000021">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Mitteilung des Beschlusses (HE)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000022">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">IV-Mitteilung des Beschlusses (TG)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="000023">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">AK-Verfügung</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="999999">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Beilagen divers</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="documentDateType">
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	
+	<xs:element name="reportHeader">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Root element für Header von Protokollquittungen und fachlichen Rückmeldungen</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="eahv-iv-common:reportHeaderType">
+					<xs:attribute name="minorVersion" type="xs:integer" use="required"></xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="eventReport">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Root element für Message von Protokollquittungen und fachlichen Rückmeldungen</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="reportHeader" type="eahv-iv-common:reportHeaderType"></xs:element>
+				<xs:element name="report" type="eahv-iv-common:reportType"></xs:element>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"></xs:attribute>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:complexType name="namedOrganisationIdType">
+		<xs:annotation>
+			<xs:documentation>eCH-0097</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="organisationIdCategory" type="eahv-iv-common:organisationIdCategoryType" />
+			<xs:element name="OrganisationId">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="20" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="organisationIdCategoryType">
+		<xs:annotation>
+			<xs:documentation>eCH-0097</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="20" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="organisationNameType">
+		<xs:annotation>
+			<xs:documentation>eCH-0097</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="60"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+</xs:schema>

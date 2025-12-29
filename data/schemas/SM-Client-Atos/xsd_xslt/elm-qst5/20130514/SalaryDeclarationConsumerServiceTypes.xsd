@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        targetNamespace="http://www.swissdec.ch/schema/sd/20130514/SalaryDeclarationConsumerServiceTypes"
+        xmlns:sdcst="http://www.swissdec.ch/schema/sd/20130514/SalaryDeclarationConsumerServiceTypes"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:sdcc="http://www.swissdec.ch/schema/sd/20130514/SalaryDeclarationConsumerContainer"
+        elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+
+    <!-- state of standardisation: FINAL
+         publication: 2013-05-21
+         a. boehm
+    -->
+
+
+    <!-- imports -->
+    <xs:import
+            namespace="http://www.swissdec.ch/schema/sd/20130514/SalaryDeclarationConsumerContainer"
+            schemaLocation="SalaryDeclarationConsumerContainer.xsd"/>
+
+    <!-- definitions PingConsumer -->
+    <xs:element name="PingConsumer" type="sdcc:PingConsumerType"/>
+    <xs:element name="PingConsumerResponse" type="sdcc:PingConsumerResponseType"/>
+
+    <!-- ****************************** -->
+    <!-- *** DECLARE SALARY PROCESS *** -->
+    <!-- ****************************** -->
+    <!-- definitions DeclareSalaryConsumer -->
+    <xs:element name="DeclareSalaryConsumer" type="sdcc:DeclareSalaryConsumerType"/>
+    <xs:element name="DeclareSalaryConsumerResponse"
+                type="sdcc:DeclareSalaryConsumerResponseType"/>
+
+    <!-- definitions GetResultFromDeclareSalaryConsumer (old GetContributionsFromDeclareSalaryConsumer) -->
+    <xs:element name="GetResultFromDeclareSalaryConsumer"
+                type="sdcc:GetResultFromDeclareSalaryConsumerType"/>
+    <xs:element name="GetResultFromDeclareSalaryConsumerResponse"
+                type="sdcc:GetResultFromDeclareSalaryConsumerResponseType"/>
+
+    <!-- ************************************ -->
+    <!-- *** SYNCHRONIZE CONTRACT PROCESS *** -->
+    <!-- ************************************ -->
+    <!-- definitions DeclareSalaryConsumer -->
+    <xs:element name="SynchronizeContractConsumer" type="sdcc:DeclareSalaryConsumerType"/>
+    <xs:element name="SynchronizeContractConsumerResponse" type="sdcc:DeclareSalaryConsumerResponseType"/>
+
+    <!-- definitions GetResultFromSynchronizeContractConsumer -->
+    <xs:element name="GetResultFromSynchronizeContractConsumer"
+                type="sdcc:GetResultFromDeclareSalaryConsumerType"/>
+    <xs:element name="GetResultFromSynchronizeContractConsumerResponse"
+                type="sdcc:GetResultFromDeclareSalaryConsumerResponseType"/>
+
+    <!-- *********** -->
+    <!-- ** FAULT ** -->
+    <!-- *********** -->
+    <xs:element name="SalaryDeclarationConsumerFault"
+                type="sdcc:SalaryDeclarationConsumerFaultType"/>
+</xs:schema>

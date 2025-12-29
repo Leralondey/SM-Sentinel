@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mit XMLSpy v2015 rel. 3 (http://www.altova.com) von IGS GmbH (IGS GmbH - Informatik) bearbeitet -->
+<!--
+==============================================================================
+ Revision History:
+==============================================================================
+¦  Date		¦Ver.	¦Who¦      Change (where, what, why)
+==============================================================================
+¦ 				¦		¦		¦ 
+¦ 17.11.16	¦ 1.0	¦ab	¦ - 
+¦ 				¦		¦		¦ 
+==============================================================================
+-->
+<xs:schema xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6" xmlns:eCH-0046="http://www.ech.ch/xmlns/eCH-0046/4" xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/3" xmlns:eCH-0098="http://www.ech.ch/xmlns/eCH-0098/3" xmlns:AGK="http://www.eahv-iv.ch/xmlns/eahv-iv-AGK-common/1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sd="http://www.swissdec.ch/schema/sd/20130514/SalaryDeclaration" targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-AGK-common/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">AGK-common</xs:documentation>
+		<xs:documentation xml:lang="fr">AGK-common</xs:documentation>
+		<xs:documentation xml:lang="it">AGK-common</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0010/6"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0046/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/3"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0098/3"/>
+	<xs:import namespace="http://www.swissdec.ch/schema/sd/20130514/SalaryDeclaration"/>
+	<xs:simpleType name="orderIdType">
+		<xs:annotation>
+			<xs:documentation>AuftragsId</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="36"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="timeStampType">
+		<xs:annotation>
+			<xs:documentation>Zeitstempel für ganzen Datensatz</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:simpleType name="orderCommentType">
+		<xs:annotation>
+			<xs:documentation>Kommentar zum Auftrag</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="0"/>
+			<xs:maxLength value="4096"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ratingType">
+		<xs:annotation>
+			<xs:documentation>Typ für die Risikoburteilung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="findingAudit" type="xs:unsignedShort">
+				<xs:annotation>
+					<xs:documentation>Ergebnis letzte Kontrolle</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="qualityHR" type="xs:unsignedShort">
+				<xs:annotation>
+					<xs:documentation>Qualität Personal</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cooperation" type="xs:unsignedShort">
+				<xs:annotation>
+					<xs:documentation>Zusammenarbeit mit AK/UV</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="organisationCriteria" type="xs:unsignedShort">
+				<xs:annotation>
+					<xs:documentation>Unternehmensspezifische Kriterien</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="auditType">
+		<xs:annotation>
+			<xs:documentation>Typ für die Parameter der Kontrolle</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="timeLimitFrom" type="xs:date"/>
+			<xs:element name="timeLimitTo" type="xs:date"/>
+			<xs:element name="AHV-AuditFrom" type="xs:date"/>
+			<xs:element name="AHV-AuditTo" type="xs:date"/>
+			<xs:element name="UVG-AuditFrom" type="xs:date" minOccurs="0"/>
+			<xs:element name="UVG-AuditTo" type="xs:date" minOccurs="0"/>
+			<xs:element name="auditKind" type="xs:unsignedShort"/>
+			<xs:element name="auditType" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="scheduledYear" type="xs:gYear" minOccurs="0"/>
+			<xs:element name="lastAuditDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="lastAuditEndYear" type="xs:gYear" minOccurs="0"/>
+			<xs:element name="auditDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="individualOrder" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="toAuditWith" type="eCH-0097:organisationIdentificationType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="organisationExtensionType">
+		<xs:annotation>
+			<xs:documentation>Erweiterung der Eigenschaften der Organisation für Arbeitgeberkontrolle</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eCH-0098:organisationType">
+				<xs:sequence>
+					<xs:element name="sumOfSalaries" type="xs:decimal"/>
+					<xs:element name="sumOfSalariesCategory" type="xs:unsignedShort"/>
+					<xs:element name="numberOfEmployees" type="xs:unsignedLong" minOccurs="0"/>
+					<xs:element name="hasCommercialRegisterEntry" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="UVG-Insurer" minOccurs="0">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="60"/>
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="UVG-InsurerNo" minOccurs="0">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="20"/>
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="UVG-PoliceNo" minOccurs="0">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="20"/>
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="BVG-Insurer" minOccurs="0">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="60"/>
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="BVG-InsurerNo" minOccurs="0">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:maxLength value="20"/>
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="organisationIdentificationExtensionType">
+		<xs:annotation>
+			<xs:documentation>Erweiterung der Eigenschaften der organisationIdentification für Arbeitgeberkontrolle</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="eCH-0097:organisationIdentificationType">
+				<xs:sequence>
+					<xs:element name="contact" type="eCH-0046:contactType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="salaryTotalsExtensionType">
+		<xs:annotation>
+			<xs:documentation>Erweiterung der Eigenschaften von SalaryTotalsType für Arbeitgeberkontrolle</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="sd:SalaryTotalsType">
+				<xs:sequence>
+					<xs:element name="salaryYears" type="xs:gYear" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>Jahre, für die Lohnsummen geliefert werden</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

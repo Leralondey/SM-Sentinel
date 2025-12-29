@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.ech.ch/xmlns/ech-0050/1" version="0">
+	<xs:annotation>
+		<xs:documentation>eCH XML Schema for a minor version attribute for indicating the minor version of a XML Schema instance in a standardized way.</xs:documentation>
+	</xs:annotation>
+	<xs:attribute name="minorVersion" type="xs:integer">
+		<xs:annotation>
+			<xs:documentation>This attribute is used for indicating the minor version of an XML Schema instance in a standardized way. It SHOULD only appear on the document element of XML Schema instances.</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+</xs:schema>

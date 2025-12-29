@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2015 rel. 3 sp1 (x64) (http://www.altova.com) by Sylvain Berthouzoz (Cambridge Technology Partners) -->
+<xs:schema xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" xmlns:eahv-iv-2064-003303="http://www.eahv-iv.ch/xmlns/eahv-iv-2064-003303/1" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2064-003303/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Nachlieferung und Dokumente ausserhalb der bestehenden Meldungen IVST-IVST</xs:documentation>
+		<xs:documentation xml:lang="fr">Livraison complémentaire et documents en dehors des annonces existantes OAI-OAI</xs:documentation>
+		<xs:documentation xml:lang="it">Invio complementare e/o documenti che non appartengono agli annunci esistenti UAI-UAI</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4"/>
+	<xs:complexType name="headerType">
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="2064"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="003303"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:actionType">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue Meldung</xs:documentation>
+								<xs:documentation xml:lang="fr">Message nouveau</xs:documentation>
+								<xs:documentation xml:lang="it">Nuovo messaggio</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" fixed="false"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" fixed="true"/>
+			<xs:element name="attachment" type="eahv-iv-2064-003303:attachmentType" maxOccurs="unbounded"/>
+			<xs:element name="extension" type="eahv-iv-2064-003303:extensionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="extensionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Attribute, welche im eCH-0058/4-Standard nicht vorgesehen sind, werden im Attribut „extension“ geführt.</xs:documentation>
+			<xs:documentation xml:lang="fr">Les éléments qui ne sont pas prévus dans le standard eCH-0058/4 sont définis dans l'élément 'extension'</xs:documentation>
+			<xs:documentation xml:lang="it">Gli elementi che non sono incluse nello standard eCH-0058/4 sono definiti in 'estensione' l'elemento</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contactInformation" type="eahv-iv-common:contactInformationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="attachmentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Dokumente des Dossiers.</xs:documentation>
+			<xs:documentation xml:lang="fr">Pièces jointes au dossier</xs:documentation>
+			<xs:documentation xml:lang="it">Allegati</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="title" type="eahv-iv-common:attachmentTitleType"/>
+			<xs:element name="documentDate" type="eahv-iv-common:documentDateType"/>
+			<xs:element name="leadingDocument" type="eahv-iv-common:leadingDocumentType"/>
+			<xs:element name="sortOrder" type="eahv-iv-common:sortOrderType"/>
+			<xs:element name="documentFormat" type="eahv-iv-common:documentFormatType"/>
+			<xs:element name="documentType" type="eahv-iv-common:documentKindType"/>
+			<xs:element name="file" type="eahv-iv-common:attachmentFileType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Falls zum Dokument nur eine Datei gehört, muss eine 1 bei internalSortOrder eingetragen werden.</xs:documentation>
+					<xs:documentation xml:lang="fr">Dans le cas d'une seule pièce jointe, il faut mettre la valeur 1 pour l'élément internalSortOrder</xs:documentation>
+					<xs:documentation xml:lang="it">Nel caso di un singolo allegato, è necessario inserire il valore 1 per il internalSortOrder elemento</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="insuredPerson" type="eahv-iv-common:naturalPersonsOASIDIType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+			<xs:documentation xml:lang="fr">Déclaration de l'élément racine pour le message.xml</xs:documentation>
+			<xs:documentation xml:lang="it">Dichiarazione di l'elemento radice per message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="eahv-iv-2064-003303:headerType"/>
+				<xs:element name="content" type="eahv-iv-2064-003303:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

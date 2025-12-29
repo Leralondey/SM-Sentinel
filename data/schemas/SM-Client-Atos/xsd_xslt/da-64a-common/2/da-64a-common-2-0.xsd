@@ -1,0 +1,1270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/6" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/8" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:eCH-0108="http://www.ech.ch/xmlns/eCH-0108/7" xmlns:da-64a-common="http://www.gdk-cds.ch/xmlns/da-64a-common/2" targetNamespace="http://www.gdk-cds.ch/xmlns/da-64a-common/2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0">
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0007/6"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0008/3"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0010/8"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0108/7"/>
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Datenaustausch 64a: Basistypen für die Meldungen</xs:documentation>
+	</xs:annotation>
+	<!-- ============================================= header type ============================================= -->
+	<xs:complexType name="headerType" abstract="true">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Ableitung von eCH-0058:headerType.
+ Dieser Typ kann nicht direkt benutzt werden. Er muss für jede Meldung abgeleitet werden.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="eCH-0058:declarationLocalReferenceType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0"/>
+			<xs:element name="businessProcessId" type="da-64a-common:businessProcessIdType"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="uniqueIdBusinessTransaction" type="eCH-0058:uniqueIdBusinessTransactionType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType" type="eCH-0058:messageTypeType"/>
+			<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType"/>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="eventDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="modificationDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action" type="da-64a-common:actionType"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="extension" type="da-64a-common:extensionType" minOccurs="0" maxOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="actionType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="2"/>
+			<xs:minLength value="1"/>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Neue Meldung</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="5">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anfrage</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="6">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Antwort</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="phoneNumberType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Von eCH-0046 übernommen, da eCH-0046-2-0.xsd auf die non-forgiving Version von eCH-0010 und eCH-0044 verweist, in DA-PV aber die forgiving Version benutzt wird.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="20"/>
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="\d{10,20}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="emailAddressType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Von eCH-0046 übernommen, da eCH-0046-2-0.xsd auf die non-forgiving Version von eCH-0010 und eCH-0044 verweist, in DA-PV aber die forgiving Version benutzt wird.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="100"/>
+			<xs:whiteSpace value="collapse"/>
+			<xs:pattern value="[A-Za-z0-9!#-'\*\+\-/=\?\^_`\{-~]+(\.[A-Za-z0-9!#-'\*\+\-/=\?\^_`\{-~]+)*@[A-Za-z0-9!#-'\*\+\-/=\?\^_`\{-~]+(\.[A-Za-z0-9!#-'\*\+\-/=\?\^_`\{-~]+)*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="businessProcessIdType">
+		<xs:restriction base="xs:token">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="32"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="extensionType">
+		<xs:annotation>
+			<xs:documentation>Enthält das Element "contactInformation"</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contactInformation" type="da-64a-common:contactInformationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contactInformationType">
+		<xs:sequence>
+			<xs:element name="name" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Name</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="department" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Abteilung</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="phone" type="da-64a-common:phoneNumberType">
+				<xs:annotation>
+					<xs:documentation>Telefon</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="email" type="da-64a-common:emailAddressType">
+				<xs:annotation>
+					<xs:documentation>E-Mail-Adresse</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="other" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Freitext</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ============================================= content types ============================================= -->
+	<!-- For 64a 5231-000101 message -->
+	<xs:complexType name="debtCollectionEventType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Betreibungsereignis</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="debtCollectionEventEnum">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Betreibungsereignis, das gemeldet wird</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Betreibungsbegehren</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Fortsetzungsbegehren möglich</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Fortsetzungsbegehren gestellt</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Verlustschein</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="5">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Vollzahlung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="6">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Annullation</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="7">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Inkasso EU/EFTA</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="debtCollectionEventDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Datum des auslösenden Ereignisses</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="collectionOffice" type="da-64a-common:collectionOfficeType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Betreibungsamt zum zugehörigen Betreibungsereignis</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="caseNumber" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Betreibungsnummer</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="certificateOfLoss" type="da-64a-common:certificateOfLossType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verlustschein</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="debtorWithClaim" type="da-64a-common:debtorWithClaimType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Schuldner mit den dazugehörigen Forderungen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="insuredPersonWithClaim" type="da-64a-common:insuredPersonWithClaimType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Versicherte Personen mit den dazugehörigen Forderungen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="employerContact" type="da-64a-common:debtorJPType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Name und Adresse des Arbeitgebers in EU/EFTA-Verfahren</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="addressType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Domiziladresse</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="addressLine1" type="eCH-0010:addressLineType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresszusatzzeile für personifizierte Adressangaben (z.B. c/o-Adresse)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="addressLine2" type="eCH-0010:addressLineType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresszusatzzeile für unpersonifizierte Adressangaben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="street" type="eCH-0010:streetType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Strassenbezeichnungen (dies kann auch der Name einer Lokalität, etc. sein)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="houseNumber" type="eCH-0010:houseNumberType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Hausnummer (zu setzen, falls vorhanden)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="town" type="eCH-0010:townType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ortsname (in ausländischen Adressen falls nötig inkl. Provinz etc.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="swissZipCode" type="eCH-0010:swissZipCodeType">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Schweizer Postleitzahl (zu setzten, falls Land CH)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="foreignZipCode" type="eCH-0010:foreignZipCodeType">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Ausländische Postleitzahl (zu setzten, falls Ausland)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="country" type="eCH-0008:countryIdType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Land, vierstelliger BFS-Ländercode</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="municipalityName" type="eCH-0007:municipalityNameType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gemeindename Domizil</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="municipalityId" type="eCH-0007:municipalityIdType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gemeindenummer Domizil (BFS-Gemeindecode)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="assumptionOfClaimsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Forderungsübernahme</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="assumptionDecision" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Forderungsübernahme ja/nein</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="debtor" type="da-64a-common:debtorType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Schuldner und Adresse</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="certificateOfLossQuarterlyStatementType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Quartalsmeldung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="statementDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Erstelldatum der Meldung (Datum des Datenabzugs des Krankenversicherers)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="statementStartDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Startdatum des zu betrachtenden Zeitraums</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="statementEndDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Enddatum des zu betrachtenden Zeitraums</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="percentageOfAssumption">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Angabe, ob 85% oder 90% der Forderungen durch den Kanton übernommen werden. </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:enumeration value="85"/>
+						<xs:enumeration value="90"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="certificateOfLossArrival" type="da-64a-common:certificateOfLossArrivalType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eingegangene Verlustscheine oder gleichzusetzende Rechtstitel, welche dem Kanton in Rechnung gestellt werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="totalClaim">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Totalbetrag (Summe) der eingegangenen Verlustscheine oder gleichzusetzender Rechtstitel in CHF (nicht gerundet) abzüglich allfälliger Teilzahlungen resp. bereits an den Kanton abgetretener Forderungen</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:fractionDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="certificateOfLossFinalStatementType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Schlussabrechnung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="statementDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Erstelldatum der Meldung (Datum des Datenabzugs des Krankenversicherers)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="statementStartDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Startdatum des zu betrachtenden Zeitraums</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="statementEndDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Enddatum des zu betrachtenden Zeitraums</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="percentageOfAssumption">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Angabe, ob 85% oder 90% der Forderungen durch den Kanton übernommen werden. </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:enumeration value="85"/>
+						<xs:enumeration value="90"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="certificateOfLossArrival" type="da-64a-common:certificateOfLossArrivalType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eingegangene Verlustscheine oder gleichzusetzende Rechtstitel, welche dem Kanton in Rechnung gestellt werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="certificateOfLossPayment" type="da-64a-common:certificateOfLossPaymentType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zahlungseingänge von Verlustscheinen oder gleichzusetzenden Rechtstiteln, welche dem Kanton bereits in Rechnung gestellt wurden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="totalClaim">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Totalbetrag (Summe) der eingegangenen Verlustscheine oder gleichzusetzender Rechtstitel in CHF (nicht gerundet) abzüglich allfälliger Teilzahlungen resp. bereits an den Kanton abgetretener Forderungen</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:fractionDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="totalArrivalDebtor">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Total (Summe) der Zahlungseingänge durch Schuldner in CHF (nicht gerundet)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:fractionDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="totalArrivalPV">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Total (Summe) der Zahlungseingänge durch rückwirkende PV in CHF (nicht gerundet)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:fractionDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="totalAnnulation">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Total (Summe) der Rückerstattungen durch Annullation wegen Doppelversicherungen in CHF (nicht gerundet)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:fractionDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="certificateOfLossArrivalType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Eingang Verlustschein</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dossierNr">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eindeutige Dossiernummer des Krankenversicherers zur Betreibung die den Verlustschein ausgelöst hat</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="collectionOffice" type="da-64a-common:collectionOfficeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Betreibungsamt, das den Verlustschein ausgestellt hat</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="caseNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Betreibungsnummer (falls Betreibung existiert)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="certificateOfLoss" type="da-64a-common:certificateOfLossType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verlustschein oder gleichzusetzender Rechtstitel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="debtorWithClaim" type="da-64a-common:debtorWithClaimType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Schuldner mit den dazugehörigen Forderungen (bzw. versicherte Person, wenn Schuldner nicht bekannt)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="insuredPersonWithClaim" type="da-64a-common:insuredPersonWithClaimType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Versicherte Personen mit den dazugehörigen Forderungen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="certificateOfLossPaymentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Zahlungseingang</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dossierNr">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eindeutige Dossiernummer des Krankenversicherer zur Betreibung die den Verlustschein ausgelöst hat</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="certificateOfLoss" type="da-64a-common:certificateOfLossType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verlustschein oder gleichzusetzender Rechtstitel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="debtor" type="da-64a-common:debtorType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Schuldner (ohne Forderung)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="payment" type="da-64a-common:paymentType" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zahlungsart (Zahlung vom Schuldner, rückwirkende PV oder Annullation wegen Doppelversicherung) und zugehörige Summe der Zahlungseingänge für das Dossier in CHF (nicht gerundet)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="certificateOfLossType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Verlustschein</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="lossDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ausstelldatum resp. Entstehungsdatum der Forderung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lossNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verlustscheinnummer (zu beachten: Konkursverlustscheinen enthalten nicht zwingend eine Nummer, daher ist lossNumber optional)
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="dateOfReceipt" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eingangsdatum beim Krankenversicherer</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="typeOfLoss">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Art des gemeldeten Verlustscheins respektive Rechtstitels</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Verlustschein</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Konkursverlustschein</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Gleichzusetzender Rechtstitel</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">EU/EFTA</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="5">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Forderung ohne Verlustschein gemäss Art. 64a Abs. 3bis KVG</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="reasonTOL5" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Falls typeOfLoss = 5: Angabe des Grundes, warum für eine gemeldete Forderung kein Verlustschein oder gleichzusetzender Rechtstitel erwirkt werden konnte.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Eltern unbekannt</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Aufenthaltsort Eltern unbekannt</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Eltern im Ausland</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="99">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">siehe Freitext</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="reasonTOL5Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Falls typeOfLoss = 5 und reason = 99: Angabe des Grundes als Freitext.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="200"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="claimDebtorType">
+		<xs:annotation>
+			<xs:documentation>Forderung zum Schuldner</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="totalClaim">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Total Forderungen in CHF (nicht gerundet) abzüglich allfälliger Teilzahlungen resp. bereits an den Kanton abgetretener Forderungen </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:fractionDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="interests">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verzugszinsen in CHF (nicht gerundet) abzüglich allfälliger Teilzahlungen</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:fractionDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="expenses">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Betreibungskosten in CHF (nicht gerundet) abzüglich allfälliger Teilzahlungen</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:fractionDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="claimDebtorGuaranteedAssumptionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Forderung zum Schuldner mit Übernahmegarantie</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dossierNr" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eindeutige Dossiernummer des Krankenversicherers zur Betreibung (falls Betreibung existiert)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="collectionOffice" type="da-64a-common:collectionOfficeType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Betreibungsamt, das den Verlustschein ausgestellt
+hat (falls Betreibung existiert)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="caseNumber" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Betreibungsnummer (falls Betreibung existiert)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="debtorWithClaim" type="da-64a-common:debtorWithClaimType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Schuldner mit den dazugehörigen Forderungen (für die erwähnten versicherten Personen)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="insuredPersonWithClaim" type="da-64a-common:insuredPersonWithClaimType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Versicherte Personen, die nicht betrieben werden dürfen, mit den dazugehörigen Forderungen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="claimInsuredPersonType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Forderung zur versicherten Person</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="claimAmount">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wert in CHF (nicht gerundet), abzüglich allfälliger Teilzahlungen</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:fractionDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="claimStartDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Erster Tag des Zeitraums der geschuldeten Forderung. Bei Prämien ist für den ersten Tag die abgerechnete Periode zu verwenden, bei Kostenbeteiligungen der Behandlungszeitraum</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="claimEndDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Letzter Tag des Zeitraums der geschuldeten Forderung. Bei Prämien ist für den letzten Tag die abgerechnete Periode zu verwenden, bei Kostenbeteiligungen der Behandlungszeitraum</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="collectionOfficeType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Betreibungsamt</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="officeId" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">
+					Identifikation gemäss eSchKG (z.B. 8-AG-191) Für ausländische Behörden wird der Wert „EU-EFTA“ übermittelt
+					</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="16"/>
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="officeName">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Name Betreibungsamt</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="town" type="eCH-0010:townType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ortsname</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="swissZipCode" type="eCH-0010:swissZipCodeType">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Schweizer Postleitzahl (zu setzen, falls Land Schweiz)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="foreignZipCode" type="eCH-0010:foreignZipCodeType">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Ausländische Postleitzahl (zu setzen, falls Ausland)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="country" type="eCH-0008:countryIdType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Land, vierstelliger BFS-Ländercode</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="debtorNPType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Schuldner – natürliche Person</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="vn" type="eCH-0044:vnType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">AHV-Nummer 13-stellig (AHVN13)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="officialName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nachname</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="firstName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Alle Vornamen in der richtigen Reihenfolge</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sex" type="eCH-0044:sexType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschlecht (1=männlich, 2=weiblich)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateOfBirth" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geburtsdatum</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="language" type="xs:language" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Korrespondenzsprache</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="address" type="da-64a-common:addressType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresse</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="debtorJPType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Schuldner – juristische Person</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="uid" type="eCH-0108:uidType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eidg. Unternehmensidentifikationsnummer (zu setzen, wenn Land Schweiz und dem Krankenversicherer bekannt)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="eCH-0108:unitNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Name des Unternehmens</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="legalName" type="eCH-0108:unitNameType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Amtlicher Name des Unternehmens</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="nameAddon" type="eCH-0108:unitNameType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ergänzungen zum Firmennamen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contactName" type="eCH-0044:baseNameType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Name der Kontaktperson</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contactPhone" type="da-64a-common:phoneNumberType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Telefonnummer der Kontaktperson</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="language" type="xs:language" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Korrespondenzsprache der juristischen Person</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="address" type="da-64a-common:addressType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresse</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="debtorType">
+		<xs:annotation>
+			<xs:documentation>Schuldner</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="debtorNP" type="da-64a-common:debtorNPType"/>
+			<xs:element name="debtorJP" type="da-64a-common:debtorJPType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="debtorWithClaimType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Schuldner mit den dazugehörigen Forderungen</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="debtor" type="da-64a-common:debtorType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Schuldner</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="claimDebtor" type="da-64a-common:claimDebtorType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Forderungen Schuldner</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="insuredPersonType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Versicherte Person</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="vn" type="eCH-0044:vnType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">AHV-Nummer 13-stellig (AHVN13)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="officialName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nachname</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="firstName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Alle Vornamen in der richtigen Reihenfolg</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sex" type="eCH-0044:sexType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschlecht (1=männlich, 2=weiblich)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateOfBirth" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geburtsdatum</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="language" type="xs:language" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Korrespondenzsprache</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="address" type="da-64a-common:addressType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Adresse</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="insuredPersonWithClaimType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Versicherte Person mit den dazugehörigen Forderungen</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="insuredPerson" type="da-64a-common:insuredPersonType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Versicherte Person</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="premium" type="da-64a-common:claimInsuredPersonType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschuldete Prämie in CHF (nicht gerundet) abzüglich allfälliger Teilzahlungen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="costSharing" type="da-64a-common:claimInsuredPersonType" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschuldete Kostenbeteiligung in CHF (nicht gerundet) abzüglich allfälliger Teilzahlungen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="listOfGuaranteedAssumptionsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Liste Übernahmegarantie</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="insuredPerson" type="da-64a-common:insuredPersonType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Liste aller versicherten Personen, die nicht betrieben werden dürfen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="listOfClaimsGuaranteedAssumptionsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Forderungen Übernahmegarantie</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="statementDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Erstelldatum der Meldung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="statementStartDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Startdatum des zu betrachtenden Zeitraums</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="statementEndDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Enddatum des zu betrachtenden Zeitraums</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="claimDebtorGuaranteedAssumption" type="da-64a-common:claimDebtorGuaranteedAssumptionType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Forderungen Schuldner, welche versicherte Personen betreffen, die nicht betrieben werden dürfen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="paymentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Zahlung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="totalAmount">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Summe der Zahlungseingänge zum gemeldeten Zahlungstyp in CHF (nicht gerundet)</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:fractionDigits value="2"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="paymentCategory">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Unterscheidung zwischen Zahlungen vom Schuldner (Betrag wird dem Kanton zu 50% gutgeschrieben) und rückwirkender PV (Betrag wird dem Kanton zu 85 % resp. 90 % gutgeschrieben). Ebenfalls gemeldet werden können Annullationen wegen Doppelversicherung</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Zahlung Schuldner</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Rückwirkende PV</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Annullation wegen Doppelversicherung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="suspensionAssumptionOfClaimsStopCancelType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Leistungsaufschub stoppen/aufheben</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="insuredPerson" type="da-64a-common:insuredPersonType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Versicherte Person</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stopCancelEnum">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Leistungsaufschub wird gestoppt oder aufgehoben</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="stop">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Leistungsaufschub stoppen</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="cancel">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Leistungsaufschub aufheben</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="date" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Letzter Tag, an dem die Leistungssperre noch gilt</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="assumptionsPaymentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Zahlungseingang</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dossierNr" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eindeutige Dossiernummer des Krankenversicherer</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="debtor" type="da-64a-common:debtorType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Schuldner (ohne Forderungen)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="payment" type="da-64a-common:paymentType" minOccurs="1" maxOccurs="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zahlungsart (Zahlung vom Schuldner, rückwirkende PV oder Annullation wegen Doppelversicherung) und zugehörige Summe der Zahlungseingänge für das Dossier in CHF (nicht gerundet)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="listOfPaymentsGuaranteedAssumptionsType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Liste Zahlungen Übernahmegarantie</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="statementDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Erstelldatum der Meldung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="statementStartDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Startdatum des zu betrachtenden Zeitraums</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="statementEndDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Enddatum des zu betrachtenden Zeitraums</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="assumptionsPayment" type="da-64a-common:assumptionsPaymentType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zahlungen auf vom Kanton übernommene Forderungen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="certificateOfLossAssumptionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Übernahme Verlustschein</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dossierNr">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eindeutige Dossiernummer des Krankenversicherers zur Betreibung die den Verlustschein ausgelöst hat</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="certificateOfLoss" type="da-64a-common:certificateOfLossType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verlustschein oder gleichzusetzender Rechtstitel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="certificateOfLossConfirmationType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Bestätigung Übernahme Verlustschein</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dossierNr">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Eindeutige Dossiernummer des Krankenversicherers zur Betreibung die den Verlustschein ausgelöst hat</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:minLength value="1"/>
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="certificateOfLoss" type="da-64a-common:certificateOfLossType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verlustschein oder gleichzusetzender Rechtstitel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="confirmAssumption" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Angabe, ob der Verlustschein dem Kanton übergeben werden kann oder ob eine bilaterale Klärung zwischen Krankenversicherer und Kanton notwendig ist. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:sequence>
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Übernahme bestätigt</xs:documentation>
+					</xs:annotation>
+					<xs:element name="debtor" type="da-64a-common:debtorType">
+						<xs:annotation>
+							<xs:documentation xml:lang="de">Schuldner (ohne Forderungen)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="totalClaim">
+						<xs:annotation>
+							<xs:documentation xml:lang="de">Total Forderungen in CHF (nicht gerundet) abzüglich allfälliger Teilzahlungen, wobei die Zahlung des Kantons (85%) nicht abgezogen wird.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:decimal">
+								<xs:fractionDigits value="2"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="totalPayment">
+						<xs:annotation>
+							<xs:documentation xml:lang="de">Total Zahlungen in CHF (nicht gerundet), wobei die Zahlung des Kantons (85%) nicht berücksichtigt wird.</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:decimal">
+								<xs:fractionDigits value="2"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+				</xs:sequence>
+				<xs:element name="rejectReason">
+					<xs:annotation>
+						<xs:documentation xml:lang="de">Übernahme abgelehnt</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Grund, warum der Verlustschein nicht übergeben werden kann (zwingend anzugeben bei confir-mAssumption=false)</xs:documentation>
+							</xs:annotation>
+							<xs:minLength value="1"/>
+							<xs:enumeration value="1">
+								<xs:annotation>
+									<xs:documentation xml:lang="de">Dossiernummer nicht bekannt</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="2">
+								<xs:annotation>
+									<xs:documentation xml:lang="de">Betreibungsverfahren läuft</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="3">
+								<xs:annotation>
+									<xs:documentation xml:lang="de">Es gibt einen Folgeverlustschein</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="4">
+								<xs:annotation>
+									<xs:documentation xml:lang="de">Keine Forderung mehr offen</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="5">
+								<xs:annotation>
+									<xs:documentation xml:lang="de">Sonstige</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

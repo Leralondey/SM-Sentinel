@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Lars Steffen (AWK Group AG) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:ssk-common="http://www.steuerkonferenz.ch/xmlns/ssk-common/2" xmlns:ssk-3109-000001="http://www.steuerkonferenz.ch/xmlns/ssk-3109-000001/1" targetNamespace="http://www.steuerkonferenz.ch/xmlns/ssk-3109-000001/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Kantons-Dossiermeldung JP</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.steuerkonferenz.ch/xmlns/ssk-common/2"/>
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von ssk-common:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="ourBusinessReferenceID" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="3109"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000001"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="eventDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="modificationDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:actionType">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue Nachricht</xs:documentation>
+								<xs:documentation xml:lang="fr">Message nouveau</xs:documentation>
+								<xs:documentation xml:lang="it">Nuovo messaggio</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Widerruf</xs:documentation>
+								<xs:documentation xml:lang="fr">Révocation</xs:documentation>
+								<xs:documentation xml:lang="it">Revoca</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Korrektur</xs:documentation>
+								<xs:documentation xml:lang="fr">Correction</xs:documentation>
+								<xs:documentation xml:lang="it">Correzione</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" fixed="false"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" fixed="true"/>
+			<xs:element name="attachment" type="ssk-3109-000001:attachmentType" maxOccurs="unbounded"/>
+			<xs:element name="extension" type="ssk-3109-000001:extensionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="attachmentType">
+		<xs:sequence>
+			<xs:element name="title" type="ssk-common:attachmentTitleType"/>
+			<xs:element name="documentDate" type="ssk-common:documentDateType"/>
+			<xs:element name="leadingDocument" type="ssk-common:leadingDocumentType"/>
+			<xs:element name="sortOrder" type="ssk-common:sortOrderType"/>
+			<xs:element name="documentFormat" type="ssk-common:documentFormatType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">MIME-Typ des Dokuments. Erlaubte MIME-Typen müssen pro Message bestimmt werden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="documentType">
+				<xs:simpleType>
+					<xs:restriction base="ssk-common:documentKindType">
+						<xs:enumeration value="10.01">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Anteile an unverteilten Erbschaften</xs:documentation>
+								<xs:documentation xml:lang="fr">Parts à des successions non partagées</xs:documentation>
+								<xs:documentation xml:lang="it">Quote di partecipazione a comunioni ereditarie</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.02">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Anteile an Einkommen und Vermögen von Kollektiv- und Kommanditgesellschaften</xs:documentation>
+								<xs:documentation xml:lang="fr">Parts aux revenus et à la fortune de sociétés en nom collectif ou en commandite</xs:documentation>
+								<xs:documentation xml:lang="it">Quote di reddito e sostanza di società in nome collettivo o in accomandita</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.03">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Handänderungen</xs:documentation>
+								<xs:documentation xml:lang="fr">Mutations</xs:documentation>
+								<xs:documentation xml:lang="it">Mutazioni</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.04">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Forderungen</xs:documentation>
+								<xs:documentation xml:lang="fr">Créances</xs:documentation>
+								<xs:documentation xml:lang="it">Crediti</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.05">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Rechnungen und Zahlungen</xs:documentation>
+								<xs:documentation xml:lang="fr">Factures et paiements</xs:documentation>
+								<xs:documentation xml:lang="it">Fatture e pagamenti</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.11">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Steuerpflichtfeststellungsverfahren</xs:documentation>
+								<xs:documentation xml:lang="fr">Procédure de constatation de l'assujettissement du contribuable PP</xs:documentation>
+								<xs:documentation xml:lang="it">Procedura di verifica dell’assoggettamento del contribuente PF</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.12">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Steuerveranlagungsverfahren (inkl. Einspracheverfahren)</xs:documentation>
+								<xs:documentation xml:lang="fr">Procédure de taxation, y compris la réclamation</xs:documentation>
+								<xs:documentation xml:lang="it">Procedura di tassazione, compreso il reclamo</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.13">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Steuerhinterziehungsverfahren</xs:documentation>
+								<xs:documentation xml:lang="fr">Procédure de soustraction d'impôts</xs:documentation>
+								<xs:documentation xml:lang="it">Procedura per sottrazione d’imposta</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.14">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nachlassverfahren</xs:documentation>
+								<xs:documentation xml:lang="fr">Procédure d'inventaire</xs:documentation>
+								<xs:documentation xml:lang="it">Procedura d’inventario</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.15">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Rechtsmittelverfahren</xs:documentation>
+								<xs:documentation xml:lang="fr">Procédure de recours</xs:documentation>
+								<xs:documentation xml:lang="it">Procedura di ricorso</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.16">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Steuerbezugsverfahren</xs:documentation>
+								<xs:documentation xml:lang="fr">Procédure de perception des impôts</xs:documentation>
+								<xs:documentation xml:lang="it">Procedura di riscossione delle imposte</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.21">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Gründungsverträge / Statuten</xs:documentation>
+								<xs:documentation xml:lang="fr">Actes constitutifs / statuts</xs:documentation>
+								<xs:documentation xml:lang="it">Atti costitutivi / statuti</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.22">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kaufverträge</xs:documentation>
+								<xs:documentation xml:lang="fr">Contrats d’achat PP</xs:documentation>
+								<xs:documentation xml:lang="it">Contratti d’acquisto</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.23">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Scheidungskonventionen / Scheidungsurteile</xs:documentation>
+								<xs:documentation xml:lang="fr">Conventions de divorce / jugements de divorce</xs:documentation>
+								<xs:documentation xml:lang="it">Convenzioni di divorzio / decisioni di divorzio</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.24">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Ruling</xs:documentation>
+								<xs:documentation xml:lang="fr">Arrangement fiscal</xs:documentation>
+								<xs:documentation xml:lang="it">Accordo fiscale</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.25">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Interkant. Repartition betreffend Anrechnung ausl. QST für ausl. Dividenden und Zinsen</xs:documentation>
+								<xs:documentation xml:lang="fr">Répart. intercant. de l'imputation d’IS étrangers sur les dividendes et intérêts étrangers</xs:documentation>
+								<xs:documentation xml:lang="it">Ripartizione intercant. sull'accredito delle IF estere per dividendi e interessi esteri</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10.99">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Andere Dokumente</xs:documentation>
+								<xs:documentation xml:lang="fr">Autres documents</xs:documentation>
+								<xs:documentation xml:lang="it">Altri documenti</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="file" type="ssk-common:attachmentFileType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="extensionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Attribute, welche im eCH-0058/4-Standard nicht vorgesehen sind, werden im Attribut „extension“ geführt.</xs:documentation>
+			<xs:documentation xml:lang="fr">Les éléments qui ne sont pas prévus dans le standard eCH-0058/4 sont définis dans l'élément 'extension'</xs:documentation>
+			<xs:documentation xml:lang="it">Gli elementi che non sono incluse nello standard eCH-0058/4 sono definiti in 'estensione' l'elemento</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contactInformation" type="ssk-common:contactInformationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="taxPayer" type="ssk-common:legalEntitiesTaxType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="ssk-3109-000001:headerType"/>
+				<xs:element name="content" type="ssk-3109-000001:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

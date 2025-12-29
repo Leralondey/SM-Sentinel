@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.eahv-iv.ch/xmlns/eahv-iv-napg-common/3"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/6"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-napg-common/3"
+           elementFormDefault="qualified"
+           version="3.0">
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/6" schemaLocation="../external/eCH-0097-6-0.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="../external/eCH-0058-5-0.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Gemeinsame Typen für Meldungen und Webdienste</xs:documentation>
+        <xs:documentation xml:lang="fr">Types communs aux messages et web services</xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType name="initialAssignmentType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Information sur la première attribution d'un cas à une caisse de
+                compensation
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Informationen über die erste Zuweisung eines Falles an eine Ausgleichskasse
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="compensationOffice" type="eCH-0097:uidStructureType"/>
+            <xs:element name="compensationOfficeChoiceRule" type="compensationOfficeChoiceRuleType"/>
+            <xs:element name="eventDate" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="transferType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Information sur un transfert du cas d'une caisse de compensation à une autre
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Information über eine Übertragung des Falles von einer Ausgleichskasse zu
+                einer anderen
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="sourceCompensationOffice" type="eCH-0097:uidStructureType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">IDE de la caisse de compensation source.</xs:documentation>
+                    <xs:documentation xml:lang="de">UID der Quellensusgleichskasse.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="destinationCompensationOffice" type="eCH-0097:uidStructureType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">IDE de la caisse de compensation de destination.</xs:documentation>
+                    <xs:documentation xml:lang="de">UID der Ausgleichskasse am Zielort.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="reason">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Commentaire de la caisse de compensation source sur la raison du
+                        transfert.
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Kommentar der Quellenausgleichskasse zum Grund der Überweisung
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="2000"/>
+                        <xs:minLength value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="eventDate" type="xs:dateTime" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Date du transfert. Pas nécessaire lors d'une demande de transfert.
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Datum der Übertragung. Nicht erforderlich bei einer
+                        Versetzungsanfrage.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="closingType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Information sur la clôture d'un cas</xs:documentation>
+            <xs:documentation xml:lang="de">Informationen über den Abschluss eines Falls</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="compensationOffice" type="eCH-0097:uidStructureType"/>
+            <xs:element name="eventDate" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="assignmentsHistoryType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Historique des attributions</xs:documentation>
+            <xs:documentation xml:lang="de">Geschichte der Zuweisungen</xs:documentation>
+        </xs:annotation>
+
+        <xs:sequence>
+            <xs:element name="initialAssignment" type="initialAssignmentType"/>
+            <xs:element name="transfer" type="transferType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="closing" type="closingType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="errorCodeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Codes d'erreurs standard pour les retours de la CdC.
+                Le code "OTHER" est là pour la flexibilité, mais ne devrait pas être utilisé à long terme.
+                Dès que possible, de nouveaux codes doivent être défini afin de permettre un traitement automatisé par
+                les caisses de compensations.
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Standard-Fehlercodes für Rückmeldungen der ZAS.
+                Der Code "OTHER" ist für die Flexibilität da, sollte aber nicht langfristig verwendet werden.
+                So bald wie möglich sollten neue Codes definiert werden, um eine automatisierte Verarbeitung durch die
+                Ausgleichskassen zu ermöglichen.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="UNKNOWN_BUSINESS_PROCESS_ID"/>
+            <xs:enumeration value="NO_CASES_FOUND_FOR_VN"/>
+            <xs:enumeration value="CASE_ALREADY_ASSIGNED"/>
+            <xs:enumeration value="CASE_NOT_ASSIGNED_TO_REQUESTER"/>
+            <xs:enumeration value="INVALID_CASE_STATUS_FOR_REQUESTED_OPERATION"/>
+            <xs:enumeration value="UNKNOWN_DESTINATION"/>
+            <xs:enumeration value="SEDEX_ID_AND_UID_MISMATCH"/>
+            <xs:enumeration value="INVALID_XSD"/>
+            <xs:enumeration value="DELIVERY_FLAG"/>
+            <xs:enumeration value="OTHER"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="caseStatusType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Statuts possible pour un cas</xs:documentation>
+            <xs:documentation xml:lang="de">Mögliche Status für einen Fall</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="INITIATED"/>
+            <xs:enumeration value="ERROR"/>
+            <xs:enumeration value="READY_FOR_ASTREINT"/>
+            <xs:enumeration value="EDITING"/>
+            <xs:enumeration value="ASSIGNED"/>
+            <xs:enumeration value="PAPER"/>
+            <xs:enumeration value="CLOSED"/>
+            <xs:enumeration value="PRESCRIBED"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="errorType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Type commun pour les erreurs dans les réponses</xs:documentation>
+            <xs:documentation xml:lang="de">Häufiger Typ des Antwortfehlers</xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="code" type="errorCodeType"/>
+            <xs:element name="description">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="500"/>
+                        <xs:minLength value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="infoType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Type commun pour les réponses</xs:documentation>
+            <xs:documentation xml:lang="de">Gemeinsamer Typ für Antworten</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="positiveReport">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="notice">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="assignedCompensationOffice" type="eCH-0097:uidStructureType"/>
+                                    <xs:element name="caseStatus" type="caseStatusType"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="negativeReport">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="notice">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="error" type="errorType" maxOccurs="unbounded"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="headerType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Type commun pour les headers eCH-0058</xs:documentation>
+            <xs:documentation xml:lang="de">Gemeinsamer Typ für Headers eCH-0058</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType"/>
+            <xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+            <xs:element name="messageId" type="eCH-0058:messageIdType"/>
+            <xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0"/>
+            <xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType" minOccurs="0"/>
+            <xs:element name="messageType">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:messageTypeType">
+                        <xs:enumeration value="2005"/>
+                        <xs:enumeration value="2006"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="subMessageType">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:subMessageTypeType">
+                        <xs:enumeration value="000101"/>
+                        <xs:enumeration value="000201"/>
+                        <xs:enumeration value="000202"/>
+                        <xs:enumeration value="000301"/>
+                        <xs:enumeration value="000401"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+            <xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+            <xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0"/>
+            <xs:element name="action" type="eCH-0058:actionType"/>
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="compensationOfficeChoiceRuleType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Règles de sélection de la caisse de compensation compétente
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Regeln für die Bestimmung der zuständigen Ausgleichskasse</xs:documentation>
+        </xs:annotation>
+
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="I_ECA_CRA_A1__SCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is abroad. Residence is abroad. Activity: Worker abroad, residing abroad.
+                        Attribution decision: Swiss Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECA_CRS_A2__CRCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is abroad. Residence is in Switzerland. Activity: Worker abroad, residing
+                        in Switzerland. Attribution decision: Canton of Residence Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A3_AS1__ASC">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: Freelance. Astreint selected his employer or
+                        company. Attribution decision: Compensation Office of the company selected by the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A3_AS2__ASCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: Freelance. Astreint selected the compensation
+                        office. Attribution decision: Compensation Office selected by the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A3_AS3__CCCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: Freelance. Astreint did not do a selection.
+                        Attribution decision: Canton of Company Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A4_AS1__ASC">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: Freelance and employed. Astreint selected his
+                        employer or company. Attribution decision: Compensation Office of the company selected by the
+                        Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A4_AS2__ASCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: Freelance and employed. Astreint selected the
+                        compensation office. Attribution decision: Compensation Office selected by the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A4_AS3__CCCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: Freelance and employed. Astreint did not do a
+                        selection. Attribution decision: Canton of Company Compensation
+                        Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A5_AS1__ASC">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: Apprentice. Astreint selected his employer or
+                        company. Attribution decision: Compensation Office of the company selected by the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A5_AS2__ASCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: Apprentice. Astreint selected the compensation
+                        office. Attribution decision: Compensation Office selected by the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A5_AS3__CCCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: Apprentice. Astreint did not do a selection.
+                        Attribution decision: Canton of Company Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A6_AS1__ASC">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: Employed. Astreint selected his employer or
+                        company. Attribution decision: Compensation Office of the company selected by the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A6_AS2__ASCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: Employed. Astreint selected the compensation
+                        office. Attribution decision: Compensation Office selected by the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A6_AS3__CCCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: Employed. Astreint did not do a selection.
+                        Attribution decision: Canton of Company Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A7__AK89">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: BRI. Attribution decision: AK89 - Bank
+                        Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_A8__AK25">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Activity: IFRC. Attribution decision: AK25 - Geneva
+                        Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_CRA_A9__SCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Residence is abroad. Activity: International civil
+                        servants. Attribution decision: Swiss Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_CRS_A9__CRCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Residence is in Switzerland. Activity: International
+                        civil servants. Attribution decision: Canton of Residence Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_CRA_A10__CCCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Residence is abroad. Activity: ANobAG. Attribution
+                        decision: Canton of Company Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="I_ECS_CRS_A10__CRCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has income. Employer is in Switzerland. Residence is in Switzerland. Activity: ANobAG.
+                        Attribution decision: Canton of Residence Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A11_AS2_O58__ASCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Not gainfully employed. Astreint selected
+                        the compensation office. Astreint is 58 years old, or older. Attribution decision: Compensation
+                        Office selected by the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A11_AS3_O58__CRCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Not gainfully employed. Astreint did not
+                        do a selection. Astreint is 58 years old, or older. Attribution decision: Canton of Residence
+                        Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A11_LT58__CRCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Not gainfully employed. Astreint is less
+                        than 58 years old. Attribution decision: Canton of Residence Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A12_AS1__ASC">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Unemployed with intermediate income.
+                        Astreint selected his employer or company. Attribution decision: Compensation Office of the
+                        company selected by the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A12_AS2__ASCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Unemployed with intermediate income.
+                        Astreint selected the compensation office. Attribution decision: Compensation Office selected by
+                        the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A12_AS3__CCCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Unemployed with intermediate income.
+                        Astreint did not do a selection. Attribution decision: Canton of Company Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A13_AS2_O58__ASCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Unemployed without intermediate income,
+                        without compensation. Astreint selected the compensation office. Astreint is 58 years old, or
+                        older. Attribution decision: Compensation Office selected by the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A13_AS3_O58__CRCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Unemployed without intermediate income,
+                        without compensation. Astreint did not do a selection. Astreint is 58 years old, or older.
+                        Attribution decision: Canton of Residence Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A13_LT58__CRCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Unemployed without intermediate income,
+                        without compensation. Astreint is less than 58 years old. Attribution decision: Canton of
+                        Residence Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A14_AS1__ASC">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Unemployed without intermediate income,
+                        with compensation. Astreint selected his employer or company. Attribution decision: Compensation
+                        Office of the company selected by the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A14_AS2__ASCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Unemployed without intermediate income,
+                        with compensation. Astreint selected the compensation office. Attribution decision: Compensation
+                        Office selected by the Astreint.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A14_AS3__CCCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Unemployed without intermediate income,
+                        with compensation. Astreint did not do a selection. Attribution decision: Canton of Company
+                        Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_SCS_A15_O21__CSCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. School is in Switzerland. Activity: Student.
+                        Astreint is 21 years old, or older. Attribution decision: Canton of school Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_SCA_A15_O21__CRCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. School is abroad. Activity: Student. Astreint is 21
+                        years old, or older. Attribution decision: Canton of Residence Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRS_A15_LT21__CRCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is in Switzerland. Activity: Student. Astreint is less than 21 years
+                        old. Attribution decision: Canton of Residence Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NI_CRA_A16__SCO">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        Has no income. Residence is abroad. Activity: Swiss from abroad not gainfully employed.
+                        Attribution decision: Swiss Compensation Office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="COMPENSATION_OFFICE_ASSIGNMENT_REQUEST">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        A compensation office requested a case assignment to itself.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="COMPENSATION_OFFICE_TRANSFER_REQUEST">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">
+                        A compensation office requested a case transfer to another compensation office.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

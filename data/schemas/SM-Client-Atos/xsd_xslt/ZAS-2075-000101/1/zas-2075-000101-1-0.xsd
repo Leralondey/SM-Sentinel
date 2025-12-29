@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+		2022-06-27 - v 0.01 - Erster Entwurf
+ -->
+<xs:schema xmlns="http://www.zas.admin.ch/xmlns/zas-2075-000101/1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:pool="http://www.zas.admin.ch/POOL" xmlns:zas-2075-000101="http://www.zas.admin.ch/xmlns/zas-2075-000101/1" targetNamespace="http://www.zas.admin.ch/xmlns/zas-2075-000101/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">MOSAR IK-Meldung</xs:documentation>
+		<xs:documentation xml:lang="fr">MOSAR Annonce CI</xs:documentation>
+		<xs:documentation xml:lang="it">MOSAR Annunci CI</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.zas.admin.ch/POOL" schemaLocation="zas-POOL.xsd"/>
+	<!--eCH-0058 Types-->
+	<xs:complexType name="headerType">
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="2075"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000101"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:actionType">
+						<xs:minLength value="1"/>
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue Nachricht</xs:documentation>
+								<xs:documentation xml:lang="fr">Message nouveau</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType"/>
+			<xs:element name="extension" type="zas-2075-000101:extensionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="extensionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Elemente, welche im eCH-0058/4-Standard nicht vorgesehen sind, werden im Attribut „extension“ geführt.</xs:documentation>
+			<xs:documentation xml:lang="fr">Les éléments qui ne sont pas prévus dans le standard eCH-0058/4 sont définis dans l'élément 'extension'</xs:documentation>
+			<xs:documentation xml:lang="it">Gli elementi che non sono incluse nello standard eCH-0058/4 sono definiti in 'estensione' l'elemento</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contactInformation" type="eahv-iv-common:contactInformationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+			<xs:documentation xml:lang="fr">Attributs métier de l'annonce</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PoolMeldungZurZAS" type="pool:PoolMeldungZurZASType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation>root element for pension query message</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="zas-2075-000101:headerType"/>
+				<xs:element name="content" type="zas-2075-000101:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

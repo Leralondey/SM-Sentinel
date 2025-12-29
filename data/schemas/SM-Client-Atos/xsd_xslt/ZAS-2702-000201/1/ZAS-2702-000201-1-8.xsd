@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- édité avec XMLSpy v2020 sp1 (http://www.altova.com) par  (Bundesamt für Informatik und Telekommunikation BIT) -->
+<!-- Copyright : Centrale de Compensation AVS/AI, Genève (2019). -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ZAS-2702-000201="http://www.zas.admin.ch/xmlns/zas-2702-000201/1" xmlns:ZAS-2702-common="http://www.zas.admin.ch/xmlns/ZAS-2702-common/1" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/5" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3" xmlns:eCH-0011="http://www.ech.ch/xmlns/eCH-0011/8" targetNamespace="http://www.zas.admin.ch/xmlns/zas-2702-000201/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="http://www.zas.admin.ch/xmlns/ZAS-2702-common/1" schemaLocation="ZAS-2702-common-1-8.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/4" schemaLocation="eCH-0044-4-1.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="eCH-0058-5-0.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0007/5" schemaLocation="eCH-0007-5-0.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0008/3" schemaLocation="eCH-0008-3-0.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0011/8" schemaLocation="eCH-0011-8-1.xsd"/>
+	<xs:simpleType name="DecisionKind">
+		<xs:restriction base="xs:integer">
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="4"/>
+			<xs:enumeration value="5"/>
+			<xs:enumeration value="7"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="headerType">
+		<xs:complexContent>
+			<xs:extension base="ZAS-2702-common:commonHeaderType">
+				<xs:sequence>
+					<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000201"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="commonHeaderType">
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="messageType" type="eCH-0058:messageTypeType" fixed="2702"/>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="action" type="eCH-0058:actionType" fixed="1"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="commonDecisionType">
+		<xs:sequence>
+			<xs:element name="decisionId" type="ZAS-2702-common:decisionIdType"/>
+			<xs:element name="decisionKind" type="ZAS-2702-000201:DecisionKind"/>
+			<xs:element name="validFrom" type="xs:gYearMonth"/>
+			<xs:element name="validTo" type="xs:gYearMonth" minOccurs="0"/>
+			<xs:element name="decisionDate" type="xs:date"/>
+			<xs:element name="deliveryOffice" type="ZAS-2702-common:deliveryOfficeType"/>
+			<xs:element name="vn" type="eCH-0044:vnType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="caseType">
+		<xs:sequence>
+			<xs:element name="businessCaseIdUel">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="100"/>
+						<xs:whiteSpace value="collapse"/>
+						<xs:pattern value="[A-Za-z0-9]+"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="decision" type="ZAS-2702-000201:commonDecisionType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="case" type="ZAS-2702-000201:caseType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="ZAS-2702-000201:headerType"/>
+				<xs:element name="content" type="ZAS-2702-000201:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:unsignedShort" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

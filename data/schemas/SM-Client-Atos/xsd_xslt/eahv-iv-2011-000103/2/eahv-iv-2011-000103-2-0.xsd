@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/2"
+	xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/1"
+	xmlns:eahv-iv-2011-000103="http://www.eahv-iv.ch/xmlns/eahv-iv-2011-000103/2"
+	targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2011-000103/2"
+	elementFormDefault="qualified" attributeFormDefault="unqualified" version="0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Steuermeldung AHV</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/2" />
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/1" />
+	
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Beschreibung des Message Headers. Abgeleitet von eahv-iv-common:headerType
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="eahv-iv-common:declarationLocalReferenceType" minOccurs="0"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="ourBusinessReferenceID" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="2011"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000103"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="object" type="eahv-iv-common:naturalPersonsTaxReturnsOASIType"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0"/>
+			<xs:element name="messageDate" type="xs:dateTime"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:initialMessageDateType" minOccurs="0"/>
+			<xs:element name="eventDate" type="xs:dateTime"/>
+			<xs:element name="modificationDate" type="xs:dateTime" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="2"/>
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="6"/>
+						<xs:enumeration value="3"/>
+						<xs:enumeration value="4"/>
+						<xs:enumeration value="7"/>
+						<xs:enumeration value="10"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="attachment" type="eahv-iv-common:attachmentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="testData" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0"/>
+			<xs:element name="messagePriority" type="eahv-iv-common:messagePriorityType"/>
+			<xs:element name="eventPeriod" type="xs:gYear"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="basicDataType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Basisdaten
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="employmentIncome" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nettoeinkommen aus unselbständiger Tätigkeit (Ausland, ohne Sozialabzüge)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="incomeFromSelfEmployment" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nettoeinkommen aus selbständiger Tätigkeit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pensionIncome" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Renteneinkommen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="incomeInAgriculture" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Selbständiges Erwerbseinkommen aus Landwirtschaft</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="capital" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Im Betrieb investiertes Eigenkapital</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="assets" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Höhe des Beitragspflichtigen Vermögens</xs:documentation>
+				</xs:annotation>
+			</xs:element>			<xs:element name="nonDomesticIncomePresent" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Sind im Ausland erzielte Einkommen vorhanden?</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:enumeration value="-1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Unbekannt</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="0">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nein</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Ja</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="purchasingLPP" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einkauf BVG</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OASIBridgingPension" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Überbrückungsrente des Arbeitgebers</xs:documentation>
+				</xs:annotation>
+			</xs:element>		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="businessDataType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Geschäftsdaten
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="commencementOfSelfEmployment" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Aufnahme einer allfälligen selbständigen Erwerbstätigkeit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="endOfSelfEmployment" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ende einer allfälligen selbständigen Erwerbstätigkeit</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mainIncome" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Selbständiger Haupterwerb</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mainIncomeInAgriculture" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Selbständiger Hauptwerwerb aus Landwirtschaft</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mainIncomeInRealEstateTrade" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Selbständiger Hauptwerwerb aus Liegenschaftenhandel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="partTimeEmployment" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Selbständiger Nebenerwerb</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="partTimeEmploymentInAgriculture" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Selbständiger Nebenerwerb aus Landwirtschaft</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="partTimeEmploymentInRealEstateTrade" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Selbständiger Nebenerwerb aus Liegenschaftenhandel</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="realisationProfit" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einkünfte aus Liquidationsgewinn</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cooperativeShares" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anteil selbständiger Erwerb aus Personengesellschaften</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="securitiesIncome" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wertschriftenertrag aus Geschäftswertschriften</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="otherIncome" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Weitere Einkünfte (geschäftlich)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="businessResidencyEntitlement" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einkommen aus Wohnrecht (Geschäft)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="incomeRealEstate" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Nettoeinkommen aus Geschäftsliegenschaften</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="debtInterest" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschäftliche Schuldzinsen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="donations" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Freiwillige Zuwendungen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="businessSecurities" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wertschriften geschäftlich</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="businessCash" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bargeld geschäftlich</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="businessAssets" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschäftsvermögen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="businessRealEstateProperties" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschäftsliegenschaften (zu den Repartitionswerten)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="totalAssets" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Total Geschäftsaktiven</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="businessDebts" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschäftsschulden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="privateDataType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">
+				Privatdaten
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="pensions" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Renten/Pensionen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pensionsPillar1" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Rente Säule 1</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pensionsPillar2" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Rente Säule 2</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pensionsPillar3a" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Rente Säule 3a</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pensionsPillar3b" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Rente Säule 3b</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="annuities" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Leibrenten</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="otherPensions" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Übrige Renten</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="militaryInsurancePensions" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Renten der Militärversicherung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="perDiemAllowance" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Taggelder aus Kranken- und Unfallversicherung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="maintenanceContribution" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Unterhaltsbeiträge (Alimente)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="childAllowances" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Kinderzulagen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="patentLicense" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einnahmen aus nicht selbstverwalteten Patenten, Lizenzen und Autorenrechte</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="privateResidencyEntitlement" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Einkommen aus Wohnrecht</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="privateSecurities" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Wertschriften und Guthaben laut Wertschriftenverzeichnis</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="privateCash" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bargeld, Gold und andere Edelmetalle</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="lifeInsurance" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Lebensversicherungen (Rückkaufswert)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="motorVehicle" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Motorfahrzeuge (Vermögenswert)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="inheritance" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Anteile an unverteilten Erbschaften</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="otherAssets" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Übrige Vermögenswerte</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="privateRealEstateProperties" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Liegenschaften inkl. ausländische Liegenschaften (mit Repartitionswert umgerechnet)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="companyShares" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Vermögensanteile an Personengesellschaften</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="privateDebts" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Private Schulden</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxableIncomeDBG" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Steuerbares Einkommen gemäss DBG</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="taxableIncomeExpenseTaxation" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bemessungsgrundlage für Aufwandbesteuerte</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="assessmentDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Datum der Einschätzung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="assessmentType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Veranlagungsart</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Veranlagung der direkten Bundessteuer</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Kantonale Veranlagung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="3">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Überprüfte Steuerdeklaration</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Ermessensveranlagung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="5">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Nachsteuermeldung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="10">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Veranlagung hängig</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="11">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Ohne Veranlagung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="reportType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Meldeart</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Normale Steuermeldung</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="2">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Zusatzmeldung (an die kant. Ausgleichskasse)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="4">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Rektifikat (Neuveranlagung)</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="taxpayer" type="eahv-iv-common:naturalPersonsTaxReturnsOASIType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Personalien und Bemessungsgrundlagen der steuerpflichtigen Person</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="spBasicData" type="eahv-iv-2011-000103:basicDataType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Zwingende Basisdaten des Steuerpflichtigen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="spBusinessData" type="eahv-iv-2011-000103:businessDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Optionale Geschäftsdaten des Steuerpflichtigen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="spPrivateData" type="eahv-iv-2011-000103:privateDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Optionale Privatdaten des Steuerpflichtigen</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="spouse" type="eahv-iv-common:naturalPersonsTaxReturnsOASIType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Personalien und Bemessungsgrundlagen eines allfälligen Ehepartners</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="epBasicData" type="eahv-iv-2011-000103:basicDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Basisdaten des Ehepartners</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="epBusinessData" type="eahv-iv-2011-000103:businessDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Geschäftsdaten des Ehepartners</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="epPrivateData" type="eahv-iv-2011-000103:privateDataType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Privatdaten des Ehepartners</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="remark" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Bemerkungen (Freitext)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="header">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für header.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="eahv-iv-2011-000103:headerType">
+					<xs:attribute name="minorVersion" type="xs:integer" use="required"></xs:attribute>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="eahv-iv-2011-000103:headerType"/>
+				<xs:element name="content" type="eahv-iv-2011-000103:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"></xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

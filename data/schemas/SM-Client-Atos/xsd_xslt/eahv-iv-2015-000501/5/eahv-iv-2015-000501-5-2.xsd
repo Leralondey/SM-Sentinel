@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4"
+           xmlns:eahv-iv-2015-000501="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-000501/5"
+           xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-common/5"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-000501/5"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="5.2">
+
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Verarbeitungsprotokoll</xs:documentation>
+        <xs:documentation xml:lang="fr">Protocol de traitement</xs:documentation>
+    </xs:annotation>
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2015-common/5"/>
+
+    <xs:element name="message">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">Déclaration de l'élément root pour message.xml
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eahv-iv-2015-000501:headerType"/>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="headerType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                Beschreibung des Message Headers. Abgeleitet von
+                eahv-iv-common:headerType
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                Description du header du message. Inspiré de
+                eahv-iv-common:headerType
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="common:headerBaseType">
+                <xs:sequence>
+                    <xs:element name="subMessageType">
+                        <xs:simpleType>
+                            <xs:restriction base="eCH-0058:subMessageTypeType">
+                                <xs:enumeration value="000501">
+                                    <xs:annotation>
+                                        <xs:documentation xml:lang="de">Verarbeitungsprotokoll</xs:documentation>
+                                        <xs:documentation xml:lang="fr">Protocol de traitement</xs:documentation>
+                                    </xs:annotation>
+                                </xs:enumeration>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="action">
+                        <xs:simpleType>
+                            <xs:restriction base="eCH-0058:actionType">
+                                <xs:enumeration value="1"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="attachment" type="eahv-iv-2015-000501:attachmentType" maxOccurs="unbounded"/>
+                    <xs:element name="responseExpected">
+                        <xs:simpleType>
+                            <xs:restriction base="eCH-0058:responseExpectedType">
+                                <xs:pattern value="false"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="attachmentType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                Hilfstyp zur Beschreibung von Message Attachments.
+                Abgeleitet von eahv-iv-common:attachmentType
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                Type décrivant les attachments du message. Inspiré de
+                eahv-iv-common:attachmentType
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="title" type="eahv-iv-2015-000501:attachmentTitleType"/>
+            <!-- documentDate is not in the specs but we decided to add it, with minOccurs=0 -->
+            <xs:element name="documentDate" type="eahv-iv-2015-000501:documentDateType" minOccurs="0"/>
+            <xs:element name="leadingDocument">
+                <xs:simpleType>
+                    <xs:restriction base="eahv-iv-2015-000501:leadingDocumentType">
+                        <xs:pattern value="true"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="sortOrder">
+                <xs:simpleType>
+                    <xs:restriction base="eahv-iv-2015-000501:sortOrderType">
+                        <xs:enumeration value="001"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="documentFormat">
+                <xs:simpleType>
+                    <xs:restriction base="eahv-iv-2015-000501:documentFormatType">
+                        <xs:enumeration value="application/pdf"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="documentType" type="eahv-iv-2015-000501:documentTypeType" minOccurs="0"/>
+            <xs:element name="file" type="eahv-iv-2015-000501:attachmentFileType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="attachmentTitleType">
+        <xs:restriction base="xs:token">
+            <xs:maxLength value="100"/>
+            <xs:minLength value="1"/>
+            <!-- This needs to be discussed; it's a bit weird to restrict the file name <xs:enumeration value="Mat_Decline"/>
+                <xs:enumeration value="Mat_Confirm"/> <xs:enumeration value="Ser_Confirm"/> <xs:enumeration value="Mat_Err"/>
+                <xs:enumeration value="Ser_Err"/> <xs:enumeration value="Mat_Reminder"/> <xs:enumeration value="Ser_Reminder"/>
+                <xs:enumeration value="Mat_UPI"/> <xs:enumeration value="Ser_UPI"/> <xs:enumeration value="8A-8F"/> -->
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="documentDateType">
+        <xs:restriction base="xs:date"/>
+    </xs:simpleType>
+    <xs:simpleType name="leadingDocumentType">
+        <xs:restriction base="xs:boolean"/>
+    </xs:simpleType>
+    <xs:simpleType name="sortOrderType">
+        <xs:restriction base="xs:nonNegativeInteger"/>
+    </xs:simpleType>
+    <xs:simpleType name="documentFormatType">
+        <xs:restriction base="xs:token"/>
+    </xs:simpleType>
+    <xs:complexType name="attachmentFileType">
+        <xs:sequence>
+            <xs:element name="pathFileName" type="eahv-iv-2015-000501:pathFileNameType"/>
+            <xs:element name="internalSortOrder" type="eahv-iv-2015-000501:sortOrderType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="pathFileNameType">
+        <xs:restriction base="xs:token">
+            <xs:maxLength value="250"/>
+            <xs:minLength value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="documentTypeType">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="000101">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Mutterschaft, Zurückgewiesene Meldungen
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Maternité, annonces refusées</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="000201">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Dienst, Zurückgewiesene Meldungen
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Service, annonces refusées</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="000102">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Mutterschaft, Bestätigung des Empfangs korrekter
+                        Meldungen
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Maternité, confirmation de la réception des
+                        annonces correctes
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="000202">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Dienst, Bestätigung des Empfangs korrekter
+                        Meldungen
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Service, confirmation de la réception des annonces
+                        correctes
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="000103">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Mutterschaft, Meldungen, die die Plausibilitäten
+                        verletzen
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Maternité, erreurs de plausibilités
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="000203">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Dienst, Meldungen, die die Plausibilitäten
+                        verletzen
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Service, erreurs de plausibilités
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="000104">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Mutterschaft, Mahnungen für Konflikte/Fehler, die
+                        älter als 3 Monate sind
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Maternité, avis pour les conflits/erreurs vieux de
+                        plus de 3 mois
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="000204">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Dienst, Mahnungen für Konflikte/Fehler, die älter
+                        als 3 Monate sind
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Service, avis pour les conflits/erreurs vieux de
+                        plus de 3 mois
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="000105">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Mutterschaft, Mitteilungen an die Kassen nach
+                        UPI-Abgleich
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Maternité, communications aux caisses après
+                        synchronisation avec UPI
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="000205">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Dienst, Mitteilungen an die Kassen nach
+                        UPI-Abgleich
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">Service, communications aux caisses après
+                        synchronisation avec UPI
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="000106">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de"/>
+                    <xs:documentation xml:lang="fr">Maternité, confirmation de la reception des
+                        annonces en historiques
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="000206">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de"/>
+                    <xs:documentation xml:lang="fr">Service, confirmation de la reception des annonces
+                        en historiques
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="000301">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Vergleichsbericht 8A-8F</xs:documentation>
+                    <xs:documentation xml:lang="fr">Rapport de comparaison 8A-8F</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

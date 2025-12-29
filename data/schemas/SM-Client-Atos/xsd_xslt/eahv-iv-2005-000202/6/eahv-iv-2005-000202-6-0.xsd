@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-napg-common/3"
+           xmlns:common-2005="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-common/6"
+           xmlns="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-000202/6"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-000202/6"
+           elementFormDefault="qualified"
+           version="6.0">
+
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-napg-common/3"
+               schemaLocation="../common/eahv-iv-napg-common-3-0.xsd"/>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2005-common/6"
+               schemaLocation="eahv-iv-2005-common-6-0.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation xml:lang="fr">
+            SubMessageType: 202
+            Annonce envoyée par une caisse à la CdC afin de demander le transfert du cas vers une autre caisse.
+        </xs:documentation>
+        <xs:documentation xml:lang="de">
+            SubMessageType: 202
+            Meldung, die von einer Kasse an die ZAS geschickt wird, um die Übertragung des Falls an eine andere Kasse zu
+            beantragen.
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType name="contentType">
+        <xs:sequence>
+            <xs:element name="transferCaseRequest" type="common:transferType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="common-2005:headerWithAttachmentsType"/>
+                <xs:choice>
+                    <xs:element name="content" type="contentType"/>
+                    <xs:element name="info" type="common:infoType"/>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+ 

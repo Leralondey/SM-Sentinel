@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           xmlns:eahv-iv-2415-000821="http://www.eahv-iv.ch/xmlns/eahv-iv-2415-000821/1"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2415-000821/1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5"
+               schemaLocation="eCH-0058-5-0.xsd"/>
+    <xs:annotation>
+        <xs:documentation xml:lang="de">EL-IPV data exchange: Fullsetabgleich Anfrage</xs:documentation>
+        <xs:documentation xml:lang="en">EL-IPV data exchange: Full set request</xs:documentation>
+    </xs:annotation>
+
+    <xs:complexType name="fullSetRequestType">
+        <xs:sequence>
+            <xs:element name="year" type="xs:gYear">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Requested year</xs:documentation>
+                    <xs:documentation xml:lang="de">Angefragtes Jahr</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="headerType">
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType"/>
+            <xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+            <xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+            <xs:element name="messageId" type="eCH-0058:messageIdType"/>
+            <xs:element name="messageType" type="eCH-0058:messageTypeType" fixed="2415"/>
+            <xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000821"/>
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+            <xs:element name="subject" type="eCH-0058:subjectType" minOccurs="0"/>
+            <xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+            <xs:element name="action" type="eCH-0058:actionType" fixed="5"/>
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="contentType">
+        <xs:sequence>
+            <xs:element name="fullSetRequest" type="eahv-iv-2415-000821:fullSetRequestType"  minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eahv-iv-2415-000821:headerType"/>
+                <xs:element name="content" type="eahv-iv-2415-000821:contentType"/>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

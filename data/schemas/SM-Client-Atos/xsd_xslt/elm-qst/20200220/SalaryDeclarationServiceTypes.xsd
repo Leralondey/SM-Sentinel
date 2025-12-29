@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        targetNamespace="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclarationServiceTypes"
+        xmlns:sdst="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclarationServiceTypes"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:sd="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclaration"
+        xmlns:sdc="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclarationContainer"
+        xmlns:c="http://www.swissdec.ch/schema/common/20200220/Common"
+        elementFormDefault="qualified"
+        attributeFormDefault="unqualified"
+        version="0.0">
+
+    <!-- state of standardisation:
+        publication: FINAL 2020-04-23
+        intern: release-5.0.0-20200423-Version5_RL-LDUeV20200220-ELMV5
+    -->
+
+    <xs:import namespace="http://www.swissdec.ch/schema/common/20200220/Common"
+               schemaLocation="Common.xsd"/>
+
+    <xs:import
+            namespace="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclaration"
+            schemaLocation="SalaryDeclaration.xsd"/>
+
+    <xs:import
+            namespace="http://www.swissdec.ch/schema/sd/20200220/SalaryDeclarationContainer"
+            schemaLocation="SalaryDeclarationContainer.xsd"/>
+
+    <!-- definitions Ping -->
+    <xs:element name="Ping" type="c:PingType"/>
+    <xs:element name="PingResponse" type="c:PingResponseType"/>
+
+    <!-- definitions CheckInteroperability -->
+    <xs:element name="CheckInteroperability" type="c:CheckInteroperabilityType"/>
+    <xs:element name="CheckInteroperabilityResponse" type="c:CheckInteroperabilityResponseType"/>
+
+    <!-- ****************************** -->
+    <!-- *** DECLARE SALARY PROCESS *** -->
+    <!-- ****************************** -->
+    <!-- definitions DeclareSalary -->
+    <xs:element name="DeclareSalary" type="sdc:SalaryDeclarationRequestType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Lohnmeldung ('ELM-Struktur') asynchron</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Notification des salaires ('ELM-Structure') asynchron</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Notifica del salario ('ELM-Struttura') asynchron</translation>
+            </xs:documentation>
+        </xs:annotation>
+        <!-- check Job references;
+            attention: element name="DeclareSalary" in SalaryDeclarationConsumerContainer.xsd  -->
+        <xs:unique name="AHV-AVS-ID-Key1">
+            <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:AHV-AVS"/>
+            <xs:field xpath="@institutionID"/>
+        </xs:unique>
+        <xs:keyref name="AHV-AVS-ID-Ref1" refer="sdst:AHV-AVS-ID-Key1">
+            <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:AHV-AVS"/>
+            <xs:field xpath="@institutionIDRef"/>
+        </xs:keyref>
+        <xs:unique name="FAK-CAF-ID-Key1">
+            <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:FAK-CAF"/>
+            <xs:field xpath="@institutionID"/>
+        </xs:unique>
+        <xs:keyref name="FAK-CAF-ID-Ref1" refer="sdst:FAK-CAF-ID-Key1">
+            <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:FAK-CAF"/>
+            <xs:field xpath="@institutionIDRef"/>
+        </xs:keyref>
+        <xs:unique name="UVG-LAA-ID-Key1">
+            <xs:selector
+                    xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:UVG-LAA"/>
+            <xs:field xpath="@institutionID"/>
+        </xs:unique>
+        <xs:keyref name="UVG-LAA-ID-Ref1" refer="sdst:UVG-LAA-ID-Key1">
+            <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:UVG-LAA"/>
+            <xs:field xpath="@institutionIDRef"/>
+        </xs:keyref>
+        <xs:unique name="UVGZ-LAAC-ID-Key1">
+            <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:UVGZ-LAAC"/>
+            <xs:field xpath="@institutionID"/>
+        </xs:unique>
+        <xs:keyref name="UVGZ-LAAC-ID-Ref1" refer="sdst:UVGZ-LAAC-ID-Key1">
+            <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:UVGZ-LAAC"/>
+            <xs:field xpath="@institutionIDRef"/>
+        </xs:keyref>
+        <xs:unique name="KTG-AMC-ID-Key1">
+            <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:KTG-AMC"/>
+            <xs:field xpath="@institutionID"/>
+        </xs:unique>
+        <xs:keyref name="KTG-AMC-ID-Ref1" refer="sdst:KTG-AMC-ID-Key1">
+            <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:KTG-AMC"/>
+            <xs:field xpath="@institutionIDRef"/>
+        </xs:keyref>
+        <xs:unique name="BVG-LPP-ID-Key1">
+            <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:BVG-LPP"/>
+            <xs:field xpath="@institutionID"/>
+        </xs:unique>
+        <xs:keyref name="BVG-LPP-ID-Ref1" refer="sdst:BVG-LPP-ID-Key1">
+            <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:BVG-LPP"/>
+            <xs:field xpath="@institutionIDRef"/>
+        </xs:keyref>
+        <xs:unique name="TaxAtSource-ID-Key1">
+            <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:TaxAtSource"/>
+            <xs:field xpath="@institutionID"/>
+        </xs:unique>
+        <xs:keyref name="TaxAtSource-ID-Ref1" refer="sdst:TaxAtSource-ID-Key1">
+            <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:TaxAtSource"/>
+            <xs:field xpath="@institutionIDRef"/>
+        </xs:keyref>
+        <xs:unique name="TaxCrossborder-Key1">
+            <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:TaxCrossborder"/>
+            <xs:field xpath="@institutionID"/>
+        </xs:unique>
+        <xs:keyref name="TaxCrossborder-Ref1" refer="sdst:TaxCrossborder-Key1">
+            <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:TaxCrossborder"/>
+            <xs:field xpath="@institutionIDRef"/>
+        </xs:keyref>
+        <xs:unique name="Statistic-ID-Key1">
+            <xs:selector xpath="sdc:SalaryDeclaration/sd:Company/sd:Institutions/sd:Statistic"/>
+            <xs:field xpath="@institutionID"/>
+        </xs:unique>
+        <xs:keyref name="Statistic-ID-Ref1" refer="sdst:Statistic-ID-Key1">
+            <xs:selector xpath="sdc:Job/sdc:Addressees/sdc:Statistic"/>
+            <xs:field xpath="@institutionIDRef"/>
+        </xs:keyref>
+    </xs:element>
+    <xs:element name="DeclareSalaryResponse" type="sdc:DeclareSalaryResponseType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>JobKey zur Quittung Lohnmeldung</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>JobKey pour la réception de la notification des salaires</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>JobKey per la ricezione della notifica del salario</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <!-- definitions GetStatusFromDeclaration -->
+    <xs:element name="GetStatusFromDeclareSalary" type="sdc:GetStatusFromDeclareSalaryType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>JobKey zur Quittung Lohnmeldung</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>JobKey pour la réception de la notification des salaires</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>NJobKey per la ricezione della notifica del salario</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="GetStatusFromDeclareSalaryResponse" type="sdc:SalaryDeclarationStatusResponseType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Status zur Lohnmeldung</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Statut pour la notification des salaires</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Stato per la notifica del salario</translation>
+            </xs:documentation>
+            <xs:documentation>Quittung Lohnmeldung</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <!-- definitions GetResultFromDeclareSalary (old GetContributionsFromDeclareSalary) -->
+    <xs:element name="GetResultFromDeclareSalary" type="sdc:GetResultFromDeclareSalaryType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Credentials zum Abrufen der Personen mit ihren Beiträge</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Pouvoirs permettant de retrouver les personnes avec leurs contributions</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Credenziali per recuperare le persone con i loro contributi</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="GetResultFromDeclareSalaryResponse" type="sdc:GetResultFromDeclareSalaryResponseType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Resultat der Verarbeitung</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Résultat du traitement</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Risultato della lavorazione</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+
+    <!-- ********************************* -->
+    <!-- ** DECLARE MONTH TOTAL PROCESS ** -->
+    <!-- ** NEW  ELM V5                 ** -->
+    <!-- ********************************* -->
+    <!-- monthly salary declaration without personal data-->
+    <!-- definitions DeclareMonthTotal()   -->
+    <xs:element name="DeclareMonthTotal" type="sdc:MonthTotalDeclarationRequestType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Monatliche AHV/FAK-Lohnsummenmeldung für effektive Abrechnung</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Déclaration de salaires AVS/CAF mensuelle</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Notifica dei salari AVS/CAF mensile per un conteggio effettivo</translation>
+            </xs:documentation>
+        </xs:annotation>
+        <!-- check Job references;
+            attention: element name="DeclareMonthTotal" in SalaryDeclarationConsumerContainer.xsd  -->
+        <xs:unique name="AHV-AVS-ID-Key2">
+            <xs:selector xpath="sdc:MonthTotalDeclaration/sd:Company/sd:Institutions/sd:AHV-AVS"/>
+            <xs:field xpath="@institutionID"/>
+        </xs:unique>
+        <xs:keyref name="AHV-AVS-ID-Ref2" refer="sdst:AHV-AVS-ID-Key2">
+            <xs:selector xpath="sdc:JobMonthTotal/sdc:Addressees/sdc:AHV-AVS"/>
+            <xs:field xpath="@institutionIDRef"/>
+        </xs:keyref>
+        <xs:unique name="FAK-CAF-ID-Key2">
+            <xs:selector xpath="sdc:MonthTotalDeclaration/sd:Company/sd:Institutions/sd:FAK-CAF"/>
+            <xs:field xpath="@institutionID"/>
+        </xs:unique>
+        <xs:keyref name="FAK-CAF-ID-Ref2" refer="sdst:FAK-CAF-ID-Key2">
+            <xs:selector xpath="sdc:JobMonthTotal/sdc:Addressees/sdc:FAK-CAF"/>
+            <xs:field xpath="@institutionIDRef"/>
+        </xs:keyref>
+    </xs:element>
+    <xs:element name="DeclareMonthTotalResponse" type="sdc:DeclareSalaryResponseType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Monatliche AHV/FAK-Lohnsummenmeldung für effektive Abrechnung Antwort</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Réponse Déclaration de salaires AVS/CAF mensuelle</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Rispondi Notifica dei salari AVS/CAF mensile per un conteggio effettivo</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <!-- definitions GetStatusFromDeclareMonthTotal() -->
+    <xs:element name="GetStatusFromDeclareMonthTotal" type="sdc:GetStatusFromDeclareSalaryType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Status Monatliche AHV/FAK-Lohnsummenmeldung für effektive Abrechnung</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Statut Déclaration de salaires AVS/CAF mensuelle</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Stato Notifica dei salari AVS/CAF mensile per un conteggio effettivo</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="GetStatusFromDeclareMonthTotalResponse" type="sdc:GetStatusFromDeclareMonthTotalResponseType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Status Monatliche AHV/FAK-Lohnsummenmeldung für effektive Abrechnung</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Statut Déclaration de salaires AVS/CAF mensuelle</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Stato Notifica dei salari AVS/CAF mensile per un conteggio effettivo</translation>
+            </xs:documentation>
+            <xs:documentation>Quittung Lohnmeldung</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <!-- definitions GetResultFromDeclareMonthTotal() -->
+    <xs:element name="GetResultFromDeclareMonthTotal" type="sdc:GetResultFromDeclareMonthTotalType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Resultat Monatliche AHV/FAK-Lohnsummenmeldung für effektive Abrechnung</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Résultat Déclaration de salaires AVS/CAF mensuelle</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Risultato Notifica dei salari AVS/CAF mensile per un conteggio effettivo</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="GetResultFromDeclareMonthTotalResponse" type="sdc:GetResultFromDeclareMonthTotalResponseType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Resultat Monatliche AHV/FAK-Lohnsummenmeldung für effektive Abrechnung</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Résultat Déclaration de salaires AVS/CAF mensuelle</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Risultato Notifica dei salari AVS/CAF mensile per un conteggio effettivo</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+
+    <!-- ******************************* -->
+    <!-- ** DIALOG MESSAGES EXTENSION ** -->
+    <!-- ** NEW  ELM V5               ** -->
+    <!-- DialogMessage as an alternative to Completion -->
+    <!-- 2 Operations:
+        GetDialog()     Get the Message dialog
+        ReplyDialog()   Submit the Message dialog
+     -->
+
+    <xs:element name="GetDialog" type="sdc:GetResultFromDeclareSalaryType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Dialog Message abrufen</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Obtenir un dialogue de message</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Ottenere la finestra di dialogo dei messaggi</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="GetDialogResponse" type="sdc:GetDialogResponseType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Dialog Message zum Beantworten</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Message de dialogue pour réponse</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Messaggio di dialogo per la risposta</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:element name="ReplyDialog" type="sdc:ReplyDialogType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Dialog Message einreichen</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Dialogue Soumettre un message</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Invia il dialogo del messaggio</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:element name="ReplyDialogResponse" type="sdc:GetDialogResponseType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Antwort und optinal neue Dialog Message zum Beantworten</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>Dialogue Soumettre un message</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>Réponse et nouveau message de dialogue facultatif pour répondre</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+
+    <!-- *********** -->
+    <!-- ** FAULT ** -->
+    <!-- *********** -->
+    <!-- definition SalaryDeclarationFault -->
+    <xs:element name="SalaryDeclarationFault" type="sdc:SalaryDeclarationFaultType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>SalaryDeclarationFault</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="fr">
+                <translation>SalaryDeclarationFault</translation>
+            </xs:documentation>
+            <xs:documentation xml:lang="it">
+                <translation>SalaryDeclarationFault</translation>
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+</xs:schema>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        targetNamespace="http://www.swissdec.ch/schema/sd/20120504/SalaryDeclarationConsumerServiceTypes"
+        xmlns:tns="http://www.swissdec.ch/schema/sd/20120504/SalaryDeclarationConsumerServiceTypes"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:cct="http://www.swissdec.ch/schema/sd/20120504/SalaryDeclarationConsumerContainer"
+        elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+
+    <!-- state of standardisation: DRAFT 5  für QST UND BFS (ACHTUNG: zurzeit noch NICHT stabil)
+        publication: 2012-05-09
+    -->
+
+
+    <!-- imports -->
+    <xs:import
+            namespace="http://www.swissdec.ch/schema/sd/20120504/SalaryDeclarationConsumerContainer"
+            schemaLocation="SalaryDeclarationConsumerContainer.xsd"/>
+
+    <!-- definitions PingConsumer -->
+    <xs:element name="PingConsumer" type="cct:PingConsumerType"/>
+    <xs:element name="PingConsumerResponse" type="cct:PingConsumerResponseType"/>
+
+    <!-- ****************************** -->
+    <!-- *** DECLARE SALARY PROCESS *** -->
+    <!-- ****************************** -->
+    <!-- definitions DeclareSalaryConsumer -->
+    <xs:element name="DeclareSalaryConsumer" type="cct:DeclareSalaryConsumerType"/>
+    <xs:element name="DeclareSalaryConsumerResponse"
+                type="cct:DeclareSalaryConsumerResponseType"/>
+
+    <!-- definitions GetContributionsFromDeclareSalaryConsumer -->
+    <xs:element name="GetContributionsFromDeclareSalaryConsumer"
+                type="cct:GetContributionsFromDeclareSalaryConsumerType"/>
+    <xs:element name="GetContributionsFromDeclareSalaryConsumerResponse"
+                type="cct:GetContributionsFromDeclareSalaryConsumerResponseType"/>
+
+    <!-- ************************************ -->
+    <!-- *** SYNCHRONIZE CONTRACT PROCESS *** -->
+    <!-- ************************************ -->
+    <!-- definitions DeclareSalaryConsumer -->
+    <xs:element name="SynchronizeContractConsumer" type="cct:DeclareSalaryConsumerType"/>
+    <xs:element name="SynchronizeContractConsumerResponse" type="cct:DeclareSalaryConsumerResponseType"/>
+
+    <!-- definitions GetResultFromSynchronizeContractConsumer -->
+    <xs:element name="GetResultFromSynchronizeContractConsumer"
+                type="cct:GetContributionsFromDeclareSalaryConsumerType"/>
+    <xs:element name="GetResultFromSynchronizeContractConsumerResponse"
+                type="cct:GetContributionsFromDeclareSalaryConsumerResponseType"/>
+
+    <!-- *********** -->
+    <!-- ** FAULT ** -->
+    <!-- *********** -->
+    <xs:element name="SalaryDeclarationConsumerFault"
+                type="cct:SalaryDeclarationConsumerFaultType"/>
+</xs:schema>

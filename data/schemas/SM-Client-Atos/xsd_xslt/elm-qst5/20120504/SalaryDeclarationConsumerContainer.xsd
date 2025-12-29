@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+        targetNamespace="http://www.swissdec.ch/schema/sd/20120504/SalaryDeclarationConsumerContainer"
+        xmlns:tns="http://www.swissdec.ch/schema/sd/20120504/SalaryDeclarationConsumerContainer"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:ct="http://www.swissdec.ch/schema/sd/20120504/SalaryDeclarationContainer"
+        xmlns:sd="http://www.swissdec.ch/schema/sd/20120504/SalaryDeclaration"
+        elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.0">
+
+    <!-- state of standardisation: DRAFT 5  für QST UND BFS (ACHTUNG: zurzeit noch NICHT stabil)
+        publication: 2012-05-09
+    -->
+
+    <!-- imports -->
+    <xs:import namespace="http://www.swissdec.ch/schema/sd/20120504/SalaryDeclarationContainer"
+               schemaLocation="SalaryDeclarationContainer.xsd"/>
+
+    <xs:import namespace="http://www.swissdec.ch/schema/sd/20120504/SalaryDeclaration"
+               schemaLocation="SalaryDeclaration.xsd"/>
+
+    <!-- complex type definitions -->
+    <xs:complexType name="PingConsumerType">
+        <xs:sequence>
+            <xs:element name="Timestamp" type="xs:dateTime"/>
+            <xs:element name="NextCheck" type="xs:dateTime"/>
+            <xs:element name="RegisteredMaintenance" type="tns:RegisteredMaintenanceType"
+                        minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="RegisteredMaintenanceType">
+        <xs:sequence>
+            <xs:element name="Start" type="xs:dateTime"/>
+            <xs:element name="End" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PingConsumerResponseType">
+        <xs:sequence>
+            <xs:element name="Timestamp" type="xs:dateTime"/>
+            <xs:choice minOccurs="0">
+                <xs:element name="PlannedMaintenance" type="tns:PlannedMaintenanceType"/>
+                <xs:element name="NoPlannedMaintenance" type="tns:EmptyType"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PlannedMaintenanceType">
+        <xs:sequence>
+            <xs:element name="Start" type="xs:dateTime"/>
+            <xs:element name="End" type="xs:dateTime"/>
+            <xs:element name="ProducerMessages" type="tns:ProducerMessagesType">
+                <xs:unique name="language">
+                    <xs:selector xpath="tns:Message"/>
+                    <xs:field xpath="@language"/>
+                </xs:unique>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ProducerMessagesType">
+        <xs:sequence>
+            <xs:element name="Message" type="tns:MessageType" minOccurs="3" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MessageType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="language" type="ct:LanguageCodeType" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="DeclareSalaryConsumerType">
+        <xs:sequence>
+            <xs:element name="DistributorRequestContext" type="tns:DistributorRequestContextType"/>
+            <xs:element name="DeclareSalary" type="ct:SalaryDeclarationRequestType">
+                <xs:annotation>
+                    <xs:documentation>SalaryDeclarationRequest</xs:documentation>
+                </xs:annotation>
+                <xs:unique name="AHV-AVS-ID-Key">
+                    <xs:selector xpath="ct:SalaryDeclaration/sd:Company/sd:Institutions/sd:AHV-AVS"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="AHV-AVS-ID-Ref" refer="tns:AHV-AVS-ID-Key">
+                    <xs:selector xpath="ct:Job/ct:Addressees/ct:AHV-AVS"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="UVG-LAA-ID-Key">
+                    <xs:selector
+                            xpath="ct:SalaryDeclaration/sd:Company/sd:Institutions/sd:UVG-LAA-Suva|ct:SalaryDeclaration/sd:Company/sd:Institutions/sd:UVG-LAA"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="UVG-LAA-ID-Ref" refer="tns:UVG-LAA-ID-Key">
+                    <xs:selector xpath="ct:Job/ct:Addressees/ct:UVG-LAA"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="UVGZ-LAAC-ID-Key">
+                    <xs:selector xpath="ct:SalaryDeclaration/sd:Company/sd:Institutions/sd:UVGZ-LAAC"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="UVGZ-LAAC-ID-Ref" refer="tns:UVGZ-LAAC-ID-Key">
+                    <xs:selector xpath="ct:Job/ct:Addressees/ct:UVGZ-LAAC"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="KTG-AMC-ID-Key">
+                    <xs:selector xpath="ct:SalaryDeclaration/sd:Company/sd:Institutions/sd:KTG-AMC"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="KTG-AMC-ID-Ref" refer="tns:KTG-AMC-ID-Key">
+                    <xs:selector xpath="ct:Job/ct:Addressees/ct:KTG-AMC"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="BVG-LPP-ID-Key">
+                    <xs:selector xpath="ct:SalaryDeclaration/sd:Company/sd:Institutions/sd:BVG-LPP"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="BVG-LPP-ID-Ref" refer="tns:BVG-LPP-ID-Key">
+                    <xs:selector xpath="ct:Job/ct:Addressees/ct:BVG-LPP"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+                <xs:unique name="FAK-CAF-ID-Key">
+                    <xs:selector xpath="ct:SalaryDeclaration/sd:Company/sd:Institutions/sd:FAK-CAF"/>
+                    <xs:field xpath="@institutionID"/>
+                </xs:unique>
+                <xs:keyref name="FAK-CAF-ID-Ref" refer="tns:FAK-CAF-ID-Key">
+                    <xs:selector xpath="ct:Job/ct:Addressees/ct:FAK-CAF"/>
+                    <xs:field xpath="@institutionIDRef"/>
+                </xs:keyref>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DistributorRequestContextType">
+        <xs:sequence>
+            <xs:element name="UserAgent" type="tns:UserAgentType"/>
+            <xs:element name="TransmissionDate" type="xs:dateTime">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Übertragungszeitpunkt</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DeclarationID" type="tns:IDType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>TODO</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>TODO</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DistributorRequestID" type="tns:IDType"/>
+            <xs:element name="TestCase" type="tns:EmptyType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Testfall</translation>
+                        <description>
+                            <short>Testfall-Kennzeichnung</short>
+                            <technical>Die Daten wurden empfangen und quittiert. Aber OHNE
+                                PRODUKTIVE VERARBEITUNG!!!
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Duplicate" type="tns:DuplicateType" minOccurs="0"/>
+            <xs:element name="SubstitutionMapping" type="tns:SubstitutionMappingType" minOccurs="0"/>
+            <xs:element name="VersionMappingFrom" type="tns:VersionMappingFromType" minOccurs="0"/>
+            <xs:element name="ProducerSecurityTokens" type="tns:ProducerSecurityTokensType">
+                <xs:unique name="x509token">
+                    <xs:selector xpath="tns:X509Certificate"/>
+                    <xs:field xpath="tns:Usage"/>
+                    <xs:field xpath="tns:DistinguishedNameOwner"/>
+                </xs:unique>
+            </xs:element>
+            <xs:element name="ProducerResponseNotifications"
+                        type="tns:ProducerResponseNotificationsType"/>
+            <xs:element name="ConsumerNotifications" type="tns:ConsumerNotificationsType"
+                        minOccurs="0"/>
+            <xs:element name="Institutions" type="sd:CustomerIdentificationType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="UserAgentType">
+        <xs:sequence>
+            <xs:element name="Producer" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Applikations-Hersteller</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Name" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Produkt-Name</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Version" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Produkt-Version</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DuplicateType">
+        <xs:sequence>
+            <xs:element name="LastDistributorRequestID" type="tns:IDType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SubstitutionMappingType">
+        <xs:sequence>
+            <xs:element name="MappedPredecessorDistributorRequestID" type="tns:IDType"/>
+            <xs:element name="MappedPredecessorConsumerResponseID" type="tns:IDType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ProducerSecurityTokensType">
+        <xs:sequence>
+            <xs:element name="Timestamp" type="xs:dateTime" maxOccurs="unbounded"/>
+            <xs:element name="X509Certificate" type="tns:X509CertificateType"
+                        maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="X509CertificateType">
+        <xs:sequence>
+            <xs:element name="Usage" type="tns:UsageType"/>
+            <xs:element name="DistinguishedNameOwner" type="xs:string"/>
+            <xs:element name="DistinguishedNameIssuer" type="xs:string"/>
+            <xs:element name="SecuredElement" type="xs:string" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="UsageType">
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="Signature"/>
+            <xs:enumeration value="QualifiedSignature"/>
+            <xs:enumeration value="Encryption"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="ProducerResponseNotificationsType">
+        <xs:sequence>
+            <xs:element name="Warning" type="tns:ProducerNotificationsType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Warnungen, die an den Producer zurückgeschickt werden
+                        </translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Info" type="tns:ProducerNotificationsType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Informationen, die an den Producer zurückgeschickt werden
+                        </translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ProducerNotificationsType">
+        <xs:sequence>
+            <xs:element name="Notification" type="tns:ProducerNotificationType"
+                        maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Hinweise</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ProducerNotificationType">
+        <xs:sequence>
+            <xs:element name="QualityLevel" type="tns:QualityLevelType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Qualitäts-Stufe</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DescriptionCode" type="tns:DescriptionCodeType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Code der Beschreibung</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Description" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Beschreibungstext</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ConsumerNotificationsType">
+        <xs:sequence>
+            <xs:element name="Warning" type="tns:ConsumerNotificationType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Warnungen, die an den Consumer geschickt werden</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Info" type="tns:ConsumerNotificationType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Informationen, die an den Consumer zurückgeschickt werden
+                        </translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ConsumerNotificationType">
+        <xs:sequence>
+            <xs:element name="Notification" type="tns:NotificationType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="NotificationType">
+        <xs:sequence>
+            <xs:element name="DescriptionCode" type="tns:DescriptionCodeType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Code der Beschreibung</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Description" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Beschreibungstext</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DeclareSalaryConsumerResponseType">
+        <xs:sequence>
+            <xs:element name="ConsumerResponseContext" type="tns:ConsumerResponseContextType"/>
+            <xs:element name="JobState" type="tns:JobStateType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="JobStateType">
+        <xs:choice>
+            <xs:element name="AHV-AVS" type="ct:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>AK-Nummer</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Numéro CC</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="UVG-LAA" type="ct:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>UVG-LAA</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>UVG-LAA</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="UVGZ-LAAC" type="ct:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>UVGZ-LAAC</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>UVGZ-LAAC</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="KTG-AMC" type="ct:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>KTG-AMC</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>KTG-AMC</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="BVG-LPP" type="ct:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>BVG-LPP</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>BVG-LPP</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="FAK-CAF" type="ct:ReducedWorkingStateMultiType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>FAK-CAF</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>FAK-CAF</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CantonalTaxAdministration" type="tns:TaxWorkingStateType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Kantonale Steuerverwaltung</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>Administration cantonale des contributions</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="SwissFederalStatisticalOffice" type="ct:ReducedWorkingStateType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>BFS</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>OFS</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CantonalTaxAtSourceAdministration" type="tns:TaxWorkingStateType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>TODO</translation>
+                    </xs:documentation>
+                    <xs:documentation xml:lang="fr">
+                        <translation>TODO</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="TaxWorkingStateType">
+        <xs:complexContent>
+            <xs:extension base="ct:ReducedWorkingStateType">
+                <xs:attribute name="canton" type="sd:CantonAndEXType" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="WorkingStateMultiType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Arbeitszustandsdetail</xs:documentation>
+            <xs:documentation xml:lang="fr">Avancement du travail</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ct:ReducedWorkingStateType">
+                <xs:attribute name="institutionIDRef" type="sd:InstitutionIDType" use="required"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ConsumerResponseContextType">
+        <xs:sequence>
+            <xs:element name="ConsumerResponseID" type="tns:IDType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>AntwortID</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="DistributorRequestID" type="tns:IDType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>AuftragsID</translation>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="TestCase" type="tns:EmptyType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">
+                        <translation>Testfall</translation>
+                        <description>
+                            <short>Testfall-Kennzeichnung</short>
+                            <technical>Die Daten wurden empfangen und quittiert. Aber OHNE
+                                PRODUKTIVE VERARBEITUNG!!!
+                            </technical>
+                        </description>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GetContributionsFromDeclareSalaryConsumerType">
+        <xs:sequence>
+            <xs:element name="DistributorRequestContext" type="tns:DistributorRequestContextType"/>
+            <xs:element name="GetContributionsFromDeclareSalary" type="ct:GetContributionsFromDeclareSalaryType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GetContributionsFromDeclareSalaryConsumerResponseType">
+        <xs:sequence>
+            <xs:element name="ConsumerResponseContext" type="tns:ConsumerResponseContextType"/>
+            <xs:element name="GetContributionsFromDeclareSalaryResponse"
+                        type="ct:SalaryResultConsumerType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="VersionMappingFromType">
+        <xs:sequence>
+            <xs:element name="WSDLNamespace" type="xs:anyURI"/>
+            <xs:element name="ServiceTypesNamespace" type="xs:anyURI"/>
+            <xs:element name="SalaryDeclarationMinorVersion" type="xs:decimal"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SalaryDeclarationConsumerFaultType">
+        <xs:sequence>
+            <xs:element name="ConsumerFaultContext" type="tns:ConsumerResponseContextType"/>
+            <xs:element name="SalaryDeclarationFault" type="ct:SalaryDeclarationFaultType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="EmptyType"/>
+
+    <!-- simple types
+    -->
+    <xs:simpleType name="QualityLevelType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Qualitäts-Stufen</translation>
+                <description>
+                    <short>Qualtäts-Stufen der Übermittlung</short>
+                    <technical>Folgende Stufen gelten Validity: erste Stufe Plausibility: zweite
+                        Stufe Acceptance: dritte Stufe
+                    </technical>
+                </description>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="Validity"/>
+            <xs:enumeration value="Plausibility"/>
+            <xs:enumeration value="Acceptance"/>
+            <!-- Validity:      first level check -->
+            <!-- Plausibility:  second level check -->
+            <!-- Acceptance:    third level check -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="DescriptionCodeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">
+                <translation>Beschreibungscode</translation>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:nonNegativeInteger">
+            <xs:totalDigits value="7"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="IDType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

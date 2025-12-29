@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://www.zas.admin.ch/xmlns/rafam-6000-68/1"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           elementFormDefault="qualified" version="1.0">
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4" schemaLocation="eCH-0044-4-1f.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="eCH-0058-5-0.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Type - Abfrage FamZReg für Ausbildungszulagen ab 18 Jahren - Anfrage</xs:documentation>
+        <xs:documentation xml:lang="fr">Type - Consultation du RAFam pour les allocations de formation à partir de 18 ans - Demande</xs:documentation>
+    </xs:annotation>
+
+    <!-- Request Type -->
+    <xs:element name="message">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Request with eCH-0058 header</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eCH-0058:headerType" />
+                <xs:element name="content">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="vn" type="eCH-0044:vnType" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

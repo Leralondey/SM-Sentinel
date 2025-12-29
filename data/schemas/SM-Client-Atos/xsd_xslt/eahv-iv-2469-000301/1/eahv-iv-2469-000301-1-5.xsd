@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright : Centrale de Compensation AVS/AI, Genève (2016). -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eahv-iv-2469-000301="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-000301/1"
+           xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-common/1"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-000301/1" elementFormDefault="qualified"
+           attributeFormDefault="unqualified" version="1.5">
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-common/1"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5"/>
+    <xs:complexType name="headerType">
+		<xs:complexContent>
+            <xs:extension base="common:commonHeaderType">
+                <xs:sequence>
+					<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000301"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:simpleType name="actionKind">
+        <xs:restriction base="xs:integer">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="contentType">
+        <xs:sequence>
+            <xs:element name="businessCaseIdRPC" minOccurs="1" maxOccurs="1">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                        <xs:pattern value="[A-Za-z0-9]+"/>
+                        <xs:whiteSpace value="collapse"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="decisionId" type="common:decisionIdType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="deliveryOffice" type="common:deliveryOfficeType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="actionKind" type="eahv-iv-2469-000301:actionKind" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eahv-iv-2469-000301:headerType"/>
+                <xs:element name="content" type="eahv-iv-2469-000301:contentType"/>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

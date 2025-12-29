@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- common. -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4"
+		   xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/5" xmlns:eCH-0008="http://www.ech.ch/xmlns/eCH-0008/3"
+		   xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-common/1"
+		   targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-common/1" elementFormDefault="qualified" version="1.0">
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0008/3" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0010/5" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/4" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" />
+	<xs:complexType name="commonHeaderType">
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType" />
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" />
+			<xs:element name="messageId" type="eCH-0058:messageIdType" />
+			<xs:element name="messageType" type="eCH-0058:messageTypeType" fixed="2417" />
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType" />
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="0" />
+			<xs:element name="messageDate" type="eCH-0058:messageDateType" />
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="requestYearType">
+		<xs:annotation>
+			<xs:documentation>Anfragejahr</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="2014" />
+			<xs:maxInclusive value="9999" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="validityDateType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Allgemeines Datumsformat für gültige Daten ab 1.1.1850</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:date">
+			<xs:minInclusive value="1850-01-01" />
+			<xs:maxInclusive value="9999-12-31" />
+			<xs:pattern value="\d{4}-\d{2}-\d{2}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="healthInsuranceBagNrType">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0" />
+			<xs:maxInclusive value="9999" />
+			<xs:totalDigits value="4" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="personType">
+		<xs:sequence>
+			<xs:element name="AHVN13" type="eCH-0044:vnType">
+				<xs:annotation>
+					<xs:documentation>AHV-Nummer 13-stellig (AHVN13)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation>Nachname</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="firstName" type="eCH-0044:baseNameType">
+				<xs:annotation>
+					<xs:documentation>Alle Vornamen in der richtigen Reihenfolge</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="sex" type="eCH-0044:sexType">
+				<xs:annotation>
+					<xs:documentation>Geschlecht (1=männlich, 2=weiblich)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="birthDate" type="common:validityDateType">
+				<xs:annotation>
+					<xs:documentation>Geburtsdatum</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="address" type="common:addressType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="addressType">
+		<xs:sequence>
+			<xs:element name="addressLine1" type="eCH-0010:addressLineType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Adresszusatzzeile für personifizierte Adressangaben (z.B. c/o-Adresse)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="addressLine2" type="eCH-0010:addressLineType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Adresszusatzzeile für unpersonifizierte Adressangaben</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="street" type="eCH-0010:streetType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Strassenbezeichnungen (dies kann auch der Name einer Lokalität, etc. sein)
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="houseNumber" type="eCH-0010:houseNumberType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Hausnummer (zu setzen, falls vorhanden)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="town" type="eCH-0010:townType">
+				<xs:annotation>
+					<xs:documentation>Ortsname (in ausländischen Adressen falls nötig inkl. Provinz etc.)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="swissZipCode" type="eCH-0010:swissZipCodeType">
+					<xs:annotation>
+						<xs:documentation>Schweizer Postleitzahl (zu setzen, falls Land Schweiz)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="foreignZipCode" type="eCH-0010:foreignZipCodeType">
+					<xs:annotation>
+						<xs:documentation>Ausländische Postleitzahl (zu setzen, falls Ausland)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="country" type="eCH-0008:countryIdType">
+				<xs:annotation>
+					<xs:documentation>Land, vierstelliger BFS-Ländercode</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="elMessageType">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="2" />
+			<xs:enumeration value="01" />
+			<xs:enumeration value="02" />
+			<xs:enumeration value="03" />
+			<xs:enumeration value="04" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="premiumRegionType">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="2" />
+			<xs:enumeration value="1" />
+			<xs:enumeration value="2" />
+			<xs:enumeration value="3" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="abgangsgrundType">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="2" />
+			<xs:enumeration value="00">
+				<xs:annotation>
+					<xs:documentation>Ohne Abgang</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="01">
+				<xs:annotation>
+					<xs:documentation>Verstorben</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="02">
+				<xs:annotation>
+					<xs:documentation>Wegzug</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="03">
+				<xs:annotation>
+					<xs:documentation>Verzicht</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="04">
+				<xs:annotation>
+					<xs:documentation>Anderes</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="uebergangsbestimmungType">
+		<xs:restriction base="xs:boolean" />
+	</xs:simpleType>
+	<!-- was sind hier min/maxInclusive? -->
+	<xs:simpleType name="laufnummerType">
+		<xs:restriction base="xs:int">
+			<xs:totalDigits value="12" />
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- was sind hier min/maxInclusive? -->
+	<xs:simpleType name="keySupplierApplicationType">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="20" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="code">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="5" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="codeDescription">
+		<xs:restriction base="xs:token">
+			<xs:maxLength value="300" />
+			<xs:minLength value="1" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="infoType">
+		<xs:choice>
+			<xs:element name="positiveReport" type="common:reportType" />
+			<xs:element name="negativeReport" type="common:reportType" />
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="notice">
+		<xs:sequence>
+			<xs:element name="code" type="common:code" />
+			<xs:element name="codeDescription" type="common:codeDescription" />
+			<xs:element name="laufnummer" type="common:laufnummerType" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="reportType">
+		<xs:sequence>
+			<xs:element name="notice" type="common:notice" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

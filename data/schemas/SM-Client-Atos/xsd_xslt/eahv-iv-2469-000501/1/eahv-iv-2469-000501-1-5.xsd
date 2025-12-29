@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright : Centrale de Compensation AVS/AI, Genève (2016). -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eahv-iv-2469-000501="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-000501/1"
+           xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-common/1"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-000501/1" elementFormDefault="qualified"
+           attributeFormDefault="unqualified" version="1.5">
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2469-common/1"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/4"/>
+    <xs:complexType name="headerType">
+		<xs:complexContent>
+            <xs:extension base="common:commonHeaderType">
+                <xs:sequence>
+					<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000501"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="decisionReturnType">
+        <xs:sequence>
+            <xs:element name="decisionId" type="common:decisionIdType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="vn" type="eCH-0044:vnType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="deliveryOffice" type="common:deliveryOfficeType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="receiptMonth" type="xs:gYearMonth" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="violatedPlausibilityGeneral" type="eahv-iv-2469-000501:plausibilityGeneralType"
+                        minOccurs="0" maxOccurs="1"/>
+            <xs:element name="violatedPlausibilityPerson" type="eahv-iv-2469-000501:plausibilityPersonType"
+                        minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="overlapInformation" type="eahv-iv-2469-000501:overlapInformationType" minOccurs="0"
+                        maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="plausibilityGeneralType">
+        <xs:sequence>
+            <xs:element name="content" type="eahv-iv-2469-000501:plausibilityContentType" minOccurs="1"
+                        maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="plausibilityPersonType">
+        <xs:complexContent>
+            <xs:extension base="eahv-iv-2469-000501:plausibilityGeneralType">
+                <xs:sequence>
+                    <xs:element name="vn" type="eCH-0044:vnType" minOccurs="1" maxOccurs="1"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="overlapInformationType">
+        <xs:sequence>
+            <xs:element name="violatedPlausibility" type="eahv-iv-2469-000501:plausibilityContentType" minOccurs="1"
+                        maxOccurs="1"/>
+            <xs:element name="businessCaseIdRPC" minOccurs="1" maxOccurs="1">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                        <xs:pattern value="[A-Za-z0-9]+"/>
+                        <xs:whiteSpace value="collapse"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="decisionId" type="common:decisionIdType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="deliveryOffice" type="common:deliveryOfficeType" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="validFrom" type="xs:gYearMonth" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="validTo" type="xs:gYearMonth" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="plausibilityContentType">
+        <xs:sequence>
+            <xs:element name="PlausibilityCode" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="PlausibilityCategory" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="PlausibilityType" minOccurs="1" maxOccurs="1">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:whiteSpace value="collapse"/>
+                        <xs:enumeration value="TECHNICAL"/>
+                        <xs:enumeration value="SIMPLE"/>
+                        <xs:enumeration value="INTRA"/>
+                        <xs:enumeration value="INTER"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="contentType">
+        <xs:sequence>
+            <xs:element name="businessCaseIdRPC" minOccurs="1" maxOccurs="1">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                        <xs:pattern value="[A-Za-z0-9]+"/>
+                        <xs:whiteSpace value="collapse"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="decisionReturned" type="eahv-iv-2469-000501:decisionReturnType" minOccurs="1"
+                        maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eahv-iv-2469-000501:headerType"/>
+                <xs:element name="content" type="eahv-iv-2469-000501:contentType"/>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:easygov-ahv-common="http://www.easygov.swiss/xmlns/ahv/easygov-ahv-common-001/2" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010-f/5" xmlns:eCH-0011="http://www.ech.ch/xmlns/eCH-0011-f/7" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044-f/4" xmlns:eCH-0046="http://www.ech.ch/xmlns/eCH-0046/5" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/1" xmlns:eCH-0196="http://www.ech.ch/xmlns/eCH-0196/2" xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" targetNamespace="http://www.easygov.swiss/xmlns/ahv/easygov-ahv-common-001/2" elementFormDefault="qualified" version="2.0">
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" schemaLocation="eahv-iv-common-4-0.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0010-f/5" schemaLocation="../ech/eCH-0010-5-0f.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0011-f/7" schemaLocation="../ech/eCH-0011-7-0f.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044-f/4" schemaLocation="../ech/eCH-0044-4-1f.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0046/5" schemaLocation="../ech/eCH-0046-5-0.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4" schemaLocation="../ech/eCH-0058-4-0.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/1" schemaLocation="../ech/eCH-0097-1-0.xsd"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0196/2" schemaLocation="../ech/eCH-0196-2-2.xsd"/>
+	<xs:complexType name="extensionType">
+		<xs:sequence>
+			<xs:element name="contactInformation" type="eahv-iv-common:contactInformationType" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="headerType">
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="businessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="messageType" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="en">
+                        Geschäftsfall: – 2804: EasyGov AHV-Anmeldung
+                        – xxx: AHV-Abmeldung
+                        – yyy: Adressänderung bei der AHV
+                        Anmerkung: Es konnte keine ID für Abmeldung und Adressänderung in eCH-0070 gefunden werden, bitte ergänzen.
+                    </xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="2804"/>
+						<!-- TODO: ID für Abmeldung und Adressänderung ergänzen -->
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType" minOccurs="1" maxOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000001"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="action" type="eCH-0058:actionType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" minOccurs="1" maxOccurs="1"/>
+
+						<xs:element name="attachment" type="eahv-iv-common:attachmentType" minOccurs="1" maxOccurs="unbounded"/>
+
+			<xs:element name="extension" type="easygov-ahv-common:extensionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="personType">
+		<xs:sequence>
+			<xs:element name="vnType" type="eCH-0044:vnType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="officialName" type="eCH-0044:baseNameType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="dateOfBirth" type="eCH-0044:datePartiallyKnownType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="nationalities" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="firstName" type="eCH-0044:baseNameType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="nameList" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="salutation" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="residencePermit" minOccurs="0" maxOccurs="1">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="B"/>
+						<xs:enumeration value="C"/>
+						<xs:enumeration value="Ci"/>
+						<xs:enumeration value="D"/>
+						<xs:enumeration value="E"/>
+						<xs:enumeration value="F"/>
+						<xs:enumeration value="G"/>
+						<xs:enumeration value="L"/>
+						<xs:enumeration value="N"/>
+						<xs:enumeration value="S"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sex" type="eCH-0044:sexType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="maritalStatus" type="eCH-0011:maritalStatusType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="phone" type="eCH-0046:phoneType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="email" type="eCH-0046:emailType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="mobile" type="eCH-0046:phoneType" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="zahlungsverbindungType">
+		<xs:sequence>
+			<xs:element name="accountName" type="eCH-0044:baseNameType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="iban" type="eCH-0196:ibanType" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="adresseDomizilType">
+		<xs:sequence>
+			<xs:element name="bfs" type="xs:int" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="email" type="eCH-0046:emailType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="recipient" type="eCH-0097:organisationNameType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="houseNumber" type="eCH-0010:addressInformationType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="canton" type="eCH-0010:addressInformationType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="mobile" type="eCH-0046:phoneType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="phone" type="eCH-0046:phoneType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="address" type="eCH-0010:addressInformationType" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

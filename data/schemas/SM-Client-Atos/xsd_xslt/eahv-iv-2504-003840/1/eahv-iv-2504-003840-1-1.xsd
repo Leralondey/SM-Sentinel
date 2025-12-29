@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Lars Steffen (AWK Group AG) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4"
+           xmlns:eCH-0090="http://www.ech.ch/xmlns/eCH-0090/1"
+           xmlns:eahv-iv-AFV-common="http://www.eahv-iv.ch/xmlns/eahv-iv-AFV-common/1"
+           xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4"
+           xmlns:eahv-iv-2504-003840="http://www.eahv-iv.ch/xmlns/eahv-iv-2504-003840/1"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2504-003840/1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified" version="1.1">
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0090/1"/>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4"/>
+    <xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-AFV-common/1"/>
+    
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Anmeldung für die Altersrente im Referenzalter nach Vorbezug</xs:documentation>
+        <xs:documentation xml:lang="fr">Demande de rente de vieillesse à l’âge de référence après une anticipation</xs:documentation>
+        <xs:documentation xml:lang="it">Richiesta della rendita di vecchiaia all’età di riferimento in caso di anticipazione</xs:documentation>
+        <xs:documentation xml:lang="en">Application for transfer from early old-age pension payments to a normal old-age pension </xs:documentation>
+    </xs:annotation>
+    <xs:complexType name="headerType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Ableitung von eahv-iv-AFV-common:headerType.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType"/>
+            <!--keep minOccurs="0" maxOccurs="0" for the purpose of tracibility-->
+            <xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0"/>
+            <xs:element name="declarationLocalReference" type="eCH-0058:declarationLocalReferenceType" minOccurs="0"
+                        maxOccurs="0"/>
+            <xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+            <xs:element name="messageId" type="eCH-0090:messageIdType"/>
+            <xs:element name="referenceMessageId" type="eCH-0090:messageIdType" minOccurs="0" maxOccurs="0"/>
+            <xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType"/>
+            <xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType"/>
+            <xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0"
+                        maxOccurs="0"/>
+            <xs:element name="uniqueIdBusinessTransaction" type="eCH-0058:uniqueIdBusinessTransactionType" minOccurs="0"
+                        maxOccurs="0"/>
+            <xs:element name="messageType">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:messageTypeType">
+                        <xs:enumeration value="2504"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="subMessageType">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:subMessageTypeType">
+                        <xs:enumeration value="003840"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+            <xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0" maxOccurs="0"/>
+            <xs:element name="subject" type="eCH-0058:subjectType"/>
+            <xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" maxOccurs="0"/>
+            <xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+            <xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0"/>
+            <xs:element name="eventDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+            <xs:element name="modificationDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+            <xs:element name="action">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:actionType">
+                        <xs:minLength value="1"/>
+                        <xs:enumeration value="1">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="de">Neue Meldung</xs:documentation>
+                                <xs:documentation xml:lang="fr">Message nouveau</xs:documentation>
+                                <xs:documentation xml:lang="it">Nuovo messaggio</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="10">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="de">Weiterleitung</xs:documentation>
+                                <xs:documentation xml:lang="fr">Transmission</xs:documentation>
+                                <xs:documentation xml:lang="it">Inoltro</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+            <xs:element name="responseExpected" type="eCH-0058:responseExpectedType"/>
+            <xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType"/>
+            <xs:element name="attachment" type="eahv-iv-AFV-common:attachmentType" maxOccurs="unbounded"/>
+            <xs:element name="extension" type="eahv-iv-AFV-common:extensionType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="contentType">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="insuredPerson" type="eahv-iv-common:naturalPersonsOASIDIType"/>
+            <xs:element name="elements" type="eahv-iv-AFV-common:elementsType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">simple key value pairs</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="repeatedElements" type="eahv-iv-AFV-common:repeatedElementsType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">repeated key value pairs</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="message">
+        <xs:annotation>
+            <xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="header" type="eahv-iv-2504-003840:headerType"/>
+                <xs:element name="content" type="eahv-iv-2504-003840:contentType"/>
+            </xs:sequence>
+            <xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+
+
+
+

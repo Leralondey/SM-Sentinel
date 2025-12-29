@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eahv-iv-2905-000001="http://www.eahv-iv.ch/xmlns/eahv-iv-2905-000001/1"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2905-000001/1"
+           elementFormDefault="qualified"
+           attributeFormDefault="unqualified"
+           version="1.1">
+    <xs:annotation>
+        <xs:documentation xml:lang="de">DA-ASV-BE</xs:documentation>
+        <xs:documentation xml:lang="fr">DA-ASV-BE</xs:documentation>
+        <xs:documentation xml:lang="it">DA-ASV-BE</xs:documentation>
+    </xs:annotation>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5"/>
+    <xs:complexType name="HeaderTypeAsv">
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType"/>
+            <xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+            <xs:element name="messageId" type="eCH-0058:messageIdType"/>
+            <xs:element name="messageType" type="eCH-0058:messageTypeType" fixed="2905"/>
+            <xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000001"/>
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+            <xs:element name="subject" type="eCH-0058:subjectType"/>
+            <xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+            <xs:element name="action" type="eCH-0058:actionType" fixed="1"/>
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ElMeldungASV">
+        <xs:sequence>
+            <xs:element name="svNr" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">AHV13-Nummer (NNSS) der EL bzw. IPV beziehenden Person.</xs:documentation>
+                    <xs:documentation xml:lang="en">AHV13-Number (NNSS) of person, who gets EL respectivly IPV.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="vorname" type="xs:string"/>
+            <xs:element name="strasse" type="xs:string" minOccurs="0"/>
+            <xs:element name="plz" type="xs:string" minOccurs="0"/>
+            <xs:element name="ort" type="xs:string" minOccurs="0"/>
+            <xs:element name="betragIpv" type="xs:double">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Jahresbetrag max. kantonale PV (MIPV)</xs:documentation>
+                    <xs:documentation xml:lang="en">Yearly amount of cantonal health insurance lump sum (MIPV)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="codeAlterskategorie" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Alterskategorie Kind = 1, Jugendlicher = 2, Erwachsener = 3</xs:documentation>
+                    <xs:documentation xml:lang="en">Age category child = 1, juvenile = 2, adult = 3</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="geburtsDatum" type="xs:date"/>
+            <xs:element name="datumGueltigVon" type="xs:date" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Beginndatum des Anspruchs. Bei Abgängen/Einnahmeüberschuss (03, 05, 14) wird der erste Tag ohne EL-Anspruch angegeben. Bei Stopp-Meldungen infolge neuer Verfügung mit Ausgabenüberschuss wird der erste Tag der neuen Leistung angegeben. Immer der Monatserste.</xs:documentation>
+                    <xs:documentation xml:lang="en">Begin date of EL entitlement. For terminations and income sruplus (03, 05, 14) report the first date without EL entitlement. For Stopp messages caused by new EL periods and calculations resulting in new amounts the first day of the new amount is reported. It always will  be the first of month.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="datumGueltigBis" type="xs:date" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Endedatum des Anspruchs, der Monats-Letzte. Bei Stopp-Meldungen (03, 05, 14) wird das gleiche Datum wie bei Gültig-Von angegeben, immer der Monatserste.</xs:documentation>
+                    <xs:documentation xml:lang="en">End of EL entitlement, the last day of month. For Stopp messages (03, 05, 14) the same day as datumGueltigVon will be reported, which will be the first of month.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="codePraemienregion" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Prämienregion 1, 2, 3</xs:documentation>
+                    <xs:documentation xml:lang="en">Premium region code 1, 2, 3</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="durchschnittsPraemieJahr" type="xs:double" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Jahresbetrag DP Regionale Durschnittsprämie (RDP)</xs:documentation>
+                    <xs:documentation xml:lang="en">Yearly amount of regional health insurance lumps sum (RDP)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="maxIPVJahr" type="xs:boolean" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Nicht verwendet - nicht senden.</xs:documentation>
+                    <xs:documentation xml:lang="en">Not used.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="svNrVertreter" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Sozialversicherungsnummer des Vertreters, wenn vorhanden und natürliche Person.</xs:documentation>
+                    <xs:documentation xml:lang="en">NNSS of representative, if defined and if it is a natural person.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="codeElMeldungTyp" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">03: Abgang, 05: Stopp infolge neuer Verfügung, 11: Start infolge neuer Verfügung (mit Ausgabenüberschuss), 12: Start infolge einer Umrechnung (mit Ausgabenüberschuss), 14: Stopp infolge von Einnahmeüberschuss</xs:documentation>
+                    <xs:documentation xml:lang="en">03: Termination, 05: Stopp caused by new decree respectively a new calculation, 11: Start caused by new decree respectively a new calculation (with expenses surplus), 12: Start caused by price rise adoption (with expenses surplus), 14: Stopp caused by income surplus</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="betragPv" type="xs:double" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Monatsbetrag max. kantonale PV (MIPV)</xs:documentation>
+                    <xs:documentation xml:lang="en">Monthly amount of maximum cantonal IPV (= A1P_MIPV)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="betragAnteilDp" type="xs:double" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Monatsbetrag Anteil Durchschnittsprämie</xs:documentation>
+                    <xs:documentation xml:lang="en">Monthly amount of health insurance lump sum (= A1P - A1P_MIPV)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="betragKrankenversicherer" type="xs:double" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="de">Monatsbetrag max. kantonale PV + Anteil Durchschnittsprämie</xs:documentation>
+                    <xs:documentation xml:lang="en">Monthly amount of maximum cantonal IPV (MIPV) + part of health insurance lump sum (part of RDP) (= A1P)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="message">
+        <xs:complexType>
+        <xs:sequence>
+            <xs:element name="header" type="eahv-iv-2905-000001:HeaderTypeAsv"/>
+            <xs:element name="content" type="eahv-iv-2905-000001:ElMeldungASV"/>
+        </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

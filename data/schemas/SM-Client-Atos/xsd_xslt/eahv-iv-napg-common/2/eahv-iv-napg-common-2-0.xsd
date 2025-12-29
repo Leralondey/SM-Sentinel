@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.eahv-iv.ch/xmlns/eahv-iv-napg-common/2"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:eCH-0097="http://www.ech.ch/xmlns/eCH-0097/6"
+           xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+           targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-napg-common/2"
+           elementFormDefault="qualified"
+           version="2.0">
+
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0097/6" schemaLocation="eCH-0097-6-0.xsd"/>
+    <xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" schemaLocation="eCH-0058-5-0.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation xml:lang="de">Gemeinsame Typen für Meldungen und Webdienste</xs:documentation>
+        <xs:documentation xml:lang="fr">Types communs aux messages et web services</xs:documentation>
+    </xs:annotation>
+
+    <xs:simpleType name="compensationOfficeChoiceRuleType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Règles de sélection de la caisse de compensation compétente
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Regeln für die Bestimmung der zuständigen Ausgleichskasse</xs:documentation>
+        </xs:annotation>
+
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="FREELANCE">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Sélection par l’astreint indépendant de l’entreprise dans une liste
+                        à partir du registre IDE. Affectation à la CC affiliée à l’employeur selon le registre IDE
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Auswahl des Unternehmens aus einer Liste durch den unabhängigen
+                        Wehrpflichtigen
+                        aus dem UID-Register. Zuweisung an die dem Arbeitgeber angeschlossene BG aus dem UID-Register
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="EMPLOYEE">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Sélection par l’astreint de son employeur principal à partir du
+                        registre IDE. Affectation à la CC dont l’employeur est affilié selon le registre IDE
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Auswahl des Dienstleistenden durch den Wehrpflichtigen aus dem
+                        aus dem UID-Register. Zuweisung an die Ausgleichskasse an deren der Arbeitgeber angeschlossen
+                        ist.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UNEMPLOYED">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Sélection par l’astreint chômeur de son dernier employeur à partir
+                        du registre IDE. Affectation à la CC dont l’employeur est affilié selon le registre IDE
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Auswahl des letzten Arbeitgebers durch den arbeitslosen
+                        Dienstleistenden aus
+                        aus dem UID-Register. Zuweisung an die Ausgleichskasse an deren der Arbeitgeber angeschlossen
+                        ist.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="UNEMPLOYED_WITH_INTERMEDIATE_EARNINGS">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Sélection par l’astreint chômeur de l’employeur du gain
+                        intermédiaire à partir du registre IDE. Affectation à la CC dont l’employeur est affilié selon
+                        le registre IDE
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Auswahl des Arbeitgebers für den Zwischenverdienst durch den
+                        Dienstleistenden aus dem UID-Register. Zuweisung an die Ausgleichskasse an deren der Arbeitgeber
+                        angeschlossen ist.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SWISS_COMPENSATION_OFFICE">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Affectation à la CSC de l’astreint avec activité lucrative et
+                        domicilié à l’étranger (3)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Zuweisung an die SAK für Dienstleistende mit einer Erwerbstätigkeit
+                        und Wohnsitz im Ausland
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CANTONAL_COMPENSATION_OFFICE_OF_RESIDENCY">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Affectation à la Caisse de Compensation Cantonale du canton de
+                        domicile pour l’astreint chômeur percevant ou pas des AC (2) = (5)
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Zuweisung an die kantonale Ausgleichskasse des Wohnsitzkantons für
+                        arbeitslose Dienstleistende mit oder ohne Bezug von ALV-Taggelder
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CANTONAL_COMPENSATION_OFFICE_OF_STUDY">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Affectation à la Caisse Cantonale de l’établissement d’enseignement
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Zuweisung an die kantonale Ausgleichskasse der Lehranstalt
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AK89_OR_AK25_OR_CANTONAL_COMPENSATION_OFFICE">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Affectation à AK89 ou AK25 ou à la Caisse de Compensation Cantonale
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Zuweisung an die AK89 oder die AK25 oder an die kantonale
+                        Ausgleichskasse
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="COMPENSATION_OFFICE_ASSIGNMENT_REQUEST">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Attribution sur demande de la caisse de compensation
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Zuweisung auf Antrag der Ausgleichskasse
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="COMPENSATION_OFFICE_TRANSFER_REQUEST">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Attribution suite à une demande de transfert d'une caisse de
+                        compensation
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Zuweisung auf Antrag der Ausgleichskasse
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="initialAssignmentType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Information sur la première attribution d'un cas à une caisse de
+                compensation
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Informationen über die erste Zuweisung eines Falles an eine Ausgleichskasse
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="compensationOffice" type="eCH-0097:uidStructureType"/>
+            <xs:element name="compensationOfficeChoiceRule" type="compensationOfficeChoiceRuleType"/>
+            <xs:element name="eventDate" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="transferType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Information sur un transfert du cas d'une caisse de compensation à une autre
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Information über eine Übertragung des Falles von einer Ausgleichskasse zu
+                einer anderen
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="sourceCompensationOffice" type="eCH-0097:uidStructureType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">IDE de la caisse de compensation source.</xs:documentation>
+                    <xs:documentation xml:lang="de">UID der Quellensusgleichskasse.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="destinationCompensationOffice" type="eCH-0097:uidStructureType">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">IDE de la caisse de compensation de destination.</xs:documentation>
+                    <xs:documentation xml:lang="de">UID der Ausgleichskasse am Zielort.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="reason">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Commentaire de la caisse de compensation source sur la raison du
+                        transfert.
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Kommentar der Quellenausgleichskasse zum Grund der Überweisung
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="300"/>
+                        <xs:minLength value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="eventDate" type="xs:dateTime" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation xml:lang="fr">Date du transfert. Pas nécessaire lors d'une demande de transfert.
+                    </xs:documentation>
+                    <xs:documentation xml:lang="de">Datum der Übertragung. Nicht erforderlich bei einer
+                        Versetzungsanfrage.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="closingType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Information sur la clôture d'un cas</xs:documentation>
+            <xs:documentation xml:lang="de">Informationen über den Abschluss eines Falls</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="compensationOffice" type="eCH-0097:uidStructureType"/>
+            <xs:element name="eventDate" type="xs:dateTime"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="assignmentsHistoryType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Historique des attributions</xs:documentation>
+            <xs:documentation xml:lang="de">Geschichte der Zuweisungen</xs:documentation>
+        </xs:annotation>
+
+        <xs:sequence>
+            <xs:element name="initialAssignment" type="initialAssignmentType"/>
+            <xs:element name="transfer" type="transferType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="closing" type="closingType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="errorCodeType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Codes d'erreurs standard pour les retours de la CdC.
+                Le code "OTHER" est là pour la flexibilité, mais ne devrait pas être utilisé à long terme.
+                Dès que possible, de nouveaux codes doivent être défini afin de permettre un traitement automatisé par
+                les caisses de compensations.
+            </xs:documentation>
+            <xs:documentation xml:lang="de">Standard-Fehlercodes für Rückmeldungen der ZAS.
+                Der Code "OTHER" ist für die Flexibilität da, sollte aber nicht langfristig verwendet werden.
+                So bald wie möglich sollten neue Codes definiert werden, um eine automatisierte Verarbeitung durch die
+                Ausgleichskassen zu ermöglichen.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="UNKNOWN_BUSINESS_PROCESS_ID"/>
+            <xs:enumeration value="NO_CASES_FOUND_FOR_VN"/>
+            <xs:enumeration value="CASE_ALREADY_ASSIGNED"/>
+            <xs:enumeration value="CASE_NOT_ASSIGNED_TO_REQUESTER"/>
+            <xs:enumeration value="INVALID_CASE_STATUS_FOR_REQUESTED_OPERATION"/>
+            <xs:enumeration value="UNKNOWN_DESTINATION"/>
+            <xs:enumeration value="SEDEX_ID_AND_UID_MISMATCH"/>
+            <xs:enumeration value="INVALID_XSD"/>
+            <xs:enumeration value="DELIVERY_FLAG"/>
+            <xs:enumeration value="OTHER"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="caseStatusType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Statuts possible pour un cas</xs:documentation>
+            <xs:documentation xml:lang="de">Mögliche Status für einen Fall</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="INITIATED"/>
+            <xs:enumeration value="ERROR"/>
+            <xs:enumeration value="READY_FOR_ASTREINT"/>
+            <xs:enumeration value="EDITING"/>
+            <xs:enumeration value="ASSIGNED"/>
+            <xs:enumeration value="PAPER"/>
+            <xs:enumeration value="CLOSED"/>
+            <xs:enumeration value="PRESCRIBED"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="errorType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Type commun pour les erreurs dans les réponses</xs:documentation>
+            <xs:documentation xml:lang="de">Häufiger Typ des Antwortfehlers</xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="code" type="errorCodeType"/>
+            <xs:element name="description">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="500"/>
+                        <xs:minLength value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="infoType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Type commun pour les réponses</xs:documentation>
+            <xs:documentation xml:lang="de">Gemeinsamer Typ für Antworten</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="positiveReport">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="notice">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="assignedCompensationOffice" type="eCH-0097:uidStructureType"/>
+                                    <xs:element name="caseStatus" type="caseStatusType"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="negativeReport">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="notice">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="error" type="errorType" maxOccurs="unbounded"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="headerType">
+        <xs:annotation>
+            <xs:documentation xml:lang="fr">Type commun pour les headers eCH-0058</xs:documentation>
+            <xs:documentation xml:lang="de">Gemeinsamer Typ für Headers eCH-0058</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="senderId" type="eCH-0058:participantIdType"/>
+            <xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+            <xs:element name="messageId" type="eCH-0058:messageIdType"/>
+            <xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0"/>
+            <xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType" minOccurs="0"/>
+            <xs:element name="messageType">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:messageTypeType">
+                        <xs:enumeration value="2005"/>
+                        <xs:enumeration value="2006"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="subMessageType">
+                <xs:simpleType>
+                    <xs:restriction base="eCH-0058:subMessageTypeType">
+                        <xs:enumeration value="000101"/>
+                        <xs:enumeration value="000201"/>
+                        <xs:enumeration value="000202"/>
+                        <xs:enumeration value="000301"/>
+                        <xs:enumeration value="000401"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+            <xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+            <xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0"/>
+            <xs:element name="action" type="eCH-0058:actionType"/>
+            <xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

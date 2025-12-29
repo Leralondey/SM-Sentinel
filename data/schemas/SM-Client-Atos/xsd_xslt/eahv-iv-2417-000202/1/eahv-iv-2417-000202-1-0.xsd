@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:el-2417-000202="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-000202/1"
+		   xmlns:common="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-common/1" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/5"
+		   xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4"
+		   targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-000202/1" elementFormDefault="qualified" version="1.0">
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2417-common/1" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/5" />
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/4" />
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Datenaustausch Prämienverbilligung EL: Antwort Tarifprämie</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="headerType">
+		<xs:complexContent>
+			<xs:extension base="common:commonHeaderType">
+				<xs:sequence>
+					<xs:element name="subMessageType" type="eCH-0058:subMessageTypeType" fixed="000202" />
+					<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" />
+					<xs:element name="action" type="eCH-0058:actionType" fixed="6" />
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="requestYear" type="common:requestYearType" />
+			<xs:element name="insurancePremiumeResponses" type="el-2417-000202:insurancePremiumResponseType" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="insurancePremiumResponseType">
+		<xs:sequence>
+			<xs:element name="AHVN13" type="eCH-0044:vnType">
+				<xs:annotation>
+					<xs:documentation>AHV-Nummer 13-stellig (AHVN13)</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="birthDate" type="common:validityDateType">
+				<xs:annotation>
+					<xs:documentation>Geburtsdatum</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="premiumInformation" type="el-2417-000202:premiumInformationType" />
+				<xs:element name="premiumRejectReason" type="xs:token">
+					<xs:annotation>
+						<xs:documentation>Tarifprämie unbekannt, wenn keine Prämieninformationen zum Anfragejahr vorliegen</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="premiumInformationType">
+		<xs:sequence>
+			<xs:element name="healthInsurance" type="common:healthInsuranceBagNrType" />
+			<xs:element name="inventoryDate" type="xs:date">
+				<xs:annotation>
+					<xs:documentation>Tag an dem die Erhebung der gemeldeten Prämiendaten erfolgte</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="premiumRequestYear" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>Tarifprämie in Rappen für den Januar (resp. den Versicherungsbeginn) des angefragten Jahres</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="premiumInventoryYear" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Tarifprämie in Rappen am Tag an dem die Erhebung erfolgte</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="0" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="el-2417-000202:headerType" />
+				<xs:element name="content" type="el-2417-000202:contentType" />
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:unsignedShort" use="required" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

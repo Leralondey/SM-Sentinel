@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2022 (http://www.altova.com) by Lars Steffen (AWK Group AG) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:pvli-common="http://www.llv.li/xmlns/pvli-common/1" xmlns:pvli-5238-000203="http://www.llv.li/xmlns/pvli-5238-000203/1" targetNamespace="http://www.llv.li/xmlns/pvli-5238-000203/1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.llv.li/xmlns/pvli-common/1"/>
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Datenaustausch Prämienverbilligung Liechtenstein: Rückweisung Stopp</xs:documentation>
+	</xs:annotation>
+	<xs:complexType name="headerType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Ableitung von pvli-common:headerType.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="declarationLocalReference" type="pvli-common:declarationLocalReferenceType"/>
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0"/>
+			<xs:element name="businessProcessId" type="pvli-common:businessProcessIdType"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="uniqueIdBusinessTransaction" type="eCH-0058:uniqueIdBusinessTransactionType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="5238"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000203"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="subject" type="eCH-0058:subjectType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="eventDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="modificationDate" type="eCH-0058:eventDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="pvli-common:actionType">
+						<xs:maxLength value="2"/>
+						<xs:minLength value="1"/>
+						<xs:enumeration value="6">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Antwort</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="extension" type="xs:anyType" minOccurs="0" maxOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="header">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für header.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="pvli-5238-000203:headerType">
+					<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="stopRejectReasonType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Grund der Rückweisung eines Stopps</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="1"/>
+			<xs:enumeration value="1">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Verfügung unbekannt</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="2">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gemeldetes Stoppdatum nach dem Ende des Verfügungszeitraums</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="3">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Gemeldetes Stoppdatum liegt zu weit in der Vergangenheit</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="4">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Ungültiger Stopp mit Verfügungsnummer 0</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="stopRejectType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Rückweisung Annullation oder Verkürzung</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="decreeId" type="pvli-common:decreeIdType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Referenzcode der betroffenen Verfügung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="person" type="pvli-common:personType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Personenidentifikation</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stopRejectReason" type="pvli-5238-000203:stopRejectReasonType">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Grund für die Rückweisung der Annullation oder Verkürzung</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="stopMonth" type="xs:gYearMonth" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Falls die Verfügung bereits gestoppt ist, Angabe des Enddatum aus diesem Stopp</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Fachliche Attribute der Nachricht</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="stopReject" type="pvli-5238-000203:stopRejectType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="pvli-5238-000203:headerType"/>
+				<xs:element name="content" type="pvli-5238-000203:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

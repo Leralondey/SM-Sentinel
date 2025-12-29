@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:eCH-0006="http://www.ech.ch/xmlns/eCH-0006/2" xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/5" xmlns:eCH-0011="http://www.ech.ch/xmlns/eCH-0011-f/9" xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4" xmlns:eCH-0058="http://www.ech.ch/xmlns/eCH-0058/4" xmlns:eahv-iv-common="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4" xmlns:eahv-iv-2053-000101="http://www.eahv-iv.ch/xmlns/eahv-iv-2053-000101/3" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.eahv-iv.ch/xmlns/eahv-iv-2053-000101/3" elementFormDefault="qualified" attributeFormDefault="unqualified" version="3.0">
+	<xs:annotation>
+		<xs:documentation xml:lang="de">Vorbescheid</xs:documentation>
+		<xs:documentation xml:lang="fr">Projet de décision</xs:documentation>
+		<xs:documentation xml:lang="it">Progetto di decisione</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0006/2"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0010/5"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0011-f/9"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0044/4"/>
+	<xs:import namespace="http://www.ech.ch/xmlns/eCH-0058/4"/>
+	<xs:import namespace="http://www.eahv-iv.ch/xmlns/eahv-iv-common/4"/>
+	<xs:complexType name="headerType">
+		<xs:sequence>
+			<xs:element name="senderId" type="eCH-0058:participantIdType"/>
+			<xs:element name="originalSenderId" type="eCH-0058:participantIdType" minOccurs="0" maxOccurs="0"/>
+			<!-- keep minOccurs=maxOccurs=0 for the purpose of keeping track of elements -->
+			<xs:element name="recipientId" type="eCH-0058:participantIdType"/>
+			<xs:element name="messageId" type="eCH-0058:messageIdType"/>
+			<xs:element name="referenceMessageId" type="eCH-0058:messageIdType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="businessProcessId" type="eCH-0058:businessProcessIdType"/>
+			<xs:element name="ourBusinessReferenceId" type="eCH-0058:businessReferenceIdType"/>
+			<xs:element name="yourBusinessReferenceId" type="eCH-0058:businessReferenceIdType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="messageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:messageTypeType">
+						<xs:enumeration value="2053"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="subMessageType">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:subMessageTypeType">
+						<xs:enumeration value="000101"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="sendingApplication" type="eCH-0058:sendingApplicationType"/>
+			<xs:element name="partialDelivery" type="eCH-0058:partialDeliveryType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="subject" type="eCH-0058:subjectType"/>
+			<xs:element name="comment" type="eCH-0058:commentType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="messageDate" type="eCH-0058:messageDateType"/>
+			<xs:element name="initialMessageDate" type="eCH-0058:messageDateType" minOccurs="0" maxOccurs="0"/>
+			<xs:element name="action">
+				<xs:simpleType>
+					<xs:restriction base="eCH-0058:actionType">
+						<xs:enumeration value="1">
+							<xs:annotation>
+								<xs:documentation xml:lang="de">Neue Nachricht</xs:documentation>
+								<xs:documentation xml:lang="fr">Message nouveau</xs:documentation>
+								<xs:documentation xml:lang="it">Nuovo messaggio</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="testDeliveryFlag" type="eCH-0058:testDeliveryFlagType"/>
+			<xs:element name="responseExpected" type="eCH-0058:responseExpectedType" fixed="false"/>
+			<xs:element name="businessCaseClosed" type="eCH-0058:businessCaseClosedType" fixed="false"/>
+			<xs:element name="attachment" type="eahv-iv-2053-000101:attachmentType" maxOccurs="unbounded"/>
+			<xs:element name="extension" type="eahv-iv-2053-000101:extensionType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="extensionType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Elemente, welche im eCH-0058/4-Standard nicht vorgesehen sind, werden im Attribut „extension“ geführt.</xs:documentation>
+			<xs:documentation xml:lang="fr">Les éléments qui ne sont pas prévus dans le standard eCH-0058/4 sont définis dans l'élément 'extension'</xs:documentation>
+			<xs:documentation xml:lang="it">Gli elementi che non sono incluse nello standard eCH-0058/4 sono definiti in 'estensione' l'elemento</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="contactInformation" type="eahv-iv-common:contactInformationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="attachmentType">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Dokumente des Dossiers.</xs:documentation>
+			<xs:documentation xml:lang="fr">Pièces jointes au dossier</xs:documentation>
+			<xs:documentation xml:lang="it">Allegati</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="title" type="eahv-iv-common:attachmentTitleType"/>
+			<xs:element name="documentDate" type="eahv-iv-common:documentDateType"/>
+			<xs:element name="leadingDocument" type="eahv-iv-common:leadingDocumentType"/>
+			<xs:element name="sortOrder" type="eahv-iv-common:sortOrderType"/>
+			<xs:element name="documentFormat" type="eahv-iv-common:documentFormatType"/>
+			<xs:element name="documentType" type="eahv-iv-common:documentKindType"/>
+			<xs:element name="file" type="eahv-iv-common:attachmentFileType" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation xml:lang="de">Falls zum Dokument nur eine Datei gehört, muss eine 1 bei internalSortOrder eingetragen werden.</xs:documentation>
+					<xs:documentation xml:lang="fr">Dans le cas d'une seule pièce jointe, il faut mettre la valeur 1 pour l'élément internalSortOrder</xs:documentation>
+					<xs:documentation xml:lang="it">Nel caso di un singolo allegato, è necessario inserire il valore 1 per il internalSortOrder elemento</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="contentType">
+		<xs:sequence>
+			<xs:element name="insuredPerson" type="eahv-iv-common:naturalPersonsOASIDIType"/>
+			<xs:element name="insuredPersonDetails" type="eahv-iv-2053-000101:insuredPersonDetailsType" minOccurs="0"/>
+			<xs:element name="decision" type="eahv-iv-2053-000101:decisionType" minOccurs="0"/>
+			<xs:element name="disabilityInsuranceDetails" type="eahv-iv-2053-000101:disabilityInsuranceDetailsType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="helplessnessAllowanceDetails" type="eahv-iv-2053-000101:helplessnessAllowanceDetailsType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="insuredPersonDetailsType">
+		<xs:sequence>
+			<xs:element name="maritalStatus" type="eCH-0011:maritalStatusType"/>
+			<xs:element name="sex" type="eCH-0044:sexType"/>
+			<xs:element name="nationality" type="eCH-0011:nationalityDataType"/>
+			<xs:element name="residentStatus" type="eCH-0006:residencePermitType" minOccurs="0"/>
+			<xs:element name="flagDecreeRecipient" type="xs:boolean"/>
+			<xs:element name="officialNameDecreeRecipient" type="eCH-0044:baseNameType" minOccurs="0"/>
+			<xs:element name="firstnameDecreeRecipient" type="eCH-0044:baseNameType" minOccurs="0"/>
+			<xs:element name="addressLineDecreeRecipient" type="eCH-0010:addressLineType" minOccurs="0"/>
+			<xs:element name="poBoxDecreeRecipient" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="32"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="streetDecreeRecipient" type="eCH-0010:streetType" minOccurs="0"/>
+			<xs:element name="houseNumberDecreeRecipient" type="eCH-0010:houseNumberType" minOccurs="0"/>
+			<xs:choice minOccurs="0">
+				<xs:element name="swissZipCodeDecreeRecipient" type="eCH-0010:swissZipCodeType"/>
+				<xs:element name="foreignZipCodeDecreeRecipient" type="eCH-0010:foreignZipCodeType"/>
+			</xs:choice>
+			<xs:element name="townDecreeRecipient" type="eCH-0010:townType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="decisionType">
+		<xs:sequence>
+			<xs:element name="statementDate" type="xs:date"/>
+			<xs:element name="requestDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="disabilityCode" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:pattern value="[0-9]{3}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="functionalFailureCode" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:pattern value="[0-9]{2}"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="selfInflicted" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="lateRegistration" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="dateLateRegistration" type="xs:date" minOccurs="0"/>
+			<xs:element name="dutyOfCooperationFullfilled" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="startBreachOfDuty" type="xs:date" minOccurs="0"/>
+			<xs:element name="endBreachOfDuty" type="xs:date" minOccurs="0"/>
+			<xs:element name="decisionText" minOccurs="0">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:maxLength value="5000"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="disabilityInsuranceDetailsType">
+		<xs:sequence>
+			<xs:element name="ivGrade">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="validityStart" type="xs:date"/>
+			<xs:element name="validityEnd" type="xs:date" minOccurs="0"/>
+			<xs:element name="transitionPayment" type="xs:boolean" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="helplessnessAllowanceDetailsType">
+		<xs:sequence>
+			<xs:element name="heGrade">
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:enumeration value="0"/>
+						<xs:enumeration value="1"/>
+						<xs:enumeration value="2"/>
+						<xs:enumeration value="3"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="nursingHome" type="xs:boolean"/>
+			<xs:element name="assistance" type="xs:boolean"/>
+			<xs:element name="validityStart" type="xs:date"/>
+			<xs:element name="validityEnd" type="xs:date" minOccurs="0"/>
+			<xs:element name="paymentDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="hospitalStayStart" type="xs:date" minOccurs="0"/>
+			<xs:element name="hospitalStayEnd" type="xs:date" minOccurs="0"/>
+			<xs:element name="nursingHomeStart" type="xs:date" minOccurs="0"/>
+			<xs:element name="nursingHomeEnd" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="message">
+		<xs:annotation>
+			<xs:documentation xml:lang="de">Deklaration des Root-Elements für message.xml</xs:documentation>
+			<xs:documentation xml:lang="fr">Déclaration de l'élément racine pour le message.xml</xs:documentation>
+			<xs:documentation xml:lang="it">Dichiarazione di l'elemento radice per message.xml</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="header" type="eahv-iv-2053-000101:headerType"/>
+				<xs:element name="content" type="eahv-iv-2053-000101:contentType"/>
+			</xs:sequence>
+			<xs:attribute name="minorVersion" type="xs:integer" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
